@@ -11,13 +11,12 @@ function graphic.drawFilledBox(arg1, arg2, arg3, arg4, arg5)
     currentColour = term.getBackgroundColor()
     currentTextColour = term.getTextColor()
     currentX, currentY = term.getCursorPos()
-    nextY = currentY - 1
  
     paintutils.drawFilledBox(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
  
     
     term.setTextColor(currentTextColour)
-    term.setCursorPos(currentX,nextY)
+    term.setCursorPos(currentX,currentY)
     term.setBackgroundColor(currentColour)
     
 end
@@ -31,13 +30,12 @@ function graphic.drawBox(arg1, arg2, arg3, arg4, arg5)
     currentColour = term.getBackgroundColor()
     currentTextColour = term.getTextColor()
     currentX, currentY = term.getCursorPos()
-    nextY = currentY - 1
  
     paintutils.drawBox(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
 
     
     term.setTextColor(currentTextColour)
-    term.setCursorPos(currentX,nextY)
+    term.setCursorPos(currentX,currentY)
     term.setBackgroundColor(currentColour)
 end
 
@@ -48,12 +46,11 @@ function graphic.drawPixel(arg1, arg2, arg3)
     currentColour = term.getBackgroundColor()
     currentTextColour = term.getTextColor()
     currentX, currentY = term.getCursorPos()
-    nextY = currentY - 1
     
     paintutils.drawPixel(tonumber(arg1),tonumber(arg2),tonumber(arg3))
     
     term.setTextColor(currentTextColour)
-    term.setCursorPos(currentX,nextY)
+    term.setCursorPos(currentX,currentY)
     term.setBackgroundColor(currentColour)
     
 end

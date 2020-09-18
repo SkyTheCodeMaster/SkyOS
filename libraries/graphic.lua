@@ -49,7 +49,7 @@ function graphic.drawPixel(arg1, arg2, arg3)
     
     paintutils.drawPixel(tonumber(arg1),tonumber(arg2),tonumber(arg3))
     
-    term.setTextColor(currentColour)
+    term.setTextColor(currentTextColour)
     term.setCursorPos(currentX,currentY-1)
     term.setBackgroundColor(currentColour)
     

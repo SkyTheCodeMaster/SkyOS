@@ -1,6 +1,5 @@
-local file = {}
-
 graphic = require("libraries.graphic")
+local file = {}
 
 function file.split (inputstr, sep)
         if sep == nil then

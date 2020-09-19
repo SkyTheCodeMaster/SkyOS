@@ -1,21 +1,27 @@
 local file = {}
 
-function file.listFiles(path)
-  fs.list(path)
+graphic = require("libraries.graphic")
+
+function file.split (inputstr, sep)
+        if sep == nil then
+                sep = "%s"
+        end
+        local t={}
+        for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+                table.insert(t, str)
+        end
+        return t
 end
 
-function file.size(path)
-  fs.getSize(path)
+function file.countLines(path)
+  local lines = 0 
+  for _ in io.lines(path) do lines = lines + 1 end 
+  return lines
 end
 
-function file.readGraphicsFile(path)
-  if fs.exists(path)==true then
-    local skgrp = fs.open(path, "r")
-    
-    skgrp.close()
-  else
-    error("FileAPI readGraphicsFile: requested file does not exist.")
-  end
+function file.loadGrpLines(path)
+  local grpFile = fs.open(path,"r")
+  local lines = file.countLines(path)
+  return file.split(grpLine,",")
 end
-
 return file

@@ -1,4 +1,3 @@
-require("libraries.file")
 local graphic = {}
 
 -- Graphics library for SkyOS

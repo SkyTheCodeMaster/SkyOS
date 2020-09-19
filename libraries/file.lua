@@ -22,6 +22,16 @@ function file.loadGrpLines(path)
   local grpFile = fs.open(path,"r")
   local lines = file.countLines(path)
   local grpLine = grpFile.readLine()
-  return file.split(grpLine,",")
+  local grpTable = file.split(grpLine,",")
+  for 1,file.countLines(path),1 do
+    local operation = grpTable[1]
+    if operation == "P" then
+      graphic.drawPixel(grpTable[2],grpTable[3],grpTable[4])
+    elseif operation == "B" then
+      graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
+    elseif operation == "F" then
+      graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
+    end
+  end
 end
 return file

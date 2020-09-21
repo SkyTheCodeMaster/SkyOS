@@ -1,6 +1,6 @@
 graphic = require("libraries.graphic")
 local file = {}
-
+ 
 function file.split (inputstr, sep)
         if sep == nil then
                 sep = "%s"
@@ -11,27 +11,33 @@ function file.split (inputstr, sep)
         end
         return t
 end
-
+ 
 function file.countLines(path)
+ 
   local lines = 0 
   for _ in io.lines(path) do lines = lines + 1 end 
   return lines
+  
 end
-
+ 
 function file.loadGrpLines(path)
+ 
   local grpFile = fs.open(path,"r")
   local lines = file.countLines(path)
-  local grpLine = grpFile.readLine()
-  local grpTable = file.split(grpLine,",")
-  for 1,file.countLines(path),1 do
+  
+  for i = 1,file.countLines(path),1 do
+    local grpLine = grpFile.readLine()
+    local grpTable = file.split(grpLine,",")
     local operation = grpTable[1]
     if operation == "P" then
-      graphic.drawPixel(grpTable[2],grpTable[3],grpTable[4])
+      graphic.drawPixel(grpTable[2],grpTable[3],tonumber(grpTable[4]))
     elseif operation == "B" then
-      graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
+      graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
     elseif operation == "F" then
-      graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
+      graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
     end
+    
   end
+  
 end
 return file

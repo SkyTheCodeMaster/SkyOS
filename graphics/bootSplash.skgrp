@@ -15,7 +15,10 @@ P,9,14,1
 B,19,14,21,14,1
 P,21,10,1
 P,20,13,1
+B,13,10,14,10,1
+P,14,9,1
 Draw Light Blue Cloud Shades
+Top Cloud
 B,5,11,21,11,8
 B,6,10,8,10,8
 B,12,7,12,10,8
@@ -27,3 +30,12 @@ P,11,10,8
 P,14,6,8
 P,7,9,8
 P,8,8,8
+Bottom Left Cloud
+B,6,14,8,14,8
+P,7,13,8
+Bottom Right Cloud
+B,16,15,21,15,8
+B,17,14,18,14,8
+P,19,13,8
+Write "SkyOS" text
+TEXT,11,13,512,8,SkyOS

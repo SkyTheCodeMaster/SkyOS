@@ -878,7 +878,7 @@ else
         term.redirect(parentTerm)
         term.setBackgroundColor(bgColour)
         term.setTextColour(promptColour)
-        term.setCursorBlink(false)
+        term.write("SkyShell>")
         term.setTextColour(textColour)
 
 

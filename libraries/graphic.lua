@@ -8,16 +8,16 @@ function graphic.drawFilledBox(arg1, arg2, arg3, arg4, arg5)
 --arg3 bottom right x
 --arg4 is bottom right y
 --arg5 is color (colors.black)
-    currentColour = term.getBackgroundColor()
-    currentTextColour = term.getTextColor()
+    currentColour = term.getBackgroundColour()
+    currentTextColour = term.getTextColour()
     currentX, currentY = term.getCursorPos()
  
     paintutils.drawFilledBox(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
  
     
-    term.setTextColor(currentTextColour)
+    term.setTextColour(currentTextColour)
     term.setCursorPos(currentX,currentY)
-    term.setBackgroundColor(currentColour)
+    term.setBackgroundColour(currentColour)
     
 end
  
@@ -27,16 +27,16 @@ function graphic.drawBox(arg1, arg2, arg3, arg4, arg5)
 --arg3 bottom right x
 --arg4 is bottom right y
 --arg5 is color (colors.black)
-    currentColour = term.getBackgroundColor()
-    currentTextColour = term.getTextColor()
+    currentColour = term.getBackgroundColour()
+    currentTextColour = term.getTextColour()
     currentX, currentY = term.getCursorPos()
  
     paintutils.drawBox(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
 
     
-    term.setTextColor(currentTextColour)
+    term.setTextColour(currentTextColour)
     term.setCursorPos(currentX,currentY)
-    term.setBackgroundColor(currentColour)
+    term.setBackgroundColour(currentColour)
 end
 
 function graphic.drawPixel(arg1, arg2, arg3)
@@ -49,10 +49,25 @@ function graphic.drawPixel(arg1, arg2, arg3)
     
     paintutils.drawPixel(tonumber(arg1),tonumber(arg2),tonumber(arg3))
     
-    term.setTextColor(currentTextColour)
+    term.setTextColour(currentTextColour)
     term.setCursorPos(currentX,currentY)
-    term.setBackgroundColor(currentColour)
+    term.setBackgroundColour(currentColour)
     
 end
- 
+
+function graphic.drawText(arg1,arg2,arg3,arg4)
+--arg1 is x
+--arg2 is y
+--arg3 is text colour
+--arg4 is string for text. This does not check to see if the text will print offscreen.
+    currentTextColour = term.getTextColour()
+    currentX, currentY = term.getCursorPos()
+    
+    term.setCursorPos(tonumber(arg1),tonumber(arg2))
+    term.setTextColour(tonumber(arg3))
+    term.write(arg4)
+    
+    term.setCursorPos(currentX,currentY)
+    term.setTextColour(currentTextColour)
+end
 return graphic

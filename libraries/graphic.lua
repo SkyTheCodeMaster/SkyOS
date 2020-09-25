@@ -1,7 +1,7 @@
 local graphic = {}
-
+ 
 -- Graphics library for SkyOS
-
+ 
 function graphic.drawFilledBox(arg1, arg2, arg3, arg4, arg5)
 --arg1 is top left x
 --arg2 is top left y
@@ -32,13 +32,13 @@ function graphic.drawBox(arg1, arg2, arg3, arg4, arg5)
     currentX, currentY = term.getCursorPos()
  
     paintutils.drawBox(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
-
+ 
     
     term.setTextColour(currentTextColour)
     term.setCursorPos(currentX,currentY)
     term.setBackgroundColour(currentColour)
 end
-
+ 
 function graphic.drawPixel(arg1, arg2, arg3)
 --arg1 is x
 --arg2 is y
@@ -54,12 +54,12 @@ function graphic.drawPixel(arg1, arg2, arg3)
     term.setBackgroundColour(currentColour)
     
 end
-
+ 
 function graphic.drawText(arg1,arg2,arg3,arg4,arg5)
 --arg1 is x
 --arg2 is y
 --arg3 is text colour
---arg4 is background colour
+--arg4 is for background colour
 --arg5 is string for text. This does not check to see if the text will print offscreen.
     currentTextColour = term.getTextColour()
     currentColour = term.getBackgroundColour()
@@ -75,3 +75,4 @@ function graphic.drawText(arg1,arg2,arg3,arg4,arg5)
     term.setBackgroundColour(currentColour)
 end
 return graphic
+ 

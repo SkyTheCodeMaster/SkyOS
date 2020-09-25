@@ -40,7 +40,7 @@ function file.loadGrpLines(path)
     end
     
   end
-  
+  grpFile.close()
 end
 return file
  

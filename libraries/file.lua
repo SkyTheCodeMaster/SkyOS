@@ -36,10 +36,11 @@ function file.loadGrpLines(path)
     elseif operation == "F" then
       graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
     elseif operation == "TEXT" then
-      graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5])
+      graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
     end
     
   end
   
 end
 return file
+ 

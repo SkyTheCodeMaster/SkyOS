@@ -1,0 +1,16 @@
+COLOURS: BLUE:2048 LIGHTBLUE:8 WHITE:1 CYAN:512
+Set the background to blue
+F,1,1,26,20,2048
+Draw White Pixels
+B,8,9,11,9,1
+F,15,6,16,10,1
+B,13,7,14,7,1
+B,17,7,17,9,1
+B,19,9,20,10,1
+B,9,10,10,10,1
+P,9,8,1
+P,18,8,1
+P,8,13,1
+P,9,14,1
+B,19,14,21,14,1
+P,21,10,1

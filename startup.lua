@@ -12,6 +12,8 @@
 
 term.clear()
 term.setCursorPos(1,1)
+file = require("libraries.file")
+file.loadGrpLines("grahpics/bootSplash.skgrp")
 
 local expect = dofile("rom/modules/main/cc/expect.lua").expect
 local make_package = dofile("rom/modules/main/cc/require.lua").make

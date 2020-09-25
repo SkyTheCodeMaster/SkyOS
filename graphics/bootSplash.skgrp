@@ -1,25 +1,15 @@
-turn screen cyan
-F,1,1,26,20,512
-Add cloud box
-F,5,7,17,12,1
-Tweak individual pixels
-Add cyan pixels
-P,5,7,512
-P,6,7,512
-P,6,8,512
-P,12,7,512
-P,8,9,512
-P,13,9,512
-P,10,11,512
-P,16,11,512
-B,15,7,16,8,512
-B,17,7,17,9,512
-Add white pixels
-P,4,10,1
-P,4,12,1
-P,5,13,1
-P,11,13,1
-P,15,13,1
-P,18,12,1
-Write "SkyOS" text
-TEXT,8,16,SkyOS
+turn screen light blue
+F,1,1,26,20,8
+draw cloud boxes
+B,5,11,20,10,1
+B,6,9,18,9,1
+B,8,8,16,8,1
+B,12,7,14,7
+B,9,7,10,7
+Tweak Pixels
+P,15,11,8
+P,20,10,8
+P,6,12,1
+P,9,12,1
+Add SkyOS Text
+TEXT,10,10,512,SkyOS

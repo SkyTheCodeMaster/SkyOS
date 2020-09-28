@@ -12,5 +12,6 @@ if fs.exists("customPrograms/") then
 end
 if fs.exists("wipeSkyOS.lua") then
     fs.delete("wipeSkyOS.lua")
+end
 shell.run("gitget SkyTheCodeMaster SkyOS master")
 os.reboot()

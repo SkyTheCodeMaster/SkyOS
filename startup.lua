@@ -5,7 +5,7 @@ file.loadGrpLines("graphics/bootSplash.skgrp")
 gpswrapper = require("libraries.gpswrapper")
 --Do server side things BEFORE term.clear()
 local function gpsGet()
-    local x, local y, local z = gpswrapper.gpslocate(5)
+    local x, y, z = gpswrapper.gpslocate(5)
     gpsCoords = vector.new(math.floor(x+0.5), math.floor(y+0.5), math.floor(z+0.5))
     gpsTable = file.split(gpsCoords,",")
     return gpsTable

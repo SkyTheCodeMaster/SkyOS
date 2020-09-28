@@ -15,6 +15,13 @@ term.setCursorPos(1,1)
 file = require("libraries.file")
 file.loadGrpLines("graphics/bootSplash.skgrp")
 
+--Do server side things BEFORE term.clear()
+term.setBackgroundColour(colours.black)
+term.clear()
+--Load DE
+file.loadGrpLines("graphics/background/default.skgrp")
+file.loadGrpLines("graphics/taskbar.skgrp")
+
 local expect = dofile("rom/modules/main/cc/expect.lua").expect
 local make_package = dofile("rom/modules/main/cc/require.lua").make
 

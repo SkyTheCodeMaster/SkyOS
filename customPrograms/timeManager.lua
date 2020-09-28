@@ -4,5 +4,5 @@ while true do
   term.setCursorPos(22,20)
   term.setBackgroundColour(colours.grey)
   term.write(formattedTime)
-  term.setBackground(colours.black)
+  term.setBackgroundColour(colours.black)
 end

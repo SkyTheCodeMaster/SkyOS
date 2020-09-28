@@ -4,34 +4,33 @@ file = require("libraries.file")
 file.loadGrpLines("graphics/bootSplash.skgrp")
 gpswrapper = require("libraries.gpswrapper")
 --Do server side things BEFORE term.clear()
-term.setBackgroundColour(colours.black)
-term.clear()
---Load DE
-file.loadGrpLines("graphics/background/default.skgrp")
-file.loadGrpLines("graphics/taskbar.skgrp")
---parallel.waitForAll(function() shell.run("customPrograms/timeManager.lua") end, function() shell.run("customPrograms/applications.lua") end)
 local function gpsGet()
     local x, local y, local z = gpswrapper.gpslocate(5)
     gpsCoords = vector.new(math.floor(x+0.5), math.floor(y+0.5), math.floor(z+0.5))
     gpsTable = file.split(gpsCoords,",")
     return gpsTable
- end
+end
+term.setBackgroundColour(colours.black)
+term.clear()
+--Load DE
+--parallel.waitForAll(function() shell.run("customPrograms/timeManager.lua") end, function() shell.run("customPrograms/applications.lua") end)
+local function drawTime(x,y,backColour,textColour)
+  local time = textutils.formatTime(os.time(), true)
+  term.setCursorPos(x,y)
+  term.setBackgroundColour(backColour)
+  term.setTextColour(textColour)
+  term.write(time)
+end
+local function drawDesktop()
+  desktopImg = "graphics/background/default.skgrp"
+  taskbarImg = "graphics/taskbar.skgrp"
+  file.loadGrpLines(desktopImg)
+  file.loadGrpLines(taskbarImg)
+end
+drawDesktop()
 while true do
-    local time = textutils.formatTime(os.time(), true)
-    term.setCursorPos(22,20)
-    term.setBackgroundColour(colours.grey)
-    term.write("      ")
-    term.setCursorPos(22,20)
-    term.write(time)
-    term.setBackgroundColour(colours.blue)
-    gpsTable = gpsGet()
-    term.setCursorPos(1,6)
-    term.write(gpsTable[1])
-    term.setCursorPos(1,7)
-    term.write(gpsTable[2])
-    term.setCursorPos(1,8)
-    term.write(gpsTable[3])
-    sleep()
+  drawTime(22,20,128,256)
+  sleep()
 end
  
 local expect = dofile("rom/modules/main/cc/expect.lua").expect

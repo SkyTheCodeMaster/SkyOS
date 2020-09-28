@@ -6,7 +6,7 @@ gpswrapper = {}
  
 function gpswrapper.gpslocate(timeout)
     if fs.exists("rom/apis/gps.lua") then
-        gps.locate(timeout)
+        return gps.locate(timeout)
     else
         return 1,1,1
     end

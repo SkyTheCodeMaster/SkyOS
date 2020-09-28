@@ -11,7 +11,7 @@ file.loadGrpLines("graphics/background/default.skgrp")
 file.loadGrpLines("graphics/taskbar.skgrp")
 --parallel.waitForAll(function() shell.run("customPrograms/timeManager.lua") end, function() shell.run("customPrograms/applications.lua") end)
 local function gpsGet()
-    x, y, z = gpswrapper.gpslocate(5)
+    local x, local y, local z = gpswrapper.gpslocate(5)
     gpsCoords = vector.new(math.floor(x+0.5), math.floor(y+0.5), math.floor(z+0.5))
     gpsTable = file.split(gpsCoords,",")
     return gpsTable

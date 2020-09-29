@@ -74,5 +74,23 @@ function graphic.drawText(arg1,arg2,arg3,arg4,arg5)
     term.setTextColour(currentTextColour)
     term.setBackgroundColour(currentColour)
 end
+
+function graphic.drawLine(arg1, arg2, arg3, arg4, arg5)
+--arg1 is top left x
+--arg2 is top left y
+--arg3 bottom right x
+--arg4 is bottom right y
+--arg5 is color (colors.black)
+    currentColour = term.getBackgroundColour()
+    currentTextColour = term.getTextColour()
+    currentX, currentY = term.getCursorPos()
+ 
+    paintutils.drawLine(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
+ 
+    
+    term.setTextColour(currentTextColour)
+    term.setCursorPos(currentX,currentY)
+    term.setBackgroundColour(currentColour)
+end
 return graphic
  

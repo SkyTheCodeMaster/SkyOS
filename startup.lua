@@ -1,3 +1,15 @@
+--- The shell API provides access to CraftOS's command line interface.
+--
+-- It allows you to @{run|start programs}, @{setCompletionFunction|add
+-- completion for a program}, and much more.
+--
+-- @{shell} is not a "true" API. Instead, it is a standard program, which its
+-- API into the programs that it launches. This allows for multiple shells to
+-- run at the same time, but means that the API is not available in the global
+-- environment, and so is unavailable to other @{os.loadAPI|APIs}.
+--
+-- @module[module] shell
+
 term.clear()
 term.setCursorPos(1,1)
 file = require("libraries.file")
@@ -34,309 +46,32 @@ while true do
   drawTime(22,20,128,256)
   sleep()
 end
- 
+
 local expect = dofile("rom/modules/main/cc/expect.lua").expect
 local make_package = dofile("rom/modules/main/cc/require.lua").make
- 
-function read2(_sReplaceChar, _tHistory, _fnComplete, _sDefault)
-    expect(1, _sReplaceChar, "string", "nil")
-    expect(2, _tHistory, "table", "nil")
-    expect(3, _fnComplete, "function", "nil")
-    expect(4, _sDefault, "string", "nil")
- 
-    term.setCursorBlink(false)
- 
-    local sLine
-    if type(_sDefault) == "string" then
-        sLine = _sDefault
-    else
-        sLine = ""
-    end
-    local nHistoryPos
-    local nPos, nScroll = #sLine, 0
-    if _sReplaceChar then
-        _sReplaceChar = string.sub(_sReplaceChar, 1, 1)
-    end
- 
-    local tCompletions
-    local nCompletion
-    local function recomplete()
-        if _fnComplete and nPos == #sLine then
-            tCompletions = _fnComplete(sLine)
-            if tCompletions and #tCompletions > 0 then
-                nCompletion = 1
-            else
-                nCompletion = nil
-            end
-        else
-            tCompletions = nil
-            nCompletion = nil
-        end
-    end
- 
-    local function uncomplete()
-        tCompletions = nil
-        nCompletion = nil
-    end
- 
-    local w = term.getSize()
-    local sx = term.getCursorPos()
- 
-    local function redraw(_bClear)
-        local cursor_pos = nPos - nScroll
-        if sx + cursor_pos >= w then
-            -- We've moved beyond the RHS, ensure we're on the edge.
-            nScroll = sx + nPos - w
-        elseif cursor_pos < 0 then
-            -- We've moved beyond the LHS, ensure we're on the edge.
-            nScroll = nPos
-        end
- 
-        local _, cy = term.getCursorPos()
-        term.setCursorPos(sx, cy)
-        local sReplace = _bClear and " " or _sReplaceChar
-        if sReplace then
-            term.write(string.rep(sReplace, math.max(#sLine - nScroll, 0)))
-        else
-            term.write(string.sub(sLine, nScroll + 1))
-        end
- 
-        if nCompletion then
-            local sCompletion = tCompletions[nCompletion]
-            local oldText, oldBg
-            if not _bClear then
-                oldText = term.getTextColor()
-                oldBg = term.getBackgroundColor()
-                term.setTextColor(colors.white)
-                term.setBackgroundColor(colors.gray)
-            end
-            if sReplace then
-                term.write(string.rep(sReplace, #sCompletion))
-            else
-                term.write(sCompletion)
-            end
-            if not _bClear then
-                term.setTextColor(oldText)
-                term.setBackgroundColor(oldBg)
-            end
-        end
- 
-        term.setCursorPos(sx + nPos - nScroll, cy)
-    end
- 
-    local function clear()
-        redraw(true)
-    end
- 
-    recomplete()
-    redraw()
- 
-    local function acceptCompletion()
-        if nCompletion then
-            -- Clear
-            clear()
- 
-            -- Find the common prefix of all the other suggestions which start with the same letter as the current one
-            local sCompletion = tCompletions[nCompletion]
-            sLine = sLine .. sCompletion
-            nPos = #sLine
- 
-            -- Redraw
-            recomplete()
-            redraw()
-        end
-    end
-    while true do
-        local sEvent, param, param1, param2 = os.pullEvent()
-        if sEvent == "char" then
-            -- Typed key
-            clear()
-            sLine = string.sub(sLine, 1, nPos) .. param .. string.sub(sLine, nPos + 1)
-            nPos = nPos + 1
-            recomplete()
-            redraw()
- 
-        elseif sEvent == "paste" then
-            -- Pasted text
-            clear()
-            sLine = string.sub(sLine, 1, nPos) .. param .. string.sub(sLine, nPos + 1)
-            nPos = nPos + #param
-            recomplete()
-            redraw()
- 
-        elseif sEvent == "key" then
-            if param == keys.enter then
-                -- Enter
-                if nCompletion then
-                    clear()
-                    uncomplete()
-                    redraw()
-                end
-                break
- 
-            elseif param == keys.left then
-                -- Left
-                if nPos > 0 then
-                    clear()
-                    nPos = nPos - 1
-                    recomplete()
-                    redraw()
-                end
- 
-            elseif param == keys.right then
-                -- Right
-                if nPos < #sLine then
-                    -- Move right
-                    clear()
-                    nPos = nPos + 1
-                    recomplete()
-                    redraw()
-                else
-                    -- Accept autocomplete
-                    acceptCompletion()
-                end
- 
-            elseif param == keys.up or param == keys.down then
-                -- Up or down
-                if nCompletion then
-                    -- Cycle completions
-                    clear()
-                    if param == keys.up then
-                        nCompletion = nCompletion - 1
-                        if nCompletion < 1 then
-                            nCompletion = #tCompletions
-                        end
-                    elseif param == keys.down then
-                        nCompletion = nCompletion + 1
-                        if nCompletion > #tCompletions then
-                            nCompletion = 1
-                        end
-                    end
-                    redraw()
- 
-                elseif _tHistory then
-                    -- Cycle history
-                    clear()
-                    if param == keys.up then
-                        -- Up
-                        if nHistoryPos == nil then
-                            if #_tHistory > 0 then
-                                nHistoryPos = #_tHistory
-                            end
-                        elseif nHistoryPos > 1 then
-                            nHistoryPos = nHistoryPos - 1
-                        end
-                    else
-                        -- Down
-                        if nHistoryPos == #_tHistory then
-                            nHistoryPos = nil
-                        elseif nHistoryPos ~= nil then
-                            nHistoryPos = nHistoryPos + 1
-                        end
-                    end
-                    if nHistoryPos then
-                        sLine = _tHistory[nHistoryPos]
-                        nPos, nScroll = #sLine, 0
-                    else
-                        sLine = ""
-                        nPos, nScroll = 0, 0
-                    end
-                    uncomplete()
-                    redraw()
- 
-                end
- 
-            elseif param == keys.backspace then
-                -- Backspace
-                if nPos > 0 then
-                    clear()
-                    sLine = string.sub(sLine, 1, nPos - 1) .. string.sub(sLine, nPos + 1)
-                    nPos = nPos - 1
-                    if nScroll > 0 then nScroll = nScroll - 1 end
-                    recomplete()
-                    redraw()
-                end
- 
-            elseif param == keys.home then
-                -- Home
-                if nPos > 0 then
-                    clear()
-                    nPos = 0
-                    recomplete()
-                    redraw()
-                end
- 
-            elseif param == keys.delete then
-                -- Delete
-                if nPos < #sLine then
-                    clear()
-                    sLine = string.sub(sLine, 1, nPos) .. string.sub(sLine, nPos + 2)
-                    recomplete()
-                    redraw()
-                end
- 
-            elseif param == keys["end"] then
-                -- End
-                if nPos < #sLine then
-                    clear()
-                    nPos = #sLine
-                    recomplete()
-                    redraw()
-                end
- 
-            elseif param == keys.tab then
-                -- Tab (accept autocomplete)
-                acceptCompletion()
- 
-            end
- 
-        elseif sEvent == "mouse_click" or sEvent == "mouse_drag" and param == 1 then
-            local _, cy = term.getCursorPos()
-            if param1 >= sx and param1 <= w and param2 == cy then
-                -- Ensure we don't scroll beyond the current line
-                nPos = math.min(math.max(nScroll + param1 - sx, 0), #sLine)
-                redraw()
-            end
- 
-        elseif sEvent == "term_resize" then
-            -- Terminal resized
-            w = term.getSize()
-            redraw()
- 
-        end
-    end
- 
-    local _, cy = term.getCursorPos()
-    term.setCursorBlink(false)
-    term.setCursorPos(w + 1, cy)
-    print()
- 
-    return sLine
-end
- 
- 
+
 local multishell = multishell
 local parentShell = shell
 local parentTerm = term.current()
- 
+
 if multishell then
     multishell.setTitle(multishell.getCurrent(), "shell")
 end
- 
+
 local bExit = false
 local sDir = parentShell and parentShell.dir() or ""
 local sPath = parentShell and parentShell.path() or ".:/rom/programs"
 local tAliases = parentShell and parentShell.aliases() or {}
 local tCompletionInfo = parentShell and parentShell.getCompletionInfo() or {}
 local tProgramStack = {}
- 
+
 local shell = {} --- @export
 local function createShellEnv(dir)
     local env = { shell = shell, multishell = multishell }
     env.require, env.package = make_package(env, dir)
     return env
 end
- 
+
 -- Colours
 local promptColour, textColour, bgColour
 if term.isColour() then
@@ -348,7 +83,7 @@ else
     textColour = colours.white
     bgColour = colours.black
 end
- 
+
 --- Run a program with the supplied arguments.
 --
 -- Unlike @{shell.run}, each argument is passed to the program verbatim. While
@@ -366,7 +101,7 @@ function shell.execute(command, ...)
     for i = 1, select('#', ...) do
         expect(i + 1, select(i, ...), "string")
     end
- 
+
     local sPath = shell.resolveProgram(command)
     if sPath ~= nil then
         tProgramStack[#tProgramStack + 1] = sPath
@@ -377,12 +112,12 @@ function shell.execute(command, ...)
             end
             multishell.setTitle(multishell.getCurrent(), sTitle)
         end
- 
+
         local sDir = fs.getDir(sPath)
         local env = createShellEnv(sDir)
         env.arg = { [0] = command, ... }
         local result = os.run(env, sPath, ...)
- 
+
         tProgramStack[#tProgramStack] = nil
         if multishell then
             if #tProgramStack > 0 then
@@ -401,7 +136,7 @@ function shell.execute(command, ...)
         return false
     end
 end
- 
+
 local function tokenise(...)
     local sLine = table.concat({ ... }, " ")
     local tWords = {}
@@ -418,9 +153,9 @@ local function tokenise(...)
     end
     return tWords
 end
- 
+
 -- Install shell API
- 
+
 --- Run a program with the supplied arguments.
 --
 -- All arguments are concatenated together and then parsed as a command line. As
@@ -441,7 +176,7 @@ function shell.run(...)
     end
     return false
 end
- 
+
 --- Exit the current shell.
 --
 -- This does _not_ terminate your program, it simply makes the shell terminate
@@ -450,7 +185,7 @@ end
 function shell.exit()
     bExit = true
 end
- 
+
 --- Return the current working directory. This is what is displayed before the
 -- `> ` of the shell prompt, and is used by @{shell.resolve} to handle relative
 -- paths.
@@ -460,7 +195,7 @@ end
 function shell.dir()
     return sDir
 end
- 
+
 --- Set the current working directory.
 --
 -- @tparam string dir The new working directory.
@@ -475,7 +210,7 @@ function shell.setDir(dir)
     end
     sDir = fs.combine(dir, "")
 end
- 
+
 --- Set the path where programs are located.
 --
 -- The path is composed of a list of directory names in a string, each separated
@@ -488,7 +223,7 @@ end
 function shell.path()
     return sPath
 end
- 
+
 --- Set the @{path|current program path}.
 --
 -- Be careful to prefix directories with a `/`. Otherwise they will be searched
@@ -499,7 +234,7 @@ function shell.setPath(path)
     expect(1, path, "string")
     sPath = path
 end
- 
+
 --- Resolve a relative path to an absolute path.
 --
 -- The @{fs} and @{io} APIs work using absolute paths, and so we must convert
@@ -521,7 +256,7 @@ function shell.resolve(path)
         return fs.combine(sDir, path)
     end
 end
- 
+
 local function pathWithExtension(_sPath, _sExt)
     local nLen = #sPath
     local sEndChar = string.sub(_sPath, nLen, nLen)
@@ -531,7 +266,7 @@ local function pathWithExtension(_sPath, _sExt)
     end
     return _sPath .. "." .. _sExt
 end
- 
+
 --- Resolve a program, using the @{path|program path} and list of @{aliases|aliases}.
 --
 -- @tparam string command The name of the program
@@ -547,7 +282,7 @@ function shell.resolveProgram(command)
     if tAliases[command] ~= nil then
         command = tAliases[command]
     end
- 
+
     -- If the path is a global path, use it directly
     if command:find("/") or command:find("\\") then
         local sPath = shell.resolve(command)
@@ -561,7 +296,7 @@ function shell.resolveProgram(command)
         end
         return nil
     end
- 
+
      -- Otherwise, look on the path variable
     for sPath in string.gmatch(sPath, "[^:]+") do
         sPath = fs.combine(shell.resolve(sPath), command)
@@ -574,11 +309,11 @@ function shell.resolveProgram(command)
             end
         end
     end
- 
+
     -- Not found
     return nil
 end
- 
+
 --- Return a list of all programs on the @{shell.path|path}.
 --
 -- @tparam[opt] boolean include_hidden Include hidden files. Namely, any which
@@ -587,9 +322,9 @@ end
 -- @usage textutils.tabulate(shell.programs())
 function shell.programs(include_hidden)
     expect(1, include_hidden, "boolean", "nil")
- 
+
     local tItems = {}
- 
+
     -- Add programs from the path
     for sPath in string.gmatch(sPath, "[^:]+") do
         sPath = shell.resolve(sPath)
@@ -607,7 +342,7 @@ function shell.programs(include_hidden)
             end
         end
     end
- 
+
     -- Sort and return
     local tItemList = {}
     for sItem in pairs(tItems) do
@@ -616,16 +351,16 @@ function shell.programs(include_hidden)
     table.sort(tItemList)
     return tItemList
 end
- 
+
 local function completeProgram(sLine)
     if #sLine > 0 and (sLine:find("/") or sLine:find("\\")) then
         -- Add programs from the root
         return fs.complete(sLine, sDir, true, false)
- 
+
     else
         local tResults = {}
         local tSeen = {}
- 
+
         -- Add aliases
         for sAlias in pairs(tAliases) do
             if #sAlias > #sLine and string.sub(sAlias, 1, #sLine) == sLine then
@@ -636,7 +371,7 @@ local function completeProgram(sLine)
                 end
             end
         end
- 
+
         -- Add all subdirectories. We don't include files as they will be added in the block below
         local tDirs = fs.complete(sLine, sDir, false, false)
         for i = 1, #tDirs do
@@ -646,7 +381,7 @@ local function completeProgram(sLine)
                 tSeen [sResult] = true
             end
         end
- 
+
         -- Add programs from the path
         local tPrograms = shell.programs()
         for n = 1, #tPrograms do
@@ -659,13 +394,13 @@ local function completeProgram(sLine)
                 end
             end
         end
- 
+
         -- Sort and return
         table.sort(tResults)
         return tResults
     end
 end
- 
+
 local function completeProgramArgument(sProgram, nArgument, sPart, tPreviousParts)
     local tInfo = tCompletionInfo[sProgram]
     if tInfo then
@@ -673,7 +408,7 @@ local function completeProgramArgument(sProgram, nArgument, sPart, tPreviousPart
     end
     return nil
 end
- 
+
 --- Complete a shell command line.
 --
 -- This accepts an incomplete command, and completes the program name or
@@ -713,19 +448,19 @@ function shell.complete(sLine)
                 end
                 return tResults
             end
- 
+
         elseif nIndex > 1 then
             local sPath = shell.resolveProgram(tWords[1])
             local sPart = tWords[nIndex] or ""
             local tPreviousParts = tWords
             tPreviousParts[nIndex] = nil
             return completeProgramArgument(sPath , nIndex - 1, sPart, tPreviousParts)
- 
+
         end
     end
     return nil
 end
- 
+
 --- Complete the name of a program.
 --
 -- @tparam string program The name of a program to complete.
@@ -735,7 +470,7 @@ function shell.completeProgram(program)
     expect(1, program, "string")
     return completeProgram(program)
 end
- 
+
 --- Set the completion function for a program. When the program is entered on
 -- the command line, this program will be called to provide auto-complete
 -- information.
@@ -771,7 +506,7 @@ function shell.setCompletionFunction(program, complete)
         fnComplete = complete,
     }
 end
- 
+
 --- Get a table containing all completion functions.
 --
 -- This should only be needed when building custom shells. Use
@@ -782,7 +517,7 @@ end
 function shell.getCompletionInfo()
     return tCompletionInfo
 end
- 
+
 --- Returns the path to the currently running program.
 --
 -- @treturn string The absolute path to the running program.
@@ -792,7 +527,7 @@ function shell.getRunningProgram()
     end
     return nil
 end
- 
+
 --- Add an alias for a program.
 --
 -- @tparam string command The name of the alias to add.
@@ -805,7 +540,7 @@ function shell.setAlias(command, program)
     expect(2, program, "string")
     tAliases[command] = program
 end
- 
+
 --- Remove an alias.
 --
 -- @tparam string command The alias name to remove.
@@ -813,7 +548,7 @@ function shell.clearAlias(command)
     expect(1, command, "string")
     tAliases[command] = nil
 end
- 
+
 --- Get the current aliases for this shell.
 --
 -- Aliases are used to allow multiple commands to refer to a single program. For
@@ -833,7 +568,7 @@ function shell.aliases()
     end
     return tCopy
 end
- 
+
 if multishell then
     --- Open a new @{multishell} tab running a command.
     --
@@ -863,7 +598,7 @@ if multishell then
             end
         end
     end
- 
+
     --- Switch to the @{multishell} tab with the given index.
     --
     -- @tparam number id The tab to switch to.
@@ -873,40 +608,41 @@ if multishell then
         multishell.setFocus(id)
     end
 end
- 
+
 local tArgs = { ... }
 if #tArgs > 0 then
     -- "shell x y z"
     -- Run the program specified on the commandline
     shell.run(...)
- 
+
 else
     -- "shell"
     -- Print the header
     term.setBackgroundColor(bgColour)
     term.setTextColour(promptColour)
+    print(os.version())
     term.setTextColour(textColour)
- 
+
     -- Run the startup program
     if parentShell == nil then
         shell.run("/rom/startup.lua")
     end
- 
+
     -- Read commands and execute them
     local tCommandHistory = {}
     while not bExit do
         term.redirect(parentTerm)
         term.setBackgroundColor(bgColour)
         term.setTextColour(promptColour)
-        term.write("SkyShell>")
+        write(shell.dir() .. ":S> ")
         term.setTextColour(textColour)
- 
- 
+
+
         local sLine
         if settings.get("shell.autocomplete") then
-            sLine = read2(nil, tCommandHistory, shell.complete)
+            sLine = read(nil, tCommandHistory, shell.complete)
         else
-            sLine = read2(nil, tCommandHistory)
+            sLine = read(nil, tCommandHistory)
         end
         if sLine:match("%S") and tCommandHistory[#tCommandHistory] ~= sLine then
             table.insert(tCommandHistory, sLine)

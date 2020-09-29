@@ -38,7 +38,7 @@ if term.isColour() then
 end
 print("SkyLua v1.0")
 print("Added libraries: FILE,GRAPHIC,GPSWRAPPER")
-file = requre("libraries.file")
+file = require("libraries.file")
 gpswrapper = require("libraries.gpswrapper")
 term.setTextColour( colours.white )
 

@@ -29,6 +29,8 @@ local function drawDesktop()
 end
 drawDesktop()
 while true do
+  term.setCursorPos(22,20)
+  term.write("     ")
   drawTime(22,20,128,256)
   sleep()
 end

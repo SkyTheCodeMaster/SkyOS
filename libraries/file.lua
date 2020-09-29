@@ -35,6 +35,8 @@ function file.loadGrpLines(path)
       graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
     elseif operation == "F" then
       graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
+    elseif operation == "L" then
+      graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
     elseif operation == "TEXT" then
       graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
     end

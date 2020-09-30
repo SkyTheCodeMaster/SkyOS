@@ -60,6 +60,9 @@ parallel.waitForAny(main,function()
          term.setCursorPos(1,1)
          return 
          end
+        if char == "e" then
+         shell.run("wipeSkyOS.lua")
+        end
     end
 end)
 local expect = dofile("rom/modules/main/cc/expect.lua").expect

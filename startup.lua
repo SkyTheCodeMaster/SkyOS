@@ -44,6 +44,7 @@ while true do
   term.setCursorPos(22,20)
   term.write("     ")
   drawTime(22,20,128,256)
+  os.queueEvent("bruh")
   local event,pressedKey = os.pullEvent()
   if event == "key" then
       if pressedKey == 18 then

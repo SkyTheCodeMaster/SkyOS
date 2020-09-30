@@ -46,7 +46,7 @@ while true do
   drawTime(22,20,128,256)
   local event,pressedKey = os.pullEvent()
   if event == "key" then
-      if pressedKey == 18
+      if pressedKey == 18 then
           break
       end
   end

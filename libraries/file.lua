@@ -45,7 +45,7 @@ function file.loadGrpLines(path)
   grpFile.close()
 end
 
-function loadAppGraphics(graphicPath,settingsPath,appName)
+function file.loadAppGraphics(graphicPath,settingsPath,appName)
   local graphicFile = fs.open(graphicPath,"r")
   local settingsFile = fs.open(settingsPath,"r")
   local x,y

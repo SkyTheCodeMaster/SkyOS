@@ -60,7 +60,9 @@ parallel.waitForAny(main,function()
          term.setCursorPos(1,1)
          return 
          end
-        if char == "e" then
+        if char == "u" then
+         term.clear()
+         term.setCursorPos(1,1)
          shell.run("wipeSkyOS.lua")
         end
     end

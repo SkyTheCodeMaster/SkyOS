@@ -23,7 +23,6 @@ end
 function file.loadGrpLines(path)
  
   local grpFile = fs.open(path,"r")
-  local lines = file.countLines(path)
   
   for i = 1,file.countLines(path),1 do
     local grpLine = grpFile.readLine()

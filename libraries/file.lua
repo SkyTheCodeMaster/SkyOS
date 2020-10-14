@@ -1,4 +1,6 @@
-graphic = require("libraries.graphic")
+if fs.exists("libraries/graphic.lua") then
+  graphic = require("libraries.graphic")
+end
 local file = {}
  
 function file.split (inputstr, sep)

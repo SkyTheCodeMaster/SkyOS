@@ -79,5 +79,17 @@ function file.loadAppGraphics(graphicPath,settingsPath,appName)
     end
   end
 end
+
+function file.loadApps(settingsFile)
+  local settings = fs.open(settingsFile,"r")
+  local lines = file.countLines(settingsFile)
+  for i = 1, lines, 1 do
+    local line = settings.readLine()
+    local lineTable = file.split(line,",")
+    local app = lineTable[1]
+    local appGraphicLocation = "/graphics/app/" .. app
+    file.loadAppGraphics(appGraphicLocation,settingsFile,app)
+    end
+end
 return file
  

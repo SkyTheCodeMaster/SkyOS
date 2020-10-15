@@ -87,7 +87,7 @@ function file.loadApps(settingsFile)
     local line = settings.readLine()
     local lineTable = file.split(line,",")
     local app = lineTable[1]
-    local appGraphicLocation = "/graphics/app/" .. app
+    local appGraphicLocation = "/graphics/app/" .. app .. ".skgapp"
     file.loadAppGraphics(appGraphicLocation,settingsFile,app)
     end
 end

@@ -27,7 +27,7 @@ for i = 1, 16 do
     to_colors[("0123456789abcdef"):sub(i, i)] = 2^(i-1)
 end
 function graphic.drawBox(x1,y1,x2,y2,c) -- (bg and fg provided in blit format)
-  local col = to_blit(c)
+  local col = to_blit{c}
   local w = (x2-x1)+1
   for i=y1,y2 do
     term.setCursorPos(x1,i)

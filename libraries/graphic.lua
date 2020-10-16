@@ -2,23 +2,21 @@ local graphic = {}
  
 -- Graphics library for SkyOS
  
-function graphic.drawFilledBox(arg1, arg2, arg3, arg4, arg5)
---arg1 is top left x
---arg2 is top left y
---arg3 bottom right x
---arg4 is bottom right y
---arg5 is color (colors.black)
-    currentColour = term.getBackgroundColour()
-    currentTextColour = term.getTextColour()
-    currentX, currentY = term.getCursorPos()
- 
-    paintutils.drawFilledBox(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
- 
-    
-    term.setTextColour(currentTextColour)
-    term.setCursorPos(currentX,currentY)
-    term.setBackgroundColour(currentColour)
-    
+local to_colors, to_blit = {}, {}
+for i = 1, 16 do
+    to_blit[2^(i-1)] = ("0123456789abcdef"):sub(i, i)
+    to_colors[("0123456789abcdef"):sub(i, i)] = 2^(i-1)
+end
+
+function graphic.drawFilledBox(x1,y1,x2,y2,c) -- (bg and fg provided in blit format)
+  local currentX,currentY = term.getCursorPos()
+  local col = to_blit[c]
+  local w = (x2-x1)+1
+  for i=y1,y2 do
+    term.setCursorPos(x1,i)
+    term.blit(string.rep(" ",w),string.rep(col,w),string.rep(col,w))
+  end
+  term.setCursorPos(currentX,currentY)
 end
  
 function graphic.drawBox(arg1, arg2, arg3, arg4, arg5)

@@ -11,9 +11,9 @@ end
 function graphic.drawFilledBox(x1,y1,x2,y2,c) -- (bg and fg provided in blit format)
   local currentX,currentY = term.getCursorPos()
   local col = to_blit[c]
-  local w = (x2-x1)+1
-  for i=y1,y2 do
-    term.setCursorPos(x1,i)
+  local w = (tonumber(x2)-tonumber(x1))+1
+  for i=tonumber(y1),tonumber(y2) do
+    term.setCursorPos(tonumber(x1),i)
     term.blit(string.rep(" ",w),string.rep(col,w),string.rep(col,w))
   end
   term.setCursorPos(currentX,currentY)

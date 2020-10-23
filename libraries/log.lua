@@ -25,10 +25,17 @@ function log.warn(text,logName)
   LFT[logName].writeLine(curTime.." [WARN] "..tostring(text))
 end
 
-function log.error(text,logName)
+function log.error(errorID,errorInfo,logName)
   t = os.date("*t")
   curTime = "[" .. string.gsub(os.date("%x"),"/",":") .. ":" .. os.date("%X") .. "]"
-  LFT[logName].writeLine(curTime.." [ERROR] "..tostring(text))
+  LFT[logName].writeLine(curTime.." [ERROR] "..tostring(errorID)..":"..tostring(errorInfo))
+end
+
+function log.errorC(errorID,errorInfo,logName)
+  log.error(errorID,errorInfo,logName)
+  log.save(logName)
+  log.close(logName)
+  error(tostring(errorInfo).." See log for more")
 end
 
 return log

@@ -15,19 +15,19 @@ end
 
 function log.info(text,logName)
   t = os.date("*t")
-  curTime = "["..tostring(t.year)..":"..tostring(t.month)..":"..tostring(t.day)..":"..tostring(t.hour)..":"..tostring(t.minute)..":"..tostring(t.second).."]"
+  curTime = "[" .. string.gsub(os.date("%x"),"/",":") .. ":" .. os.date("%X") .. "]"
   LFT[logName].writeLine(curTime.." [INFO] "..tostring(text))
 end
 
 function log.warn(text,logName)
   t = os.date("*t")
-  curTime = "["..tostring(t.year)..":"..tostring(t.month)..":"..tostring(t.day)..":"..tostring(t.hour)..":"..tostring(t.minute)..":"..tostring(t.second).."]"
+  curTime = "[" .. string.gsub(os.date("%x"),"/",":") .. ":" .. os.date("%X") .. "]"
   LFT[logName].writeLine(curTime.." [WARN] "..tostring(text))
 end
 
 function log.error(text,logName)
   t = os.date("*t")
-  curTime = "["..tostring(t.year)..":"..tostring(t.month)..":"..tostring(t.day)..":"..tostring(t.hour)..":"..tostring(t.minute)..":"..tostring(t.second).."]"
+  curTime = "[" .. string.gsub(os.date("%x"),"/",":") .. ":" .. os.date("%X") .. "]"
   LFT[logName].writeLine(curTime.." [ERROR] "..tostring(text))
 end
 

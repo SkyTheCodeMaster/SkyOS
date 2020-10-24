@@ -8,33 +8,33 @@ end
 
 function log.save(logName)
   if logName == nil then logName = mLog end
-  LFT[logName].flush()
+  LFT[tostring(logName)].flush()
 end
 
 function log.close(logName)
   if logName == nil then logName = mLog end
-  LFT[logName].close()
+  LFT[tostring(logName)].close()
 end
 
 function log.info(text,logName)
   if logName == nil then logName = mLog end
   t = os.date("*t")
   curTime = "[" .. string.gsub(os.date("%x"),"/",":") .. ":" .. os.date("%X") .. "]"
-  LFT[logName].writeLine(curTime.." [INFO] "..tostring(text))
+  LFT[tostring(logName)].writeLine(curTime.." [INFO] "..tostring(text))
 end
 
 function log.warn(text,logName)
   if logName == nil then logName = mLog end
   t = os.date("*t")
   curTime = "[" .. string.gsub(os.date("%x"),"/",":") .. ":" .. os.date("%X") .. "]"
-  LFT[logName].writeLine(curTime.." [WARN] "..tostring(text))
+  LFT[tostring(logName)].writeLine(curTime.." [WARN] "..tostring(text))
 end
 
 function log.error(errorID,errorInfo,logName)
   if logName == nil then logName = mLog end
   t = os.date("*t")
   curTime = "[" .. string.gsub(os.date("%x"),"/",":") .. ":" .. os.date("%X") .. "]"
-  LFT[logName].writeLine(curTime.." [ERROR] "..tostring(errorID)..":"..tostring(errorInfo))
+  LFT[tostring(logName)].writeLine(curTime.." [ERROR] "..tostring(errorID)..":"..tostring(errorInfo))
 end
 
 function log.errorC(errorID,errorInfo,logName)

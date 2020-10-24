@@ -9,6 +9,7 @@ for i = 1, 16 do
 end
 
 function graphic.drawFilledBox(x1,y1,x2,y2,c) -- (bg and fg provided in blit format)
+  sLog.info("[grp] drawing filled box " .. tostring(x1) .. " " .. tostring(y1) .. " " .. tostring(x2) .. " " .. tostring(y2) .. " " .. tostring(c))
   local currentX,currentY = term.getCursorPos()
   local col = to_blit[c]
   local w = (tonumber(x2)-tonumber(x1))+1
@@ -20,6 +21,7 @@ function graphic.drawFilledBox(x1,y1,x2,y2,c) -- (bg and fg provided in blit for
 end
  
 function graphic.drawBox(arg1, arg2, arg3, arg4, arg5)
+ sLog.info("[grp] drawing box " .. tostring(arg1) .. " " .. tostring(arg2) .. " " .. tostring(arg3) .. " " .. tostring(arg4) .. " " .. tostring(arg5))
 --arg1 is top left x
 --arg2 is top left y
 --arg3 bottom right x
@@ -38,6 +40,7 @@ function graphic.drawBox(arg1, arg2, arg3, arg4, arg5)
 end
  
 function graphic.drawPixel(arg1, arg2, arg3)
+ sLog.info("[grp] drawing pixel " .. tostring(arg1) .. " " .. tostring(arg2) .. " " .. tostring(arg3))
 --arg1 is x
 --arg2 is y
 --arg3 is color (colors.black)
@@ -54,6 +57,7 @@ function graphic.drawPixel(arg1, arg2, arg3)
 end
  
 function graphic.drawText(arg1,arg2,arg3,arg4,arg5)
+ sLog.info("[grp] drawing text " .. tostring(arg1) .. " " .. tostring(arg2) .. " " .. tostring(arg3) .. " " .. tostring(arg4) .. " " .. tostring(arg5))
 --arg1 is x
 --arg2 is y
 --arg3 is text colour
@@ -74,6 +78,7 @@ function graphic.drawText(arg1,arg2,arg3,arg4,arg5)
 end
 
 function graphic.drawLine(arg1, arg2, arg3, arg4, arg5)
+ sLog.info("[grp] drawing line " .. tostring(arg1) .. " " .. tostring(arg2) .. " " .. tostring(arg3) .. " " .. tostring(arg4) .. " " .. tostring(arg5))
 --arg1 is top left x
 --arg2 is top left y
 --arg3 bottom right x

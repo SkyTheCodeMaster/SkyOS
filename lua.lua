@@ -41,10 +41,11 @@ local function loadLib(lib)
   libExists = string.gsub(lib,"%.","/")
   if fs.exists(libExists..".lua") then
     loadedLib = require(lib)
+    sLog.info("[sLua] loaded library " .. lib)
     librariesAdded = librariesAdded..string.upper(lib)..", "
   end
 end
-print("SkyLua v1.0")
+print("SkyLua 20.10")
 file = loadLib("libraries.file")
 graphic = loadLib("libraries.graphic")
 gpswrapper = loadLib("libraries.gpswrapper")

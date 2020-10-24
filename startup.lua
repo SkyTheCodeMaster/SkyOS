@@ -9,7 +9,7 @@
 -- environment, and so is unavailable to other @{os.loadAPI|APIs}.
 --
 -- @module[module] shell
- 
+_G.sOSversion = "20.10"
 term.clear()
 term.setCursorPos(1,1)
 _G.sLog = require("libraries.log")

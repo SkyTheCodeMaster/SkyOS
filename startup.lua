@@ -663,7 +663,7 @@ else
     -- Print the header
     term.setBackgroundColor(bgColour)
     term.setTextColour(promptColour)
-    print("SkyShell V20.09")
+    print("SkyShell V" .. SkyShellVersion)
     term.setTextColour(textColour)
  
     -- Run the startup program

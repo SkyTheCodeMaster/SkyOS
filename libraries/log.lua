@@ -3,7 +3,7 @@ local LFT = {} -- Log File Table
 local log = {}
 
 function log.new(logPath,logName)
-  LFT[logName] = fs.open(logPath,"a")
+  LFT[tostring(logName)] = fs.open(logPath,"a")
 end
 
 function log.save(logName)

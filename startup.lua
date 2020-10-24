@@ -15,7 +15,7 @@ _G.sLuaVersion = "20.10"
 term.clear()
 term.setCursorPos(1,1)
 _G.sLog = require("libraries.log")
-sLog.new(logs/mainLog.sklog,mainLog)
+sLog.new("logs/mainLog.sklog",mainLog)
 sLog.setMain(mainLog)
 sLog.info("------------------------")
 sLog.info("SkyOS Main Boot Sequence")

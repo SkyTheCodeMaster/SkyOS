@@ -45,7 +45,7 @@ local function loadLib(lib)
     librariesAdded = librariesAdded..string.upper(lib)..", "
   end
 end
-print("SkyLua 20.10")
+print("SkyLua " .. sLuaVersion)
 file = loadLib("libraries.file")
 graphic = loadLib("libraries.graphic")
 gpswrapper = loadLib("libraries.gpswrapper")

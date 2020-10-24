@@ -50,7 +50,7 @@ function file.loadGrpLines(path)
 end
 
 function file.loadAppGraphics(graphicPath,settingsPath,appName)
-  sLog.info("[file] loading app " .. appName .. ", graphic at " .. graphicPath .. ", setting " .. settingsPath
+  sLog.info("[file] loading app " .. appName .. ", graphic at " .. graphicPath .. ", setting " .. settingsPath)
   local graphicFile = fs.open(graphicPath,"r")
   local settingsFile = fs.open(settingsPath,"r")
   local x,y

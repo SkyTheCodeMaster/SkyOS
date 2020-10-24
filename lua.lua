@@ -73,7 +73,7 @@ while bRunning do
         end
         return nil
     end )
-    sLog.info("[sLua] " .. tostring(s)",luaLog)
+    sLog.info("[sLua] " .. tostring(s),luaLog)
     if s:match("%S") and tCommandHistory[#tCommandHistory] ~= s then
         table.insert( tCommandHistory, s )
     end

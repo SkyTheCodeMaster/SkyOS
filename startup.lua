@@ -31,6 +31,7 @@ if fs.exists("beta.skprg") then
     sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)
 end
+sLog.save()
 --Do server side things BEFORE term.clear()
 local function gpsGet()
     sLog.info("Getting current gps location")
@@ -71,6 +72,7 @@ parallel.waitForAny(main,function()
         sLog.info("GUI character pressed")
         if char == "e" then
          sLog.info("E pressed, exiting to SkyShell")
+         sLog.save()
          term.setBackgroundColour(colours.black)
          term.clear()
          term.setCursorPos(1,1)
@@ -78,6 +80,7 @@ parallel.waitForAny(main,function()
          end
         if char == "u" then
          sLog.warn("U pressed, updating SkyOS")
+         sLog.save()
          term.clear()
          term.setCursorPos(1,1)
          shell.run("wipeSkyOS.lua")

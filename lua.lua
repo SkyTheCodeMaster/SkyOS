@@ -127,6 +127,6 @@ while bRunning do
         printError( e )
         sLog.error("[sLua] " .. e,luaLog)
     end
-    
+    sLog.save()
 end
  

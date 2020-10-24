@@ -1,5 +1,5 @@
 sLog.new("logs/lua.sklog",luaLog)
-sLog.info("[sLua] starting sLua "..versions.sLua,luaLog)
+sLog.info("[sLua] starting sLua "..require("versions").LUAVERSION,luaLog)
 local tArgs = { ... }
  
 local pretty = require "cc.pretty"
@@ -46,7 +46,7 @@ local function loadLib(lib)
     librariesAdded = librariesAdded..string.upper(lib)..", "
   end
 end
-print("SkyLua " .. versions.sLua)
+print("SkyLua " .. require("versions").LUAVERSION)
 file = loadLib("libraries.file")
 graphic = loadLib("libraries.graphic")
 gpswrapper = loadLib("libraries.gpswrapper")

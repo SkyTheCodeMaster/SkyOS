@@ -1,4 +1,5 @@
- 
+sLog.new("logs/lua.sklog",luaLog)
+sLog.info("[sLua] starting sLua "..versions.sLua,luaLog)
 local tArgs = { ... }
  
 local pretty = require "cc.pretty"
@@ -41,7 +42,7 @@ local function loadLib(lib)
   libExists = string.gsub(lib,"%.","/")
   if fs.exists(libExists..".lua") then
     loadedLib = require(lib)
-    sLog.info("[sLua] loaded library " .. lib)
+    sLog.info("[sLua] loaded library " .. lib,luaLog)
     librariesAdded = librariesAdded..string.upper(lib)..", "
   end
 end
@@ -72,6 +73,7 @@ while bRunning do
         end
         return nil
     end )
+    sLog.info("[sLua] " .. tostring(s)",luaLog)
     if s:match("%S") and tCommandHistory[#tCommandHistory] ~= s then
         table.insert( tCommandHistory, s )
     end
@@ -80,6 +82,7 @@ while bRunning do
             term.setTextColour(colours.yellow)
         end
        print("To access local variables in later inputs, remove the local keyword.")
+       sLog.warn("To access local variables in later inputs, remove the local keyword.",luaLog)
        term.setTextColour(colours.white)
     end
     
@@ -112,14 +115,17 @@ while bRunning do
                     pretty.print(serialised)
                 else
                     print( tostring( value ) )
+                    sLog.info("[sLua] "..tostring(value),luaLog)
                 end
                 n = n + 1
             end
         else
             printError( tResults[2] )
+            sLog.error("[sLua] " .. tResults[2],luaLog)
         end
     else
         printError( e )
+        sLog.error("[sLua] " .. e,luaLog)
     end
     
 end

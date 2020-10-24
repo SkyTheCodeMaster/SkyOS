@@ -1,0 +1,5 @@
+term.clear()
+sLog.warn("SkyOS rebooting, saving and closing log")
+sLog.save()
+sLog.close()
+os.reboot()

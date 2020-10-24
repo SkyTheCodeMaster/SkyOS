@@ -19,14 +19,14 @@ sLog.info("SkyOS Main Boot Sequence")
 sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
 sLog.info("Loading file lib")
 file = require("libraries.file")
-if file == nil then sLog.errorC(301,"file library does not exist, reinstall") else sLog.info("file lib loaded")
+if file == nil then sLog.errorC(301,"file library does not exist, reinstall") else sLog.info("file lib loaded") end
 sLog.info("Loading graphic lib")
 graphic = require("libraries.graphic")
-if graphic == nil then sLog.errorC(302,"graphic library does not exist, reinstall") else sLog.info("graphic lib loaded")
+if graphic == nil then sLog.errorC(302,"graphic library does not exist, reinstall") else sLog.info("graphic lib loaded") end
 file.loadGrpLines("graphics/bootSplash.skgrp")
 sLog.info("Loading gpswrapper lib")
 gpswrapper = require("libraries.gpswrapper")
-if gpswrapper == nil then sLog.errorC(303,"gpswrapper library does not exist, reinstall") else sLog.info("gpswrapper lib loaded")
+if gpswrapper == nil then sLog.errorC(303,"gpswrapper library does not exist, reinstall") else sLog.info("gpswrapper lib loaded") end
 if fs.exists("beta.skprg") then
     sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)

@@ -12,14 +12,28 @@
  
 term.clear()
 term.setCursorPos(1,1)
+_G.sLog = require("libraries.log")
+sLog.new(logs/mainLog.sklog,mainLog)
+sLog.setMain(mainLog)
+sLog.info("SkyOS Main Boot Sequence")
+sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
+sLog.info("Loading file lib")
 file = require("libraries.file")
+if file == nil then sLog.errorC(301,"file library does not exist, reinstall") else sLog.info("file lib loaded")
+sLog.info("Loading graphic lib")
+graphic = require("libraries.graphic")
+if graphic == nil then sLog.errorC(302,"graphic library does not exist, reinstall") else sLog.info("graphic lib loaded")
 file.loadGrpLines("graphics/bootSplash.skgrp")
+sLog.info("Loading gpswrapper lib")
 gpswrapper = require("libraries.gpswrapper")
-if fs.exists("osBeta.lua") then
+if gpswrapper == nil then sLog.errorC(303,"gpswrapper library does not exist, reinstall") else sLog.info("gpswrapper lib loaded")
+if fs.exists("beta.skprg") then
+    sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)
 end
 --Do server side things BEFORE term.clear()
 local function gpsGet()
+    sLog.info("Getting current gps location")
     local x, y, z = gpswrapper.gpslocate(5)
     gpsCoords = vector.new(math.floor(x+0.5), math.floor(y+0.5), math.floor(z+0.5))
     gpsTable = file.split(gpsCoords,",")
@@ -54,13 +68,16 @@ end
 parallel.waitForAny(main,function()
     while true do
         local _, char = os.pullEvent("char")
+        sLog.info("GUI character pressed")
         if char == "e" then
+         sLog.info("E pressed, exiting to SkyShell")
          term.setBackgroundColour(colours.black)
          term.clear()
          term.setCursorPos(1,1)
          return 
          end
         if char == "u" then
+         sLog.warn("U pressed, updating SkyOS")
          term.clear()
          term.setCursorPos(1,1)
          shell.run("wipeSkyOS.lua")

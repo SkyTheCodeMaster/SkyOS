@@ -36,10 +36,19 @@ end
 if term.isColour() then
     term.setTextColour( colours.yellow )
 end
+local librariesAdded = "sLog, "
+local function loadLib(lib)
+  libExists = string.gsub(lib,"%.","/")
+  if fs.exists(libExists..".lua") then
+    loadedLib = require(lib)
+    librariesAdded = librariesAdded..string.upper(lib)..", "
+  end
+end
 print("SkyLua v1.0")
-print("Added libraries: FILE,GRAPHIC,GPSWRAPPER")
-file = require("libraries.file")
-gpswrapper = require("libraries.gpswrapper")
+file = loadLib("libraries.file")
+graphic = loadLib("libraries.graphic")
+gpswrapper = loadLib("libraries.gpswrapper")
+print("Added libraries: " .. librariesAdded)
 term.setTextColour( colours.white )
 
  

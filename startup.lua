@@ -9,7 +9,6 @@
 -- environment, and so is unavailable to other @{os.loadAPI|APIs}.
 --
 -- @module[module] shell
-_G.versions = {SkyShell = "20.09", SkyOS = "20.10", sLua = "20.10"}
 term.clear()
 term.setCursorPos(1,1)
 _G.sLog = require("libraries.log")

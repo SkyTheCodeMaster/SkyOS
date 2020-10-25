@@ -49,4 +49,8 @@ function log.setMain(logName)
   mLog = logName
 end
 
+function log.activeLogs()
+  return LFT
+end
+
 return log

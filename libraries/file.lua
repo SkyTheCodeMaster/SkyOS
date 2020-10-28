@@ -101,14 +101,17 @@ function file.loadApps(settingsFile)
   end
 end
 
-local size = 0
 function file.getSize(path)
-  files = fs.list(path)
-  cPath = shell.dir()
+  local size = 0
+  local files = fs.list(path)
   for i=1,#files do
-    if fs.isDir(files[i]) then file.getSize(path .. "/" .. files[i]) end
-    size = size + fs.getSize(path .. "/" .. files[i])
+    if fs.isDir(fs.combine(path, files[i])) then
+      size = size + file.getSize(fs.combine(path, files[i]))
+    else
+      size = size + fs.getSize(fs.combine(path, files[i]))
+    end
   end
+  return size
 end
 
 return file

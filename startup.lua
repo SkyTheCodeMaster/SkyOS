@@ -56,7 +56,7 @@ local function drawTime(x,y,backColour,textColour)
   local t = os.date("!*t")
   local offSet = require("settings.general").timeZone
   local hour = tostring(math.abs(t.hour + offSet))
-  local minute = tostring(t.minute)
+  local minute = tostring(t.min)
   local day = t.day
   if t.hour - offSet < 0 then day = day - 1 end
   if #hour == 1 then hour = "0"..hour end

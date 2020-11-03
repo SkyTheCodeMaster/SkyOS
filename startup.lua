@@ -12,7 +12,9 @@
 term.clear()
 term.setCursorPos(1,1)
 _G.sLog = require("libraries.log")
-_g.SkyOS.buttons = {}
+_G.SkyOS = {}
+_G.SkyOS.buttons = {}
+_G.SkyOS.versions = {SkyOS = 20.09, SkyShell = 20.09, SkyLua = 20.10}
 sLog.new("logs/mainLog.sklog",mainLog)
 sLog.setMain(mainLog)
 sLog.info("------------------------")

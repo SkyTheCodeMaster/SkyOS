@@ -44,9 +44,10 @@ local function loadLib(lib)
     loadedLib = require(lib)
     sLog.info("[sLua] loaded library " .. lib,luaLog)
     librariesAdded = librariesAdded..string.upper(lib)..", "
+    return loadedLib
   end
 end
-print("SkyLua " .. require("versions").LUAVERSION)
+print("SkyLua " .. SkyOS.versions.SkyLua)
 file = loadLib("libraries.file")
 graphic = loadLib("libraries.graphic")
 gpswrapper = loadLib("libraries.gpswrapper")

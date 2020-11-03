@@ -1,14 +1,4 @@
---- The shell API provides access to CraftOS's command line interface.
---
--- It allows you to @{run|start programs}, @{setCompletionFunction|add
--- completion for a program}, and much more.
---
--- @{shell} is not a "true" API. Instead, it is a standard program, which its
--- API into the programs that it launches. This allows for multiple shells to
--- run at the same time, but means that the API is not available in the global
--- environment, and so is unavailable to other @{os.loadAPI|APIs}.
---
--- @module[module] shell
+
 term.clear()
 term.setCursorPos(1,1)
 _G.sLog = require("libraries.log")
@@ -27,85 +17,14 @@ sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
 sLog.info("Loading file lib")
 file = require("libraries.file")
 if file == nil then sLog.errorC(301,"file library does not exist, reinstall") else sLog.info("file lib loaded") end
-sLog.info("Loading graphic lib")
-graphic = require("libraries.graphic")
-if graphic == nil then sLog.errorC(302,"graphic library does not exist, reinstall") else sLog.info("graphic lib loaded") end
-file.loadGrpLines("graphics/bootSplash.skgrp")
-sLog.info("Loading gpswrapper lib")
-gpswrapper = require("libraries.gpswrapper")
-if gpswrapper == nil then sLog.errorC(303,"gpswrapper library does not exist, reinstall") else sLog.info("gpswrapper lib loaded") end
-if fs.exists("beta.skprg") then
-    sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
-    sleep(1)
-end
 sLog.save()
---Do server side things BEFORE term.clear()
-local function gpsGet()
-    sLog.info("Getting current gps location")
-    local x, y, z = gpswrapper.gpslocate(5)
-    gpsCoords = vector.new(math.floor(x+0.5), math.floor(y+0.5), math.floor(z+0.5))
-    gpsTable = file.split(gpsCoords,",")
-    return gpsTable
-end
 term.setBackgroundColour(colours.black)
---Begin auto version check
-
 term.clear()
---Load DE
-local function drawTime(x,y,backColour,textColour)
-  local t = os.date("!*t")
-  local offSet = require("settings.general").timeZone
-  local hour = tostring(math.abs(t.hour + offSet))
-  local minute = tostring(t.minute)
-  local day = t.day
-  if t.hour - offSet < 0 then day = day - 1 end
-  if #hour == 1 then hour = "0"..hour end
-  if #minute == 1 then minute = "0"..minute end
-  local time = hour .. ":" .. minute
-  term.setCursorPos(x,y)
-  term.setBackgroundColour(backColour)
-  term.setTextColour(textColour)
-  term.write(time)
-end
-local function drawDesktop()
-  desktopImg = "graphics/background/default.skgrp"
-  taskbarImg = "graphics/taskbar.skgrp"
-  file.loadGrpLines(desktopImg)
-  file.loadGrpLines(taskbarImg)
-end
-drawDesktop()
-function main()
-while true do
-  term.setCursorPos(22,20)
-  term.write("     ")
-  drawTime(22,20,128,256)
-  sleep()
-end
-end
-parallel.waitForAny(main,function()
-    while true do
-        local _, char = os.pullEvent("char")
-        sLog.info("GUI character pressed")
-        if char == "e" then
-         sLog.info("E pressed, exiting to SkyShell")
-         sLog.save()
-         term.setBackgroundColour(colours.black)
-         term.clear()
-         term.setCursorPos(1,1)
-         return 
-         end
-        if char == "u" then
-         sLog.warn("U pressed, updating SkyOS")
-         sLog.save()
-         term.clear()
-         term.setCursorPos(1,1)
-         shell.run("wipeSkyOS.lua")
-        end
-    end
-end)
+
+
 local expect = dofile("rom/modules/main/cc/expect.lua").expect
 local make_package = dofile("rom/modules/main/cc/require.lua").make
- 
+
 local multishell = multishell
 local parentShell = shell
 local parentTerm = term.current()

@@ -19,7 +19,7 @@ sLog.new("logs/mainLog.sklog",mainLog)
 sLog.setMain(mainLog)
 sLog.info("------------------------")
 sLog.info("SkyOS Main Boot Sequence")
-sLog.info("SkyOS V"..require("versions").OSVERSION)
+sLog.info("SkyOS V"..SkyOS.versions.SkyOS)
 sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
 sLog.info("Loading file lib")
 file = require("libraries.file")
@@ -664,7 +664,7 @@ else
     -- Print the header
     term.setBackgroundColor(bgColour)
     term.setTextColour(promptColour)
-    print("SkyShell V" .. require("versions").SHELLVERSION)
+    print("SkyShell V" .. SkyOS.versions.SkyShell)
     term.setTextColour(textColour)
  
     -- Run the startup program

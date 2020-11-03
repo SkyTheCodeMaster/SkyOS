@@ -1,5 +1,5 @@
 sLog.new("logs/lua.sklog",luaLog)
-sLog.info("[sLua] starting sLua "..require("versions").LUAVERSION,luaLog)
+sLog.info("[sLua] starting sLua "..SkyOS.versions.SkyLua,luaLog)
 local tArgs = { ... }
  
 local pretty = require "cc.pretty"

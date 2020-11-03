@@ -1,2 +1,2 @@
 shell.run("gitget SkyTheCodeMaster SkyOS master")
-os.reboot()
+shell.run("reboot.lua")

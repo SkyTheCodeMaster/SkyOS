@@ -14,7 +14,10 @@ term.setCursorPos(1,1)
 _G.sLog = require("libraries.log")
 _G.SkyOS = {}
 _G.SkyOS.buttons = {}
-_G.SkyOS.versions = {SkyOS = 20.09, SkyShell = 20.09, SkyLua = 20.10}
+_G.SkyOS.versions = {SkyOS = "20.09", SkyShell = "20.09", SkyLua = "20.10"}
+_G.SkyOS.settings = {}
+_G.SkyOS.settings.timeZone = require("settings.general").timeZone
+_G.SkyOS.settings.language = require("settings.general").language
 sLog.new("logs/mainLog.sklog",mainLog)
 sLog.setMain(mainLog)
 sLog.info("------------------------")
@@ -45,11 +48,20 @@ local function gpsGet()
     return gpsTable
 end
 term.setBackgroundColour(colours.black)
+--Begin auto version check
+
 term.clear()
 --Load DE
---parallel.waitForAll(function() shell.run("customPrograms/timeManager.lua") end, function() shell.run("customPrograms/applications.lua") end)
 local function drawTime(x,y,backColour,textColour)
-  local time = textutils.formatTime(os.time(), true)
+  local t = os.date("!*t")
+  local offSet = require("settings.general").timeZone
+  local hour = tostring(math.abs(t.hour + offSet))
+  local minute = tostring(t.minute)
+  local day = t.day
+  if t.hour - offSet < 0 then day = day - 1 end
+  if #hour == 1 then hour = "0"..hour end
+  if #minute == 1 then minute = "0"..minute end
+  local time = hour .. ":" .. minute
   term.setCursorPos(x,y)
   term.setBackgroundColour(backColour)
   term.setTextColour(textColour)

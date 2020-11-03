@@ -90,8 +90,6 @@ parallel.waitForAny(main,function()
          shell.run("wipeSkyOS.lua")
         end
     end
-end,function()
-   shell.run("buttonCheck.lua") 
 end)
 local expect = dofile("rom/modules/main/cc/expect.lua").expect
 local make_package = dofile("rom/modules/main/cc/require.lua").make

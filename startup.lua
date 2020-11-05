@@ -82,6 +82,15 @@ while true do
   sleep()
 end
 end
+local function checkSizeLogs()
+    while true do
+        local curSize = file.getSize("./logs")
+        if curSize > 98304 then
+            sLog.warn("log folder size is too large, transmitting and deleting logs.")
+        end
+    sleep(180)
+    end
+end
 parallel.waitForAny(main,function()
     while true do
         local _, char = os.pullEvent("char")

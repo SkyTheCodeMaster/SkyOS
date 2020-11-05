@@ -1,5 +1,5 @@
 sLog.new("logs/lua.sklog",luaLog)
-sLog.info("[sLua] starting sLua "..SkyOS.versions.SkyLua,luaLog)
+sLog.info("[sLua] starting sLua "..SkyOS.versions.LUAVERSION,luaLog)
 local tArgs = { ... }
  
 local pretty = require "cc.pretty"
@@ -47,7 +47,7 @@ local function loadLib(lib)
     return loadedLib
   end
 end
-print("SkyLua " .. SkyOS.versions.SkyLua)
+print("SkyLua " .. SkyOS.versions.LUAVERSION)
 file = loadLib("libraries.file")
 graphic = loadLib("libraries.graphic")
 gpswrapper = loadLib("libraries.gpswrapper")

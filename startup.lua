@@ -14,7 +14,7 @@ term.setCursorPos(1,1)
 _G.sLog = require("libraries.log")
 _G.SkyOS = {}
 _G.SkyOS.buttons = {}
-_G.SkyOS.versions = {SkyOS = "20.09", SkyShell = "20.09", SkyLua = "20.10"}
+_G.SkyOS.versions = require("versions")
 _G.SkyOS.settings = {}
 _G.SkyOS.settings.timeZone = require("settings.general").timeZone
 _G.SkyOS.settings.language = require("settings.general").language
@@ -22,7 +22,7 @@ sLog.new("logs/mainLog.sklog",mainLog)
 sLog.setMain(mainLog)
 sLog.info("------------------------")
 sLog.info("SkyOS Main Boot Sequence")
-sLog.info("SkyOS V"..SkyOS.versions.SkyOS)
+sLog.info("SkyOS V"..SkyOS.versions.OSVERSION)
 sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
 sLog.info("Loading file lib")
 file = require("libraries.file")
@@ -676,7 +676,7 @@ else
     -- Print the header
     term.setBackgroundColor(bgColour)
     term.setTextColour(promptColour)
-    print("SkyShell V" .. SkyOS.versions.SkyShell)
+    print("SkyShell V" .. SkyOS.versions.SHELLVERSION)
     term.setTextColour(textColour)
  
     -- Run the startup program

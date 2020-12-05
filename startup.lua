@@ -54,7 +54,7 @@ term.setBackgroundColour(colours.black)
 term.clear()
 --Load DE
 local function drawTime(x,y,backColour,textColour)
-  local epoch = math.floor(os.epoch("utc") / 1000) + (3600*SkyOS.settings.timeZone))
+  local epoch = math.floor(os.epoch("utc") / 1000) + (3600*SkyOS.settings.timeZone)
   local t = os.date("!*t",epoch)
   if t.hour - SkyOS.settings.timeZone < 0 then day = day - 1 end
   if #hour == 1 then hour = "0"..hour end

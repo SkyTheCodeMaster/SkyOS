@@ -18,6 +18,7 @@ _G.SkyOS.versions = require("versions")
 _G.SkyOS.settings = {}
 _G.SkyOS.settings.timeZone = require("settings.general").timeZone
 _G.SkyOS.settings.language = require("settings.general").language
+_G.SkyOS.lib = {}
 sLog.new("logs/mainLog.sklog",mainLog)
 sLog.setMain(mainLog)
 sLog.info("------------------------")
@@ -25,15 +26,15 @@ sLog.info("SkyOS Main Boot Sequence")
 sLog.info("SkyOS V"..SkyOS.versions.OSVERSION)
 sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
 sLog.info("Loading file lib")
-file = require("libraries.file")
-if file == nil then sLog.errorC(301,"file library does not exist, reinstall") else sLog.info("file lib loaded") end
+SkyOS.lib.file = require("libraries.file")
+if SkyOS.lib.file == nil then sLog.errorC(301,"file library does not exist, reinstall") else sLog.info("file lib loaded") end
 sLog.info("Loading graphic lib")
-graphic = require("libraries.graphic")
-if graphic == nil then sLog.errorC(302,"graphic library does not exist, reinstall") else sLog.info("graphic lib loaded") end
+SkyOS.lib.graphic = require("libraries.graphic")
+if SkyOS.lib.graphic == nil then sLog.errorC(302,"graphic library does not exist, reinstall") else sLog.info("graphic lib loaded") end
 file.loadGrpLines("graphics/bootSplash.skgrp")
 sLog.info("Loading gpswrapper lib")
-gpswrapper = require("libraries.gpswrapper")
-if gpswrapper == nil then sLog.errorC(303,"gpswrapper library does not exist, reinstall") else sLog.info("gpswrapper lib loaded") end
+SkyOS.lib.gpswrapper = require("libraries.gpswrapper")
+if SkyOS.lib.gpswrapper == nil then sLog.errorC(303,"gpswrapper library does not exist, reinstall") else sLog.info("gpswrapper lib loaded") end
 if fs.exists("beta.skprg") then
     sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)
@@ -70,8 +71,8 @@ end
 local function drawDesktop()
   desktopImg = "graphics/background/default.skgrp"
   taskbarImg = "graphics/taskbar.skgrp"
-  file.loadGrpLines(desktopImg)
-  file.loadGrpLines(taskbarImg)
+  SkyOS.lib.file.loadGrpLines(desktopImg)
+  SkyOS.lib.file.loadGrpLines(taskbarImg)
 end
 drawDesktop()
 function main()

@@ -1,4 +1,3 @@
-local graphic = require("libraries.graphic")
 local progressBar = {}
 
 
@@ -16,8 +15,7 @@ function progressBar.calcFill(len,fill)
   return result
 
 end
-  
-  
+
 function progressBar.update(name,filled)
   
   if not bars[name] then error("bar does not exist") end
@@ -27,14 +25,14 @@ function progressBar.update(name,filled)
   local UNUSED1,len,x,y,fg,bg = tableBar[1],tableBar[2],tableBar[3],tableBar[4],tableBar[5],tableBar[6]
   local pixels = progressBar.calcFill(len,filled)
 
-  graphic.drawFilledBox(x,y,len,y,bg) -- draw over the old progess bar - useful if progress goes backwards
-  graphic.drawFilledBox(x,y,pixels,y,fg)
+  SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg) -- draw over the old progess bar - useful if progress goes backwards
+  SkyOS.lib.graphic.drawFilledBox(x,y,pixels,y,fg)
 end
 
 function progressBar.new(x,y,len,fg,bg,name,filled)
   filled = filled or 0
 
-  graphic.drawFilledBox(x,y,len,y,bg) -- draw the background of it
+  SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg) -- draw the background of it
 
   bars[name] = {filled, len, x, y, fg, bg}
 
@@ -44,7 +42,5 @@ function progressBar.new(x,y,len,fg,bg,name,filled)
 
   return name
 end
-
-
 
 return progressBar

@@ -19,13 +19,13 @@ _G.SkyOS.settings = {}
 _G.SkyOS.settings.timeZone = require("settings.general").timeZone
 _G.SkyOS.settings.language = require("settings.general").language
 _G.SkyOS.lib = {}
-sLog.new("logs/mainLog.sklog",mainLog)
-sLog.setMain(mainLog)
-sLog.info("------------------------")
-sLog.info("SkyOS Main Boot Sequence")
-sLog.info("SkyOS V"..SkyOS.versions.OSVERSION)
-sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
-sLog.info("Loading file lib")
+SkyOS.sLog.new("logs/mainLog.sklog","mainLog")
+SkyOS.sLog.setMain(mainLog)
+SkyOS.sLog.info("------------------------")
+SkyOS.sLog.info("SkyOS Main Boot Sequence")
+SkyOS.sLog.info("SkyOS V"..SkyOS.versions.OSVERSION)
+SkyOS.sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
+SkyOS.sLog.info("Loading file lib")
 SkyOS.lib.file = require("libraries.file")
 if SkyOS.lib.file == nil then sLog.errorC(301,"file library does not exist, reinstall") else sLog.info("file lib loaded") end
 SkyOS.sLog.info("Loading graphic lib")

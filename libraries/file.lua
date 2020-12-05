@@ -1,10 +1,7 @@
-if fs.exists("libraries/graphic.lua") then
-  graphic = require("libraries.graphic")
-end
 local file = {}
  
 function file.split (inputstr, sep)
-        sLog.info("[file] splitting " .. inputstr)
+        SkyOS.sLog("[file] splitting " .. inputstr)
         if sep == nil then
                 sep = "%s"
         end
@@ -16,10 +13,8 @@ function file.split (inputstr, sep)
 end
  
 function file.countLines(path)
-  sLog.info("[file] counting lines " .. path)
   local lines = 0 
   for _ in io.lines(path) do lines = lines + 1 end 
-  sLog.info("[file] " .. path .. " has " .. tostring(lines))
   return lines
   
 end
@@ -33,15 +28,15 @@ function file.loadGrpLines(path)
     local grpTable = file.split(grpLine,",")
     local operation = grpTable[1]
     if operation == "P" then
-      graphic.drawPixel(grpTable[2],grpTable[3],tonumber(grpTable[4]))
+      SkyOS.lib.graphic.drawPixel(grpTable[2],grpTable[3],tonumber(grpTable[4]))
     elseif operation == "B" then
-      graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
+      SkyOS.lib.graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
     elseif operation == "F" then
-      graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
+      SkyOS.lib.graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
     elseif operation == "L" then
-      graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
+      SkyOS.lib.graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
     elseif operation == "TEXT" then
-      graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
+      SkyOS.lib.graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
     end
     
   end
@@ -71,19 +66,21 @@ function file.loadAppGraphics(graphicPath,settingsPath,appName)
     local a = tonumber(grpTable[2])+x
     local b = tonumber(grpTable[3])+y
     if operation == "P" then
-      graphic.drawPixel(a,b,tonumber(grpTable[4]))
+      SkyOS.lib.graphic.drawPixel(a,b,tonumber(grpTable[4]))
     elseif operation == "B" then
       local c = tonumber(grpTable[4])+x
       local d = tonumber(grpTable[5])+y
-      graphic.drawBox(a,b,c,d,tonumber(grpTable[6]))
+      SkyOS.lib.graphic.drawBox(a,b,c,d,tonumber(grpTable[6]))
     elseif operation == "F" then
       graphic.drawFilledBox(a,b,c,d,tonumber(grpTable[6]))
     elseif operation == "L" then
-      graphic.drawLine(a,b,c,d,tonumber(grpTable[6]))
+      SkyOS.lib.graphic.drawLine(a,b,c,d,tonumber(grpTable[6]))
     elseif operation == "TEXT" then
-      graphic.drawText(a,b,grpTable[4],grpTable[5],grpTable[6])
+      SkyOS.lib.graphic.drawText(a,b,grpTable[4],grpTable[5],grpTable[6])
     end
   end
+  settingsFile.close()
+  graphicFile.close()
 end
 
 function file.loadApps(settingsFile)
@@ -99,6 +96,7 @@ function file.loadApps(settingsFile)
       file.loadAppGraphics(appGraphicLocation,settingsFile,app)
     end
   end
+  settings.close()
 end
 
 function file.getSize(path)

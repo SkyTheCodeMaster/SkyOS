@@ -11,8 +11,8 @@
 -- @module[module] shell
 term.clear()
 term.setCursorPos(1,1)
-_G.sLog = require("libraries.log")
 _G.SkyOS = {}
+_G.SkyOS.sLog = require("libraries.log")
 _G.SkyOS.buttons = {}
 _G.SkyOS.versions = require("versions")
 _G.SkyOS.settings = {}
@@ -28,18 +28,18 @@ sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
 sLog.info("Loading file lib")
 SkyOS.lib.file = require("libraries.file")
 if SkyOS.lib.file == nil then sLog.errorC(301,"file library does not exist, reinstall") else sLog.info("file lib loaded") end
-sLog.info("Loading graphic lib")
+SkyOS.sLog.info("Loading graphic lib")
 SkyOS.lib.graphic = require("libraries.graphic")
 if SkyOS.lib.graphic == nil then sLog.errorC(302,"graphic library does not exist, reinstall") else sLog.info("graphic lib loaded") end
-file.loadGrpLines("graphics/bootSplash.skgrp")
-sLog.info("Loading gpswrapper lib")
+SkyOS.lib.file.loadGrpLines("graphics/bootSplash.skgrp")
+SkyOS.sLog.info("Loading gpswrapper lib")
 SkyOS.lib.gpswrapper = require("libraries.gpswrapper")
 if SkyOS.lib.gpswrapper == nil then sLog.errorC(303,"gpswrapper library does not exist, reinstall") else sLog.info("gpswrapper lib loaded") end
 if fs.exists("beta.skprg") then
-    sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
+    SkyOS.sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)
 end
-sLog.save()
+SkyOS.sLog.save()
 --Do server side things BEFORE term.clear()
 local function gpsGet()
     sLog.info("Getting current gps location")
@@ -54,12 +54,9 @@ term.setBackgroundColour(colours.black)
 term.clear()
 --Load DE
 local function drawTime(x,y,backColour,textColour)
-  local t = os.date("!*t")
-  local offSet = require("settings.general").timeZone
-  local hour = tostring(math.abs(t.hour + offSet))
-  local minute = tostring(t.min)
-  local day = t.day
-  if t.hour - offSet < 0 then day = day - 1 end
+  local epoch = math.floor(os.epoch("utc") / 1000) + (3600*SkyOS.settings.timeZone))
+  local t = os.date("!*t",epoch)
+  if t.hour - SkyOS.settings.timeZone < 0 then day = day - 1 end
   if #hour == 1 then hour = "0"..hour end
   if #minute == 1 then minute = "0"..minute end
   local time = hour .. ":" .. minute
@@ -87,7 +84,9 @@ local function checkSizeLogs()
     while true do
         local curSize = file.getSize("./logs")
         if curSize > 98304 then
-            sLog.warn("log folder size is too large, transmitting and deleting logs.")
+            SkyOS.sLog.warn("log folder size is too large, transmitting and deleting logs.")
+            SkyOS.sLog.close()
+            fs.delete("./logs")
         end
     sleep(180)
     end

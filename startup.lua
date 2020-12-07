@@ -94,17 +94,17 @@ parallel.waitForAny(main,function()
         local _, char = os.pullEvent("char")
         sLog.info("GUI character pressed")
         if char == "e" then
-         sLog.info("E pressed, exiting to SkyShell")
-         sLog.save()
+         SkyOS.sLog.info("E pressed, exiting to SkyShell")
+         SkyOS.sLog.save()
          term.setBackgroundColour(colours.black)
          term.clear()
          term.setCursorPos(1,1)
          return 
          end
         if char == "u" then
-         sLog.warn("U pressed, updating SkyOS")
-         sLog.save()
-         term.clear()
+         SkyOS.sLog.warn("U pressed, updating SkyOS")
+         SkyOS.sLog.save()
+         SkyOS.term.clear()
          term.setCursorPos(1,1)
          shell.run("wipeSkyOS.lua")
         end

@@ -35,6 +35,8 @@ SkyOS.lib.file.loadGrpLines("graphics/bootSplash.skgrp")
 SkyOS.sLog.info("Loading gpswrapper lib")
 SkyOS.lib.gpswrapper = require("libraries.gpswrapper")
 if SkyOS.lib.gpswrapper == nil then SkyOS.sLog.errorC(303,"gpswrapper library does not exist, reinstall") else SkyOS.sLog.info("gpswrapper lib loaded") end
+SkyOS.lib.ts = require("libraries.ts")
+if SkyOS.lib.gpswrapper == nil then SkyOS.sLog.errorC(304,"ts library does not exist, reinstall") else SkyOS.sLog.info(ts lib loaded") end
 if fs.exists("beta.skprg") then
     SkyOS.sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)
@@ -54,13 +56,8 @@ term.setBackgroundColour(colours.black)
 term.clear()
 --Load DE
 local function drawTime(x,y,backColour,textColour)
-  local epoch = math.floor(os.epoch("utc") / 1000) + (3600*SkyOS.settings.timeZone)
-  local t = os.date("!*t",epoch)
-  if t.hour - SkyOS.settings.timeZone < 0 then day = day - 1 end
-  local hour,minute = tostring(t.hour),tostring(t.minute)
-  if #hour == 1 then hour = "0"..hour end
-  if #minute == 1 then minute = "0"..minute end
-  local time = hour .. ":" .. minute
+  if SkyOS.lib.ts == nil then return "" end
+  time = SkyOS.lib.ts.get(SkyOS.settings.timeZone)[3]
   term.setCursorPos(x,y)
   term.setBackgroundColour(backColour)
   term.setTextColour(textColour)

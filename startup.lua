@@ -20,7 +20,7 @@ _G.SkyOS.settings.timeZone = require("settings.general").timeZone
 _G.SkyOS.settings.language = require("settings.general").language
 _G.SkyOS.lib = {}
 SkyOS.sLog.new("logs/mainLog.sklog","mainLog")
-SkyOS.sLog.setMain(mainLog)
+SkyOS.sLog.setMain("mainLog")
 SkyOS.sLog.info("------------------------")
 SkyOS.sLog.info("SkyOS Main Boot Sequence")
 SkyOS.sLog.info("SkyOS V"..SkyOS.versions.OSVERSION)

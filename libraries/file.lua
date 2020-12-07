@@ -1,7 +1,7 @@
 local file = {}
  
 function file.split (inputstr, sep)
-        SkyOS.sLog("[file] splitting " .. inputstr)
+        SkyOS.sLog.info("[file] splitting " .. inputstr)
         if sep == nil then
                 sep = "%s"
         end

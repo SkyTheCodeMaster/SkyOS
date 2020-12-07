@@ -20,7 +20,7 @@ function file.countLines(path)
 end
  
 function file.loadGrpLines(path)
-  sLog.info("[file] loading image " .. path)
+  SkyOS.sLog.info("[file] loading image " .. path)
   local grpFile = fs.open(path,"r")
   
   for i = 1,file.countLines(path),1 do
@@ -40,12 +40,12 @@ function file.loadGrpLines(path)
     end
     
   end
-  sLog.info("[file] done loading, closing file.")
+  SkyOS.sLog.info("[file] done loading, closing file.")
   grpFile.close()
 end
 
 function file.loadAppGraphics(graphicPath,settingsPath,appName)
-  sLog.info("[file] loading app " .. appName .. ", graphic at " .. graphicPath .. ", setting " .. settingsPath)
+  SkyOS.sLog.info("[file] loading app " .. appName .. ", graphic at " .. graphicPath .. ", setting " .. settingsPath)
   local graphicFile = fs.open(graphicPath,"r")
   local settingsFile = fs.open(settingsPath,"r")
   local x,y
@@ -57,8 +57,8 @@ function file.loadAppGraphics(graphicPath,settingsPath,appName)
       x,y = settingsTable[2],settingsTable[3]
     end
   end
-  sLog.info("[info] offset " .. x .."X, " .. y "Y")
-  sLog.info("[info] loading image")
+  SkyOS.sLog.info("[info] offset " .. x .."X, " .. y "Y")
+  SkyOS.sLog.info("[info] loading image")
   for i = 1,file.countLines(graphicPath),1 do
     local grpLine = graphicFile.readLine()
     local grpTable = file.split(grpLine,",")
@@ -84,7 +84,7 @@ function file.loadAppGraphics(graphicPath,settingsPath,appName)
 end
 
 function file.loadApps(settingsFile)
-  sLog.info("[info] loading all apps")
+  SkyOS.sLog.info("[info] loading all apps")
   local settings = fs.open(settingsFile,"r")
   local lines = file.countLines(settingsFile)
   for i = 1, lines, 1 do

@@ -8,87 +8,71 @@ for i = 1, 16 do
     to_colors[("0123456789abcdef"):sub(i, i)] = 2^(i-1)
 end
 
-function graphic.drawFilledBox(x1,y1,x2,y2,c) -- (bg and fg provided in blit format)
-  local currentX,currentY = term.getCursorPos()
-  local col = to_blit[c]
+function graphic.drawFilledBox(nX1,nY1,nX2,nY2,nC,tOutput)
+  tOutput = tOutput or term.current()
+  local currentX,currentY = tOutput.getCursorPos()
+  local col = to_blit[nC]
   local w = (tonumber(x2)-tonumber(x1))+1
   for i=tonumber(y1),tonumber(y2) do
-    term.setCursorPos(tonumber(x1),i)
-    term.blit(string.rep(" ",w),string.rep(col,w),string.rep(col,w))
+    tOutput.setCursorPos(tonumber(x1),i)
+    tOutput.blit(string.rep(" ",w),string.rep(col,w),string.rep(col,w))
   end
-  term.setCursorPos(currentX,currentY)
+  tOutput.setCursorPos(currentX,currentY)
 end
  
-function graphic.drawBox(arg1, arg2, arg3, arg4, arg5)
---arg1 is top left x
---arg2 is top left y
---arg3 bottom right x
---arg4 is bottom right y
---arg5 is color (colors.black)
-    currentColour = term.getBackgroundColour()
-    currentTextColour = term.getTextColour()
-    currentX, currentY = term.getCursorPos()
- 
-    paintutils.drawBox(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
- 
-    
-    term.setTextColour(currentTextColour)
-    term.setCursorPos(currentX,currentY)
-    term.setBackgroundColour(currentColour)
+function graphic.drawBox(nX1,nY1,nX2,nY2,nC,tOutput)
+  tOutput = tOutput or term.current()
+  local nCurFG = term.getTextColour()
+  local nCurBG = term.getBackgroundColour()
+  local nCurX, nCurY = term.getCursorPos()
+  
+  paintutils.drawBox(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nC))
+  
+  term.setCursorPos(nCurX,currentY)
+  term.setTextColour(nCurFG)
+  term.setBackgroundColour(nCurBG)
 end
  
-function graphic.drawPixel(arg1, arg2, arg3)
---arg1 is x
---arg2 is y
---arg3 is color (colors.black)
-    currentColour = term.getBackgroundColor()
-    currentTextColour = term.getTextColor()
-    currentX, currentY = term.getCursorPos()
-    
-    paintutils.drawPixel(tonumber(arg1),tonumber(arg2),tonumber(arg3))
-    
-    term.setTextColour(currentTextColour)
-    term.setCursorPos(currentX,currentY)
-    term.setBackgroundColour(currentColour)
-    
+function graphic.drawPixel(nX,nY,nC,tOutput)
+  tOutput = tOutput or term.current()
+  local nCurFG = term.getTextColour()
+  local nCurBG = term.getBackgroundColour()
+  local nCurX, nCurY = term.getCursorPos()
+  
+  paintutils.drawPixel(tonumber(nX),tonumber(nY),tonumber(nC))
+  
+  term.setCursorPos(nCurX,currentY)
+  term.setTextColour(nCurFG)
+  term.setBackgroundColour(nCurBG)
 end
  
-function graphic.drawText(arg1,arg2,arg3,arg4,arg5)
---arg1 is x
---arg2 is y
---arg3 is text colour
---arg4 is for background colour
---arg5 is string for text. This does not check to see if the text will print offscreen.
-    currentTextColour = term.getTextColour()
-    currentColour = term.getBackgroundColour()
-    currentX, currentY = term.getCursorPos()
+function graphic.drawText(nX,nY,nFG,nBG,sText,tOutput)
+  tOutput = tOutput or term.current()
+  local nCurFG = term.getTextColour()
+  local nCurBG = term.getBackgroundColour()
+  local nCurX, nCurY = term.getCursorPos()
     
-    term.setCursorPos(tonumber(arg1),tonumber(arg2))
-    term.setTextColour(tonumber(arg3))
-    term.setBackgroundColour(tonumber(arg4))
-    term.write(arg5)
+  term.setCursorPos(tonumber(nX),tonumber(nY))
+  term.setTextColour(tonumber(nFG))
+  term.setBackgroundColour(tonumber(nBG))
+  term.write(sText)
     
-    term.setCursorPos(currentX,currentY)
-    term.setTextColour(currentTextColour)
-    term.setBackgroundColour(currentColour)
+  term.setCursorPos(nCurX,currentY)
+  term.setTextColour(nCurFG)
+  term.setBackgroundColour(nCurBG)
 end
 
-function graphic.drawLine(arg1, arg2, arg3, arg4, arg5)
---arg1 is top left x
---arg2 is top left y
---arg3 bottom right x
---arg4 is bottom right y
---arg5 is color (colors.black)
-    currentColour = term.getBackgroundColour()
-    currentTextColour = term.getTextColour()
-    currentX, currentY = term.getCursorPos()
+function graphic.drawLine(nX1, nY1, nX2, nY2, nCol, tOutput)
+  tOutput = tOutput or term.current()
+  local nCurFG = term.getTextColour()
+  local nCurBG = term.getBackgroundColour()
+  local nCurX, nCurY = term.getCursorPos()
  
-    paintutils.drawLine(tonumber(arg1),tonumber(arg2),tonumber(arg3),tonumber(arg4),tonumber(arg5))
+  paintutils.drawLine(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nCol))
  
-    
-    term.setTextColour(currentTextColour)
-    term.setCursorPos(currentX,currentY)
-    term.setBackgroundColour(currentColour)
+  term.setCursorPos(nCurX,currentY)
+  term.setTextColour(nCurFG)
+  term.setBackgroundColour(nCurBG)
 end
+
 return graphic
- 

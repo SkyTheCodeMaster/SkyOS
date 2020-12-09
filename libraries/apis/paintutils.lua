@@ -1,9 +1,6 @@
 local expect = require("cc.expect")
 
-local function drawPixelInternal(xPos, yPos)
-    term.setCursorPos(xPos, yPos)
-    term.write(" ")
-end
+local paintutils = {}
 
 local function toBlit(color)
   local idx = select(2, math.frexp(color))
@@ -14,8 +11,8 @@ local function drawPixelInternal(nX,nY,nsCol,tOutput)
   tOutput = tOutput or term.current()
   if type(nsCol) == "number" then nCol = toBlit(nsCol) end
   local fg = toBlit(tOutput.getTextColour())
-  term.setCursorPos(nX,nY)
-  term.blit(" ",fg,nsCol)
+  tOutput.setCursorPos(nX,nY)
+  tOutput.blit(" ",fg,nsCol)
 end
 
 local tColourLookup = {}
@@ -42,18 +39,20 @@ local function sortCoords(startX, startY, endX, endY)
     return minX, maxX, minY, maxY
 end
 
-function drawPixel(xPos, yPos, colour)
+function paintutils.drawPixel(xPos, yPos, colour, tOutput)
+    tOutput = tOutput or term.current()
     expect(1, xPos, "number")
     expect(2, yPos, "number")
     expect(3, colour, "number", "nil")
 
     if colour then
-        term.setBackgroundColor(colour)
+        tOutput.setBackgroundColor(colour)
     end
-    return drawPixelInternal(xPos, yPos)
+    return drawPixelInternal(xPos, yPos, tOutput)
 end
 
-function drawLine(startX, startY, endX, endY, colour)
+function paintutils.drawLine(startX, startY, endX, endY, colour, tOutput)
+    tOutput = tOutput or term.current()
     expect(1, startX, "number")
     expect(2, startY, "number")
     expect(3, endX, "number")
@@ -66,10 +65,10 @@ function drawLine(startX, startY, endX, endY, colour)
     endY = math.floor(endY)
 
     if colour then
-        term.setBackgroundColor(colour)
+        tOutput.setBackgroundColor(colour)
     end
     if startX == endX and startY == endY then
-        drawPixelInternal(startX, startY)
+        drawPixelInternal(startX, startY, tOutput)
         return
     end
 
@@ -84,7 +83,7 @@ function drawLine(startX, startY, endX, endY, colour)
         local y = minY
         local dy = yDiff / xDiff
         for x = minX, maxX do
-            drawPixelInternal(x, math.floor(y + 0.5))
+            drawPixelInternal(x, math.floor(y + 0.5), tOutput)
             y = y + dy
         end
     else
@@ -92,19 +91,20 @@ function drawLine(startX, startY, endX, endY, colour)
         local dx = xDiff / yDiff
         if maxY >= minY then
             for y = minY, maxY do
-                drawPixelInternal(math.floor(x + 0.5), y)
+                drawPixelInternal(math.floor(x + 0.5), y, tOutput)
                 x = x + dx
             end
         else
             for y = minY, maxY, -1 do
-                drawPixelInternal(math.floor(x + 0.5), y)
+                drawPixelInternal(math.floor(x + 0.5), y, tOutput)
                 x = x - dx
             end
         end
     end
 end
 
-function drawBox(startX, startY, endX, endY, nColour)
+function paintutils.drawBox(startX, startY, endX, endY, nColour, tOutput)
+    tOutput = tOutput or term.current()
     expect(1, startX, "number")
     expect(2, startY, "number")
     expect(3, endX, "number")
@@ -117,14 +117,14 @@ function drawBox(startX, startY, endX, endY, nColour)
     endY = math.floor(endY)
 
     if nColour then
-        term.setBackgroundColor(nColour) -- Maintain legacy behaviour
+        tOutput.setBackgroundColor(nColour) -- Maintain legacy behaviour
     else
-        nColour = term.getBackgroundColour()
+        nColour = tOutput.getBackgroundColour()
     end
     local colourHex = colours.toBlit(nColour)
 
     if startX == endX and startY == endY then
-        drawPixelInternal(startX, startY)
+        drawPixelInternal(startX, startY, tOutput)
         return
     end
 
@@ -133,18 +133,19 @@ function drawBox(startX, startY, endX, endY, nColour)
 
     for y = minY, maxY do
         if y == minY or y == maxY then
-            term.setCursorPos(minX, y)
-            term.blit((" "):rep(width), colourHex:rep(width), colourHex:rep(width))
+            tOutput.setCursorPos(minX, y)
+            tOutput.blit((" "):rep(width), colourHex:rep(width), colourHex:rep(width))
         else
-            term.setCursorPos(minX, y)
-            term.blit(" ", colourHex, colourHex)
-            term.setCursorPos(maxX, y)
-            term.blit(" ", colourHex, colourHex)
+            tOutput.setCursorPos(minX, y)
+            tOutput.blit(" ", colourHex, colourHex)
+            tOutput.setCursorPos(maxX, y)
+            tOutput.blit(" ", colourHex, colourHex)
         end
     end
 end
 
-function drawFilledBox(startX, startY, endX, endY, nColour)
+function paintutils.drawFilledBox(startX, startY, endX, endY, nColour, tOutput)
+    tOutput = tOutput or term.current()
     expect(1, startX, "number")
     expect(2, startY, "number")
     expect(3, endX, "number")
@@ -157,14 +158,14 @@ function drawFilledBox(startX, startY, endX, endY, nColour)
     endY = math.floor(endY)
 
     if nColour then
-        term.setBackgroundColor(nColour) -- Maintain legacy behaviour
+        tOutput.setBackgroundColor(nColour) -- Maintain legacy behaviour
     else
-        nColour = term.getBackgroundColour()
+        nColour = tOutput.getBackgroundColour()
     end
     local colourHex = colours.toBlit(nColour)
 
     if startX == endX and startY == endY then
-        drawPixelInternal(startX, startY)
+        drawPixelInternal(startX, startY, tOutput)
         return
     end
 
@@ -172,7 +173,7 @@ function drawFilledBox(startX, startY, endX, endY, nColour)
     local width = maxX - minX + 1
 
     for y = minY, maxY do
-        term.setCursorPos(minX, y)
-        term.blit((" "):rep(width), colourHex:rep(width), colourHex:rep(width))
+        tOutput.setCursorPos(minX, y)
+        tOutput.blit((" "):rep(width), colourHex:rep(width), colourHex:rep(width))
     end
 end

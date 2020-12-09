@@ -1,5 +1,3 @@
-local expect = require("cc.expect")
-
 local paintutils = {}
 
 local function toBlit(color)
@@ -41,9 +39,6 @@ end
 
 function paintutils.drawPixel(xPos, yPos, colour, tOutput)
     tOutput = tOutput or term.current()
-    expect(1, xPos, "number")
-    expect(2, yPos, "number")
-    expect(3, colour, "number", "nil")
 
     if colour then
         tOutput.setBackgroundColor(colour)
@@ -53,11 +48,6 @@ end
 
 function paintutils.drawLine(startX, startY, endX, endY, colour, tOutput)
     tOutput = tOutput or term.current()
-    expect(1, startX, "number")
-    expect(2, startY, "number")
-    expect(3, endX, "number")
-    expect(4, endY, "number")
-    expect(5, colour, "number", "nil")
 
     startX = math.floor(startX)
     startY = math.floor(startY)
@@ -105,11 +95,6 @@ end
 
 function paintutils.drawBox(startX, startY, endX, endY, nColour, tOutput)
     tOutput = tOutput or term.current()
-    expect(1, startX, "number")
-    expect(2, startY, "number")
-    expect(3, endX, "number")
-    expect(4, endY, "number")
-    expect(5, nColour, "number", "nil")
 
     startX = math.floor(startX)
     startY = math.floor(startY)
@@ -146,11 +131,6 @@ end
 
 function paintutils.drawFilledBox(startX, startY, endX, endY, nColour, tOutput)
     tOutput = tOutput or term.current()
-    expect(1, startX, "number")
-    expect(2, startY, "number")
-    expect(3, endX, "number")
-    expect(4, endY, "number")
-    expect(5, nColour, "number", "nil")
 
     startX = math.floor(startX)
     startY = math.floor(startY)

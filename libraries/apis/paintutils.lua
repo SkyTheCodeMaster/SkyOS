@@ -177,3 +177,5 @@ function paintutils.drawFilledBox(startX, startY, endX, endY, nColour, tOutput)
         tOutput.blit((" "):rep(width), colourHex:rep(width), colourHex:rep(width))
     end
 end
+
+return paintutils

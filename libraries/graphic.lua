@@ -28,7 +28,7 @@ function graphic.drawBox(nX1,nY1,nX2,nY2,nC,tOutput)
   
   paintutils.drawBox(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nC))
   
-  term.setCursorPos(nCurX,currentY)
+  term.setCursorPos(nCurX,nCurY)
   term.setTextColour(nCurFG)
   term.setBackgroundColour(nCurBG)
 end
@@ -41,7 +41,7 @@ function graphic.drawPixel(nX,nY,nC,tOutput)
   
   paintutils.drawPixel(tonumber(nX),tonumber(nY),tonumber(nC))
   
-  term.setCursorPos(nCurX,currentY)
+  term.setCursorPos(nCurX,nCurY)
   term.setTextColour(nCurFG)
   term.setBackgroundColour(nCurBG)
 end
@@ -70,7 +70,7 @@ function graphic.drawLine(nX1, nY1, nX2, nY2, nCol, tOutput)
  
   paintutils.drawLine(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nCol))
  
-  term.setCursorPos(nCurX,currentY)
+  term.setCursorPos(nCurX,nCurY)
   term.setTextColour(nCurFG)
   term.setBackgroundColour(nCurBG)
 end

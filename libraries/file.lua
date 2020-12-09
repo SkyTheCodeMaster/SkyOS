@@ -1,10 +1,6 @@
-if fs.exists("libraries/graphic.lua") then
-  graphic = require("libraries.graphic")
-end
 local file = {}
  
 function file.split (inputstr, sep)
-        sLog.info("[file] splitting " .. inputstr)
         if sep == nil then
                 sep = "%s"
         end
@@ -16,14 +12,36 @@ function file.split (inputstr, sep)
 end
  
 function file.countLines(path)
-  sLog.info("[file] counting lines " .. path)
   local lines = 0 
   for _ in io.lines(path) do lines = lines + 1 end 
-  sLog.info("[file] " .. path .. " has " .. tostring(lines))
   return lines
   
 end
  
+function file.loadGrpLines(path,tOutput)
+  tOutput = tOutput or term.current()
+  local grpFile = fs.open(path,"r")
+  
+  for i = 1,file.countLines(path),1 do
+    local grpLine = grpFile.readLine()
+    local grpTable = file.split(grpLine,",")
+    local operation = grpTable[1]
+    if operation == "P" then
+      SkyOS.lib.graphic.drawPixel(grpTable[2],grpTable[3],tonumber(grpTable[4]),tOutput)
+    elseif operation == "B" then
+      SkyOS.lib.graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
+    elseif operation == "F" then
+      SkyOS.lib.graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
+    elseif operation == "L" then
+      SkyOS.lib.graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
+    elseif operation == "TEXT" then
+      SkyOS.lib.graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6],tOutput)
+    end
+    
+  end
+  grpFile.close()
+end
+
 function file.getSize(path)
   local size = 0
   local files = fs.list(path)

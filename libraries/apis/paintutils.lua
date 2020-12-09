@@ -58,7 +58,7 @@ function paintutils.drawLine(startX, startY, endX, endY, colour, tOutput)
         tOutput.setBackgroundColor(colour)
     end
     if startX == endX and startY == endY then
-        drawPixelInternal(startX, startY, tOutput)
+        drawPixelInternal(startX, startY, colour, tOutput)
         return
     end
 
@@ -73,7 +73,7 @@ function paintutils.drawLine(startX, startY, endX, endY, colour, tOutput)
         local y = minY
         local dy = yDiff / xDiff
         for x = minX, maxX do
-            drawPixelInternal(x, math.floor(y + 0.5), tOutput)
+            drawPixelInternal(x, math.floor(y + 0.5), colour, tOutput)
             y = y + dy
         end
     else
@@ -81,12 +81,12 @@ function paintutils.drawLine(startX, startY, endX, endY, colour, tOutput)
         local dx = xDiff / yDiff
         if maxY >= minY then
             for y = minY, maxY do
-                drawPixelInternal(math.floor(x + 0.5), y, tOutput)
+                drawPixelInternal(math.floor(x + 0.5), y, colour, tOutput)
                 x = x + dx
             end
         else
             for y = minY, maxY, -1 do
-                drawPixelInternal(math.floor(x + 0.5), y, tOutput)
+                drawPixelInternal(math.floor(x + 0.5), y, colour, tOutput)
                 x = x - dx
             end
         end

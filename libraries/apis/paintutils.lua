@@ -7,6 +7,7 @@ end
 
 local function drawPixelInternal(nX,nY,nsCol,tOutput)
   tOutput = tOutput or term.current()
+  nsCol = nsCol or tOutput.getBackgroundColour()
   if type(nsCol) == "number" then nsCol = toBlit(nsCol) end
   local fg = toBlit(tOutput.getTextColour())
   tOutput.setCursorPos(nX,nY)

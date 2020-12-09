@@ -57,7 +57,7 @@ function graphic.drawText(nX,nY,nFG,nBG,sText,tOutput)
   term.setBackgroundColour(tonumber(nBG))
   term.write(sText)
     
-  term.setCursorPos(nCurX,currentY)
+  term.setCursorPos(nCurX,nCurY)
   term.setTextColour(nCurFG)
   term.setBackgroundColour(nCurBG)
 end

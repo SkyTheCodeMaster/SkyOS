@@ -22,14 +22,15 @@ function progressBar.update(name,filled)
 
   local tableBar = bars[name]
 
-  local UNUSED1,len,x,y,fg,bg = tableBar[1],tableBar[2],tableBar[3],tableBar[4],tableBar[5],tableBar[6]
+  local UNUSED1,len,x,y,fg,bg,tOutput = tableBar[1],tableBar[2],tableBar[3],tableBar[4],tableBar[5],tableBar[6],tableBar[7]
   local pixels = progressBar.calcFill(len,filled)
 
-  SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg) -- draw over the old progess bar - useful if progress goes backwards
-  SkyOS.lib.graphic.drawFilledBox(x,y,pixels,y,fg)
+  SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg,tOutput) -- draw over the old progess bar - useful if progress goes backwards
+  SkyOS.lib.graphic.drawFilledBox(x,y,pixels,y,fg,tOutput)
 end
 
-function progressBar.new(x,y,len,fg,bg,name,filled)
+function progressBar.new(x,y,len,fg,bg,name,filled,tOutput)
+  tOutput = tOutput or term.current()
   filled = filled or 0
 
   SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg) -- draw the background of it

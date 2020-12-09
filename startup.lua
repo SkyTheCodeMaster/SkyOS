@@ -83,7 +83,7 @@ end
 parallel.waitForAny(main,function()
     while true do
         local _, char = os.pullEvent("char")
-        sLog.info("GUI character pressed")
+        SkyOS.sLog.info("GUI character pressed")
         if char == "e" then
          SkyOS.sLog.info("E pressed, exiting to SkyShell")
          SkyOS.sLog.save()

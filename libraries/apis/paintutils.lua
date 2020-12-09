@@ -43,7 +43,7 @@ function paintutils.drawPixel(xPos, yPos, colour, tOutput)
     if colour then
         tOutput.setBackgroundColor(colour)
     end
-    return drawPixelInternal(xPos, yPos, tOutput)
+    return drawPixelInternal(xPos, yPos, nColour, tOutput)
 end
 
 function paintutils.drawLine(startX, startY, endX, endY, colour, tOutput)
@@ -109,7 +109,7 @@ function paintutils.drawBox(startX, startY, endX, endY, nColour, tOutput)
     local colourHex = toBlit(nColour)
 
     if startX == endX and startY == endY then
-        drawPixelInternal(startX, startY, tOutput)
+        drawPixelInternal(startX, startY, nColour, tOutput)
         return
     end
 
@@ -145,7 +145,7 @@ function paintutils.drawFilledBox(startX, startY, endX, endY, nColour, tOutput)
     local colourHex = toBlit(nColour)
 
     if startX == endX and startY == endY then
-        drawPixelInternal(startX, startY, tOutput)
+        drawPixelInternal(startX, startY, nColour, tOutput)
         return
     end
 

@@ -19,7 +19,8 @@ function file.countLines(path)
   
 end
  
-function file.loadGrpLines(path)
+function file.loadGrpLines(path,tOutput)
+  tOutput = tOutput or term.current()
   SkyOS.sLog.info("[file] loading image " .. path)
   local grpFile = fs.open(path,"r")
   
@@ -28,15 +29,15 @@ function file.loadGrpLines(path)
     local grpTable = file.split(grpLine,",")
     local operation = grpTable[1]
     if operation == "P" then
-      SkyOS.lib.graphic.drawPixel(grpTable[2],grpTable[3],tonumber(grpTable[4]))
+      SkyOS.lib.graphic.drawPixel(grpTable[2],grpTable[3],tonumber(grpTable[4]),tOutput)
     elseif operation == "B" then
-      SkyOS.lib.graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
+      SkyOS.lib.graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
     elseif operation == "F" then
-      SkyOS.lib.graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
+      SkyOS.lib.graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
     elseif operation == "L" then
-      SkyOS.lib.graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]))
+      SkyOS.lib.graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
     elseif operation == "TEXT" then
-      SkyOS.lib.graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6])
+      SkyOS.lib.graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6],tOutput)
     end
     
   end

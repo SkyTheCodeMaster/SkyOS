@@ -95,7 +95,7 @@ parallel.waitForAny(main,function()
         if char == "u" then
          SkyOS.sLog.warn("U pressed, updating SkyOS")
          SkyOS.sLog.save()
-         SkyOS.term.clear()
+         term.clear()
          term.setCursorPos(1,1)
          shell.run("wipeSkyOS.lua")
         end

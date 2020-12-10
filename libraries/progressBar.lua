@@ -16,32 +16,48 @@ function progressBar.calcFill(len,fill)
 
 end
 
-function progressBar.update(name,filled)
-  
-  if not bars[name] then error("bar does not exist") end
+function progressBar.calcSteps(step,total)
+  return step/total
+end
 
+function progressBar.updateStep(name,step,total)
+  local percent = progressBar.calcSteps(step,total) * 100
+  progressBar.update(name,percent)
+end
+
+function progressBar.update(name,filled)
+  if not bars[name] then error("bar does not exist") end
   local tableBar = bars[name]
 
-  local UNUSED1,len,x,y,fg,bg,tOutput = tableBar[1],tableBar[2],tableBar[3],tableBar[4],tableBar[5],tableBar[6],tableBar[7]
+  local _,len,x,y,fg,bg,tOutput = tableBar[1],tableBar[2],tableBar[3],tableBar[4],tableBar[5],tableBar[6],tableBar[7]
   local pixels = progressBar.calcFill(len,filled)
 
   SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg,tOutput) -- draw over the old progess bar - useful if progress goes backwards
   SkyOS.lib.graphic.drawFilledBox(x,y,pixels,y,fg,tOutput)
+  bars[name] = {filled, len, x, y, fg, bg, tOutput}
 end
 
 function progressBar.new(x,y,len,fg,bg,name,filled,tOutput)
   tOutput = tOutput or term.current()
   filled = filled or 0
 
-  SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg) -- draw the background of it
+  SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg,tOutput) -- draw the background of it
 
   bars[name] = {filled, len, x, y, fg, bg, tOutput}
 
   if filled ~= 0 then
-    progressBar.update(name,filled) -- if `filled` variable is passed, fill the progress bar to that amount.
+    progressBar.update(name,filled,tOutput) -- if `filled` variable is passed, fill the progress bar to that amount.
   end
 
   return name
+end
+
+function progressBar.getFill(name)
+  if not bars[name] then error("bar does not exist") end
+
+  local tableBar = bars[name]
+  
+  return tableBar[1]
 end
 
 return progressBar

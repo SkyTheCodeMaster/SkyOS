@@ -1,3 +1,4 @@
+
 local file = {}
  
 function file.split (inputstr, sep)
@@ -27,15 +28,15 @@ function file.loadGrpLines(path,tOutput)
     local grpTable = file.split(grpLine,",")
     local operation = grpTable[1]
     if operation == "P" then
-      SkyOS.lib.graphic.drawPixel(grpTable[2],grpTable[3],tonumber(grpTable[4]),tOutput)
+      graphic.drawPixel(grpTable[2],grpTable[3],tonumber(grpTable[4]),tOutput)
     elseif operation == "B" then
-      SkyOS.lib.graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
+      graphic.drawBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
     elseif operation == "F" then
-      SkyOS.lib.graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
+      graphic.drawFilledBox(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
     elseif operation == "L" then
-      SkyOS.lib.graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
+      graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
     elseif operation == "TEXT" then
-      SkyOS.lib.graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6],tOutput)
+      graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6],tOutput)
     end
     
   end

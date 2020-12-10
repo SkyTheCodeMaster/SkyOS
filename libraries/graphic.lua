@@ -22,57 +22,57 @@ end
  
 function graphic.drawBox(nX1,nY1,nX2,nY2,nC,tOutput)
   tOutput = tOutput or term.current()
-  local nCurFG = term.getTextColour()
-  local nCurBG = term.getBackgroundColour()
-  local nCurX, nCurY = term.getCursorPos()
+  local nCurFG = tOutput.getTextColour()
+  local nCurBG = tOutput.getBackgroundColour()
+  local nCurX, nCurY = tOutput.getCursorPos()
   
-  paintutils.drawBox(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nC))
+  paintutils.drawBox(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nC),tOutput)
   
-  term.setCursorPos(nCurX,nCurY)
-  term.setTextColour(nCurFG)
-  term.setBackgroundColour(nCurBG)
+  tOutput.setCursorPos(nCurX,nCurY)
+  tOutput.setTextColour(nCurFG)
+  tOutput.setBackgroundColour(nCurBG)
 end
  
 function graphic.drawPixel(nX,nY,nC,tOutput)
   tOutput = tOutput or term.current()
-  local nCurFG = term.getTextColour()
-  local nCurBG = term.getBackgroundColour()
-  local nCurX, nCurY = term.getCursorPos()
+  local nCurFG = tOutput.getTextColour()
+  local nCurBG = tOutput.getBackgroundColour()
+  local nCurX, nCurY = tOutput.getCursorPos()
   
-  paintutils.drawPixel(tonumber(nX),tonumber(nY),tonumber(nC))
+  paintutils.drawPixel(tonumber(nX),tonumber(nY),tonumber(nC),tOutput)
   
-  term.setCursorPos(nCurX,nCurY)
-  term.setTextColour(nCurFG)
-  term.setBackgroundColour(nCurBG)
+  tOutput.setCursorPos(nCurX,nCurY)
+  tOutput.setTextColour(nCurFG)
+  tOutput.setBackgroundColour(nCurBG)
 end
  
 function graphic.drawText(nX,nY,nFG,nBG,sText,tOutput)
   tOutput = tOutput or term.current()
-  local nCurFG = term.getTextColour()
-  local nCurBG = term.getBackgroundColour()
-  local nCurX, nCurY = term.getCursorPos()
+  local nCurFG = tOutput.getTextColour()
+  local nCurBG = tOutput.getBackgroundColour()
+  local nCurX, nCurY = tOutput.getCursorPos()
     
-  term.setCursorPos(tonumber(nX),tonumber(nY))
-  term.setTextColour(tonumber(nFG))
-  term.setBackgroundColour(tonumber(nBG))
-  term.write(sText)
+  tOutput.setCursorPos(tonumber(nX),tonumber(nY))
+  tOutput.setTextColour(tonumber(nFG))
+  tOutput.setBackgroundColour(tonumber(nBG))
+  tOutput.write(sText)
     
-  term.setCursorPos(nCurX,nCurY)
-  term.setTextColour(nCurFG)
-  term.setBackgroundColour(nCurBG)
+  tOutput.setCursorPos(nCurX,nCurY)
+  tOutput.setTextColour(nCurFG)
+  tOutput.setBackgroundColour(nCurBG)
 end
 
 function graphic.drawLine(nX1, nY1, nX2, nY2, nCol, tOutput)
   tOutput = tOutput or term.current()
-  local nCurFG = term.getTextColour()
-  local nCurBG = term.getBackgroundColour()
-  local nCurX, nCurY = term.getCursorPos()
+  local nCurFG = tOutput.getTextColour()
+  local nCurBG = tOutput.getBackgroundColour()
+  local nCurX, nCurY = tOutput.getCursorPos()
  
-  paintutils.drawLine(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nCol))
+  paintutils.drawLine(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nCol),tOutput)
  
-  term.setCursorPos(nCurX,nCurY)
-  term.setTextColour(nCurFG)
-  term.setBackgroundColour(nCurBG)
+  tOutput.setCursorPos(nCurX,nCurY)
+  tOutput.setTextColour(nCurFG)
+  tOutput.setBackgroundColour(nCurBG)
 end
 
 return graphic

@@ -35,7 +35,7 @@ function progressBar.new(x,y,len,fg,bg,name,filled,tOutput)
 
   SkyOS.lib.graphic.drawFilledBox(x,y,len,y,bg) -- draw the background of it
 
-  bars[name] = {filled, len, x, y, fg, bg}
+  bars[name] = {filled, len, x, y, fg, bg, tOutput}
 
   if filled ~= 0 then
     progressBar.update(name,filled) -- if `filled` variable is passed, fill the progress bar to that amount.

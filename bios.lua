@@ -15,6 +15,10 @@ _G.SkyOS = {}
 local tData = textutils.unserialise(dbHandle.readAll())
 _G.SkyOS = tData
 dbHandle.close()
+
+local mainMon = peripheral.wrap(SkyOS.monitors.main)
+file.loadGrpLines("images/bootSplash.skgrp",mainMon)
+local biosBar = pg.new(3,3,55,colours.lime,colours.grey,"biosBar",nil,mainMon)
  
 graphic.drawBox(1,0,x,y-1,colours.white)
 -- draw storefront image

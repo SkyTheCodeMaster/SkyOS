@@ -1,3 +1,4 @@
+local graphic = require("libraries.graphic")
 local progressBar = {}
 
 

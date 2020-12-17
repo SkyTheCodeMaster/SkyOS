@@ -14,7 +14,7 @@ end
 
 function gpswrapper.gpsfloor(nTimeout)
   local x,y,z = gpswrapper.gpslocate(nTimeout)
-  return math.floor(x),math.floor(y),math.floor(z)
+  return math.floor(x+0.5),math.floor(y+0.5),math.floor(z+0.5)
 end
  
 return gpswrapper

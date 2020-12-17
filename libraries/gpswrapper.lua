@@ -6,12 +6,15 @@ gpswrapper = {}
  
 function gpswrapper.gpslocate(timeout)
     if fs.exists("rom/apis/gps.lua") then
-        sLog.info("[gpsw] gps api exists, getting gps")
         return gps.locate(timeout)
     else
-        sLog.warn("[gpsw] gps api does not exist, returning 1,1,1")
         return 1,1,1
     end
+end
+
+function gpswrapper.gpsfloor(nTimeout)
+  local x,y,z = gpswrapper.gpslocate(nTimeout)
+  return math.floor(x),math.floor(y),math.floor(z)
 end
  
 return gpswrapper

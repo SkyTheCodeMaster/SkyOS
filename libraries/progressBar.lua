@@ -16,12 +16,12 @@ function progressBar.calcFill(len,fill)
 
 end
 
-function progressBar.calcSteps(step,total)
+local function calcSteps(step,total)
   return step/total
 end
 
 function progressBar.updateStep(name,step,total)
-  local percent = progressBar.calcSteps(step,total) * 100
+  local percent = calcSteps(step,total) * 100
   progressBar.update(name,percent)
 end
 

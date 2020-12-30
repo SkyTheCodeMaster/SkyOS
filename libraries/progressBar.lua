@@ -14,7 +14,6 @@ function progressBar.calcFill(len,fill)
   local result = math.floor((fill / div) + 0.5)
   
   return result
-
 end
 
 function progressBar.updateStep(name,step,total)

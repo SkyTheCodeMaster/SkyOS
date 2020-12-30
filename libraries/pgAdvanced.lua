@@ -11,7 +11,7 @@ function pga.create(barName,stepCount,stepNames,curStep)
     local tOutput = bar[7]
     local x,y = tOutput.getCursorPos()
     
-    pg.updateStep(unpack(bars[barName]))
+    pg.updateStep(barName, unpack(bars[barName]))
     tOutput.setCursorPos(bar[3],bar[4]+1)
     tOutput.write("("..tostring(curStep).."/"..tostring(stepCount)..") "..stepNames[curStep])
     tOutout.setCursorPos(x,y)

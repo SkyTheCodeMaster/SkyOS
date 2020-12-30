@@ -16,6 +16,7 @@ function pga.create(barName,stepCount,stepNames,curStep)
     tOutput.write("("..tostring(curStep).."/"..tostring(stepCount)..") "..stepNames[curStep])
     tOutout.setCursorPos(x,y)
   end
+  return barName
 end
 
 function pga.update(barName,curStep)

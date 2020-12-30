@@ -28,7 +28,7 @@ function pga.update(barName,curStep)
   local pgaBar = bars[barName]
   local stepCount,stepNames = pgaBar[2],pgaBar[3]
   
-  pg.updateStep(unpack(bars[barName]))
+  pg.updateStep(barName, unpack(bars[barName]))
   tOutput.setCursorPos(bar[3],bar[4]+1)
   tOutput.write("("..tostring(curStep).."/"..tostring(stepCount)..") "..stepNames[curStep])
   tOutput.setCursorPos(x,y)

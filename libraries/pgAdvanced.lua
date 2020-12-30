@@ -20,7 +20,7 @@ function pga.create(barName,stepCount,stepNames,curStep)
 end
 
 function pga.update(barName,curStep)
-  if bars[barName] == nil then error("bar does not exist")
+  if bars[barName] == nil then error("bar does not exist") end
   curStep = curStep or 1
   local bar = pg.get(barName)
   local tOutput = bar[7]

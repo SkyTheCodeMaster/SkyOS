@@ -12,7 +12,7 @@ local dbFile = "data/main.skydb"
 term.setBackgroundColour(colours.blue)
 term.setTextColour(colours.white)
 term.clear()
- 
+
 -- Initialize completion for programs
 -- edit
  
@@ -32,6 +32,11 @@ file.loadGrpLines("images/bootSplash.skgrp",mainMon)
 local biosBar = pg.new(3,3,55,colours.lime,colours.grey,"biosBar",nil,mainMon)
  
 graphic.drawBox(1,0,x,y-1,colours.white)
+
+-- begin loading bg processes
+shell.run("bg bg/timeserver.lua")
+shell.run("bg bg/gps host -67 61 7")
+shell.run("bg bg/turtleserver.lua")
 
 -- custom shell
 
@@ -61,8 +66,3 @@ while not bExit do
      shell.run(sLine)
    end
 end
-
--- begin loading bg processes
-shell.run("bg bg/timeserver.lua")
-shell.run("bg bg/gps host -67 61 7")
-shell.run("bg bg/turtleserver.lua")

@@ -32,6 +32,36 @@ file.loadGrpLines("images/bootSplash.skgrp",mainMon)
 local biosBar = pg.new(3,3,55,colours.lime,colours.grey,"biosBar",nil,mainMon)
  
 graphic.drawBox(1,0,x,y-1,colours.white)
+
+-- custom shell
+
+term.setBackgroundColor(bgColour)
+term.setTextColour(promptColour)
+print(os.version())
+term.setTextColour(textColour)
+
+-- Read commands and execute them
+local tCommandHistory = {}
+while not bExit do
+  term.redirect(parentTerm)
+  term.setBackgroundColor(bgColour)
+  term.setTextColour(promptColour)
+  write(shell.dir() .. "> ")
+  term.setTextColour(textColour)
+ 
+  local sLine
+   if settings.get("shell.autocomplete") then
+     sLine = read(nil, tCommandHistory, shell.complete)
+   else
+     sLine = read(nil, tCommandHistory)
+   end
+   if sLine:match("%S") and tCommandHistory[#tCommandHistory] ~= sLine then
+     table.insert(tCommandHistory, sLine)
+   end
+     shell.run(sLine)
+   end
+end
+
 -- begin loading bg processes
 shell.run("bg bg/timeserver.lua")
 shell.run("bg bg/gps host -67 61 7")

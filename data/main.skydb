@@ -1,0 +1,18 @@
+{
+  monitors = {
+    main = "monitor_0",
+    outside = "monitor_1",
+    turtle = "monitor_3",
+    krist = "monitor_5",
+  },
+  modems = {
+    timeserver = "modem_0",
+    main = "top",
+    turtle = "modem_2",
+  },
+  extra = {
+    krist = {
+      address = "kr5rkibzt1",
+    },
+  },
+}

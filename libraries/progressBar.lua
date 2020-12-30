@@ -60,4 +60,9 @@ function progressBar.getFill(name)
   return tableBar[1]
 end
 
+function progressBar.get(name)
+  if not bars[name] then error("bar does not exist") end
+  return bars[name]
+end
+
 return progressBar

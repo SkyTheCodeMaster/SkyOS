@@ -33,6 +33,10 @@ local posTable = {
     y = 5,
     time = 3000,
   },
+  supremium = {
+    y = 6,
+    time = 30,
+  },
 }
  
 -- Draw base image
@@ -125,4 +129,31 @@ local function inferium()
     end
   end
 end
-parallel.waitForAny(hemp,sugarcane,inferium)
+
+local function supremium()
+  local y = posTable.supremium.y
+  local time = posTable.supremium.time
+  local supremiumTable = {
+    namePos = {posTable.standard.name,y},
+    statusPos = {posTable.standard.status,y},
+    fuelPos = {posTable.standard.fuel,y}
+  }
+  tM.setCursorPos(unpack(supremiumTable.namePos))
+  tM.write("Craft-U1")
+  while true do
+    modem.transmit(turtleChannel,turtleChannel,{"supremium","farm"})
+    tM.setCursorPos(unpack(supremiumTable.statusPos))
+    tM.write("ACTIVE")
+    local msg
+    repeat _,_,sC,_,msg = os.pullEvent("modem_message")
+    until sC == turtleChannel and msg[1] == "inferiumDone"
+    local fuel = msg[2]
+    tM.setCursorPos(unpack(supremiumTable.fuelPos))
+    tM.write(tostring(fuel))
+    for i=1,time do
+      drawCount(supremiumTable.statusPos[1],supremiumTable.statusPos[2],i,time)
+      sleep(1)
+    end
+  end
+end
+parallel.waitForAny(hemp,sugarcane,inferium,supremium)

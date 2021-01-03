@@ -46,9 +46,10 @@ local biosSteps = {
 }
  
 local bgSteps = {
-  "Timeserver",
-  "GPS Server",
+  "Timeserver  ",
+  "GPS Server  ",
   "Turtleserver",
+  "Krist Viewer",
 }
  
 local aBiosBar = pga.create(biosBar,#biosSteps,biosSteps,1)
@@ -61,6 +62,8 @@ pga.update(aBG,2)
 shell.run("bg bg/gps host -67 61 7")
 pga.update(aBG,3)
 shell.run("bg bg/turtleserver.lua")
+pga.update(aBG,4)
+shell.run("bg bg/kstviewer.lua")
 pg.update(bgBar,100)
 file.loadGrpLines("images/bgBarPatch.skgrp",mainMon)
 -- custom shell
@@ -88,9 +91,6 @@ while true do
   else
     sLine = read(nil, tCommandHistory)
   end
-  if sLine:match("%S") and tCommandHistory[#tCommandHistory] ~= sLine then
-    table.insert(tCommandHistory, sLine)
-  else
-    shell.run(sLine)
-  end
+  table.insert(tCommandHistory, sLine)
+  shell.run(sLine)
 end

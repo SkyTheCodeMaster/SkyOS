@@ -38,6 +38,8 @@ function file.loadGrpLines(path,tOutput)
       SkyOS.lib.graphic.drawLine(grpTable[2],grpTable[3],grpTable[4],grpTable[5],tonumber(grpTable[6]),tOutput)
     elseif operation == "TEXT" then
       SkyOS.lib.graphic.drawText(grpTable[2],grpTable[3],grpTable[4],grpTable[5],grpTable[6],tOutput)
+    elseif operation == "PAL" then
+      term.setPaletteColour(tonumber(grpTable[2]),grpTable[3])
     end
     
   end

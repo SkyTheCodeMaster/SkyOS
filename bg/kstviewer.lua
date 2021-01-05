@@ -2,6 +2,15 @@ local function cut(str,len,pad)
   pad = pad or " "
   return str:sub(1,len) .. pad:rep(len - #str)
 end
+
+local function calcHashrate(work)
+  local rate = 1 / (tonumber(work) / (256 ^ 6)) * 60)
+  if rate == 0 return ("0 H/s")
+  
+  local sizes = {"H","KH","MH","GH","TH"}
+  local i = math.floor(math.log(rate) / math.log(1000))
+  return tostring(string.format("%0.2f", (rate / 1000 ^ i))) .. " " .. sizes[i] .. "/s"
+end
  
 local response,err = http.post("https://krist.ceriat.net/ws/start","{}")
 if not response then error(err) end

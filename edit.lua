@@ -533,8 +533,8 @@ while bRunning do
                 else
                     -- Indent line
                     local sLine = tLines[y]
-                    tLines[y] = string.sub(sLine, 1, x - 1) .. "    " .. string.sub(sLine, x)
-                    setCursor(x + 4, y)
+                    tLines[y] = string.sub(sLine, 1, x - 1) .. "  " .. string.sub(sLine, x)
+                    setCursor(x + 2, y)
                 end
             end
  

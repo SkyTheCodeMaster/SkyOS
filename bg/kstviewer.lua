@@ -4,8 +4,8 @@ local function cut(str,len,pad)
 end
 
 local function calcHashrate(work)
-  local rate = 1 / (tonumber(work) / (256 ^ 6)) * 60)
-  if rate == 0 return ("0 H/s") end
+  local rate = 1 / (tonumber(work) / (256 ^ 6)) * 60
+  if rate == 0 then return ("0 H/s") end
   
   local sizes = {"H","KH","MH","GH","TH"}
   local i = math.floor(math.log(rate) / math.log(1000))

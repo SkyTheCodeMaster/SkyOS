@@ -1,0 +1,52 @@
+-- Ethereum Base Images
+-- Includes base text w/o wallet address
+-- Colour Table:
+-- White 1
+-- Light Blue 8
+-- Blue 2048
+-- Black 32768
+
+-- Set background to blue
+F,1,1,50,19,2048
+
+-- Draw light blue alternating chart lines
+L,1,6,44,6,8
+L,1,8,44,8,8
+L,1,10,44,10,8
+
+-- Fill in white lines
+
+-- Making boxes with coordinates at 0 draw 3 or 2 sided boxes, saves on file size.
+B,0,4,45,12,1
+B,20,4,45,7,1
+L,20,8,20,11,1
+F,1,0,50,2,1
+
+-- Add blue line, fixes the filled box turning the top 2 lines being white.
+L,5,1,46,1,2048
+
+-- Pixel tweaks, final image step
+P,1,3,1
+P,11,3,1
+P,15,3,1
+
+-- Draw text, does not include wallet address.
+
+TEXT,2,3,32768,2048,Ethereum
+TEXT,12,3,32768,2048,CAD
+
+TEXT,1,5,32768,2048,Rev (1h):
+TEXT,1,6,32768,8,Rev (6h):
+TEXT,1,7,32768,2048,Rev (1d):
+TEXT,1,8,32768,8,Rev (7d):
+TEXT,1,9,32768,2048,Rev (1m):
+TEXT,1,10,32768,8,Rev (6m): 
+TEXT,1,11,32768,2048,Rev (1y):
+
+TEXT,21,5,32768,2048,Avg Hashrate:
+TEXT,21,5,32768,8,Cur Hashrate:
+
+TEXT,21,8,32768,8,Balance:
+TEXT,21,9,32768,2048,Unconfirmed:
+TEXT,26,10,32768,8,Unpaid:
+TEXT,28,11,32768,2048,Paid:

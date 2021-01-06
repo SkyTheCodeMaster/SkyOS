@@ -44,7 +44,7 @@ TEXT,1,10,32768,8,Rev (6m):
 TEXT,1,11,32768,2048,Rev (1y):
 
 TEXT,21,5,32768,2048,Avg Hashrate:
-TEXT,21,5,32768,8,Cur Hashrate:
+TEXT,21,6,32768,8,Cur Hashrate:
 
 TEXT,21,8,32768,8,Balance:
 TEXT,21,9,32768,2048,Unconfirmed:

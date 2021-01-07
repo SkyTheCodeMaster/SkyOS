@@ -1,7 +1,16 @@
-local graphic = require("libraries.graphic")
+
 local progressBar = {}
 
+if not fs.exists("libraries/graphic.lua") then
+  local h,err = http.get("https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/libraries/graphic.lua")
+  if not h then error(err) end
+  local f = fs.open("libraries/graphic.lua","w")
+  f.write(h.readAll())
+  f.close()
+  h.close()
+end
 
+local graphic = require("libraries.graphic")
 
 local bars = {}
 

@@ -34,7 +34,7 @@ function progressBar.update(name,filled)
   if not bars[name] then error("bar does not exist") end
   local tableBar = bars[name]
 
-  local _,len,x,y,fg,bg,tOutput,height = tableBar[1],tableBar[2],tableBar[3],tableBar[4],tableBar[5],tableBar[6],tableBar[7]
+  local _,len,x,y,fg,bg,tOutput,height = tableBar[1],tableBar[2],tableBar[3],tableBar[4],tableBar[5],tableBar[6],tableBar[7],tableBar[8]
   local pixels = progressBar.calcFill(len,filled)
 
   graphic.drawFilledBox(x,y,len,height,bg,tOutput) -- draw over the old progess bar - useful if progress goes backwards
@@ -47,7 +47,7 @@ function progressBar.new(x,y,len,height,fg,bg,name,filled,tOutput)
   filled = filled or 0
   height = height or 1
 
-  graphic.drawFilledBox(x,y,len,y,bg,tOutput) -- draw the background of it
+  graphic.drawFilledBox(x,y,len,height,bg,tOutput) -- draw the background of it
 
   bars[name] = {filled, len, x, y, fg, bg, tOutput, height}
 

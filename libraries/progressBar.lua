@@ -45,7 +45,6 @@ function progressBar.update(name,filled)
   if decimal < .5 then
     graphic.drawFilledBox(x,y,len,height,bg,tOutput) -- draw over the old progess bar - useful if progress goes backwards
     graphic.drawFilledBox(x,y,pixels,height,fg,tOutput)
-    print(decimal)
   elseif decimal >= .5  then
     graphic.drawFilledBox(x,y,len,height,bg,tOutput)
     graphic.drawFilledBox(x,y,pixels,height,fg,tOutput)

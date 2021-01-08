@@ -80,7 +80,7 @@ function progressBar.new(x,y,len,height,fg,bg,name,filled,tOutput)
   return name, bars[name]
 end
 
-function pg.edit(name,index)
+function progressBar.edit(name,index)
   expect(1,name,"string")
   expect(2,index,"table")
   

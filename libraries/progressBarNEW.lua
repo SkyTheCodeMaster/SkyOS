@@ -1,6 +1,6 @@
 local progressBar = {}
 
-local expect = require("expect").expect
+local expect = require("cc.expect").expect
 
 if not fs.exists("libraries/graphic.lua") then -- Check for existence of libraries/graphic.lua, if not, download it
   local h,err = http.get("https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/libraries/graphic.lua")

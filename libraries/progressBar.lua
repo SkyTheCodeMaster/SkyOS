@@ -11,7 +11,11 @@ if not fs.exists("libraries/graphic.lua") then
 end
 
 local graphic = require("libraries.graphic")
-
+local to_colors, to_blit = {}, {}
+for i = 1, 16 do
+    to_blit[2^(i-1)] = ("0123456789abcdef"):sub(i, i)
+    to_colors[("0123456789abcdef"):sub(i, i)] = 2^(i-1)
+end
 local bars = {}
 
 -- fill or filled is a PERCENTAGE of how full the bar is.
@@ -20,7 +24,8 @@ function progressBar.calcFill(len,fill)
 
   if fill > 100 then fill = 100 end
   local div = 100 / len
-  local result = math.floor((fill / div) + 0.5)
+  local power = 10
+  local result = (math.floor(fill/div * power))/power
   
   return result
 end
@@ -35,11 +40,21 @@ function progressBar.update(name,filled)
   local tableBar = bars[name]
 
   local _,len,x,y,fg,bg,tOutput,height = tableBar[1],tableBar[2],tableBar[3],tableBar[4],tableBar[5],tableBar[6],tableBar[7],tableBar[8]
-  local pixels = progressBar.calcFill(len,filled)
-
-  graphic.drawFilledBox(x,y,len,height,bg,tOutput) -- draw over the old progess bar - useful if progress goes backwards
-  graphic.drawFilledBox(x,y,pixels,height,fg,tOutput)
+  local float = progressBar.calcFill(len,filled)
+  local pixels, decimal = math.modf(float)
+  if decimal < .5 then
+    graphic.drawFilledBox(x,y,len,height,bg,tOutput) -- draw over the old progess bar - useful if progress goes backwards
+    graphic.drawFilledBox(x,y,pixels,height,fg,tOutput)
+    print(decimal)
+  elseif decimal >= .5  then
+    graphic.drawFilledBox(x,y,len,height,bg,tOutput)
+    graphic.drawFilledBox(x,y,pixels,height,fg,tOutput)
+    for i=tonumber(y),tonumber(height) do
+    tOutput.setCursorPos(x+pixels,i)
+    tOutput.blit(string.char(149),to_blit[fg],to_blit[bg])
+  end
   bars[name] = {filled, len, x, y, fg, bg, tOutput, height}
+ end
 end
 
 function progressBar.new(x,y,len,height,fg,bg,name,filled,tOutput)

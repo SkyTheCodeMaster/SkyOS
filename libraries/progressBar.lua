@@ -46,6 +46,7 @@ function progressBar.new(x,y,len,height,fg,bg,name,filled,tOutput)
   tOutput = tOutput or term.current()
   filled = filled or 0
   height = height or 1
+  height = y + height -- This fixes the god forsaken issue
 
   graphic.drawFilledBox(x,y,len,height,bg,tOutput) -- draw the background of it
 

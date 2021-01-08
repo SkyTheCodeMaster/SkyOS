@@ -8,7 +8,8 @@ for i = 1, 16 do
     to_colors[("0123456789abcdef"):sub(i, i)] = 2^(i-1)
 end
 
-function graphic.drawFilledBox(nX1,nY1,nX2,nY2,nC,tOutput)
+-- Temp removal to maybe fix it
+--[[ function graphic.drawFilledBox(nX1,nY1,nX2,nY2,nC,tOutput)
   tOutput = tOutput or term.current()
   local currentX,currentY = tOutput.getCursorPos()
   local col = to_blit[nC]
@@ -18,6 +19,19 @@ function graphic.drawFilledBox(nX1,nY1,nX2,nY2,nC,tOutput)
     tOutput.blit(string.rep(" ",w),string.rep(col,w),string.rep(col,w))
   end
   tOutput.setCursorPos(currentX,currentY)
+end]]
+
+function graphic.drawFilledBox(nX1,nY1,nX2,nY2,nC,tOutput)
+  tOutput = tOutput or term.current()
+  local nCurFG = tOutput.getTextColour()
+  local nCurBG = tOutput.getBackgroundColour()
+  local nCurX, nCurY = tOutput.getCursorPos()
+  
+  paintutils.drawFilledBox(tonumber(nX1),tonumber(nY1),tonumber(nX2),tonumber(nY2),tonumber(nC),tOutput)
+  
+  tOutput.setCursorPos(nCurX,nCurY)
+  tOutput.setTextColour(nCurFG)
+  tOutput.setBackgroundColour(nCurBG)
 end
  
 function graphic.drawBox(nX1,nY1,nX2,nY2,nC,tOutput)

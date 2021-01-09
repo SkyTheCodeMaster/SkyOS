@@ -48,7 +48,7 @@ function progressBar.update(name,filled)
 
   graphic.drawFilledBox(bar.x,bar.y,bar.len,bar.height,bar.bg,bar.tOutput) -- draw over the old progess bar - useful if progress goes backwards
   graphic.drawFilledBox(bar.x,bar.y,pixels,bar.height,bar.fg,bar.tOutput)
-  bars[name] = { x = x, y = y, len = len, height = height, fg = fg, bg = bg, filled = filled, tOutput = tOutput}
+  bars[name] = { x = bar.x, y = bar.y, len = bar.len, height = bar.height, fg = bar.fg, bg = bar.bg, filled = bar.filled, tOutput = bar.tOutput}
   
   return bars[name]
 end

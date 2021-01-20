@@ -27,7 +27,7 @@ if SkyOS.lib.file == nil then SkyOS.sLog.errorC(301,"file library does not exist
 SkyOS.sLog.info("Loading graphic lib")
 SkyOS.lib.graphic = require("libraries.graphic")
 if SkyOS.lib.graphic == nil then SkyOS.sLog.errorC(302,"graphic library does not exist, reinstall") else SkyOS.sLog.info("graphic lib loaded") end
-SkyOS.lib.file.loadGrpLines("graphics/bootSplash.skgrp")
+SkyOS.lib.file.loadGrpLines(path("graphics/bootSplash.skgrp"))
 SkyOS.sLog.info("Loading gpswrapper lib")
 SkyOS.lib.gpswrapper = require("libraries.gpswrapper")
 if SkyOS.lib.gpswrapper == nil then SkyOS.sLog.errorC(303,"gpswrapper library does not exist, reinstall") else SkyOS.sLog.info("gpswrapper lib loaded") end

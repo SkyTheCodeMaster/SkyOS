@@ -1,5 +1,9 @@
+local function path(file)
+  return fs.combine(shell.dir(),file)  
+end
 -- replace apis with new ones
 _G.paintutils = require("libraries.apis.paintutils")
+-- normal loading
 term.clear()
 term.setCursorPos(1,1)
 _G.SkyOS = {}
@@ -10,13 +14,13 @@ _G.SkyOS.settings = {}
 _G.SkyOS.settings.timeZone = require("settings.general").timeZone
 _G.SkyOS.settings.language = require("settings.general").language
 _G.SkyOS.lib = {}
-_G.SkyOS.update = function() shell.run("wipeSkyOS.lua") end
-SkyOS.sLog.new("logs/mainLog.sklog","mainLog")
+_G.SkyOS.update = function() shell.run(path("wipeSkyOS.lua")) end
+SkyOS.sLog.new(path("logs/mainLog.sklog"),"mainLog")
 SkyOS.sLog.setMain("mainLog")
 SkyOS.sLog.info("------------------------")
 SkyOS.sLog.info("SkyOS Main Boot Sequence")
 SkyOS.sLog.info("SkyOS V"..SkyOS.versions.OSVERSION)
-SkyOS.sLog.info("Is beta: " .. tostring(fs.exists("beta.skprg")))
+SkyOS.sLog.info("Is beta: " .. tostring(fs.exists(path("beta.skprg"))))
 SkyOS.sLog.info("Loading file lib")
 SkyOS.lib.file = require("libraries.file")
 if SkyOS.lib.file == nil then SkyOS.sLog.errorC(301,"file library does not exist, reinstall") else SkyOS.sLog.info("file lib loaded") end
@@ -29,7 +33,7 @@ SkyOS.lib.gpswrapper = require("libraries.gpswrapper")
 if SkyOS.lib.gpswrapper == nil then SkyOS.sLog.errorC(303,"gpswrapper library does not exist, reinstall") else SkyOS.sLog.info("gpswrapper lib loaded") end
 SkyOS.lib.ts = require("libraries.ts")
 if SkyOS.lib.ts == nil then SkyOS.sLog.errorC(304,"ts library does not exist, reinstall") else SkyOS.sLog.info("ts lib loaded") end
-if fs.exists("beta.skprg") then
+if fs.exists(path("beta.skprg")) then
     SkyOS.sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)
 end
@@ -56,8 +60,8 @@ local function drawTime(x,y,backColour,textColour)
   term.write(time)
 end
 local function drawDesktop()
-  desktopImg = "graphics/background/default.skgrp"
-  taskbarImg = "graphics/taskbar.skgrp"
+  desktopImg = path("graphics/background/default.skgrp")
+  taskbarImg = path("graphics/taskbar.skgrp")
   SkyOS.lib.file.loadGrpLines(desktopImg)
   SkyOS.lib.file.loadGrpLines(taskbarImg)
 end
@@ -72,7 +76,7 @@ end
 end
 local function checkSizeLogs()
     while true do
-        local curSize = file.getSize("./logs")
+        local curSize = file.getSize(path("./logs"))
         if curSize > 98304 then
             SkyOS.sLog.warn("log folder size is too large, transmitting and deleting logs.")
             SkyOS.sLog.close()
@@ -98,7 +102,7 @@ parallel.waitForAny(main,function()
          SkyOS.sLog.save()
          term.clear()
          term.setCursorPos(1,1)
-         shell.run("wipeSkyOS.lua")
+         SkyOS.update()
         end
     end
 end)

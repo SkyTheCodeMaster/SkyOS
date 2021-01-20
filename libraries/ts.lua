@@ -2,12 +2,14 @@ local modem = peripheral.find("modem")
 local tsSend = 27793
  
 local pcReturn = math.random(30000,40000)
-modem.open(pcReturn)
+if modem then
+  modem.open(pcReturn)
+end
 
 local ts = {}
  
 function ts.get(offset)
-  if not SkyOS.settings.timeServerEnabled then
+  if not SkyOS.settings.timeServerEnabled or not modem then
     local epoch = math.floor(os.epoch("utc") / 1000) + (3600 * SkyOS.settings.timeZone) 
     local t = os.date("!*t", epoch)
     return {t,tostring(t.hour) .. ":" .. tostring(t.min) .. ":" .. tostring(t.sec),tostring(t.hour) .. ":" .. tostring(t.min)}

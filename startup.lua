@@ -14,6 +14,7 @@ _G.SkyOS.settings = {}
 _G.SkyOS.settings.timeZone = require("settings.general").timeZone
 _G.SkyOS.settings.language = require("settings.general").language
 _G.SkyOS.lib = {}
+_G.SkyOS.emu = {}
 _G.SkyOS.update = function() shell.run(path("wipeSkyOS.lua")) end
 SkyOS.sLog.new(path("logs/mainLog.sklog"),"mainLog")
 SkyOS.sLog.setMain("mainLog")
@@ -21,24 +22,47 @@ SkyOS.sLog.info("------------------------")
 SkyOS.sLog.info("SkyOS Main Boot Sequence")
 SkyOS.sLog.info("SkyOS V"..SkyOS.versions.OSVERSION)
 SkyOS.sLog.info("Is beta: " .. tostring(fs.exists(path("beta.skprg"))))
+SkyOS.sLog.info("Checking for emulators")
+
+SkyOS.emu.levelos = (lOS and lUtils) and true or false
+SkyOS.emu.craftospc = (periphemu and config) and true or false
+SkyOS.emu.ccemux = (ccemux) and true or false
+
+SkyOS.sLog.info("LevelOS: " .. tostring(SkyOS.emu.levelos))
+SkyOS.sLog.info("CraftOS-PC: " .. tostring(SkyOS.emu.craftospc))
+SkyOS.sLog.info("CCEmuX: " .. tostring(SkyOS.emu.ccemux))
+
+if SkyOS.emu.levelos then
+  SkyOS.sLog.info("Running LevelOS-specific functions")
+  local x,y = LevelOS.self.window.getPosition()
+  LevelOS.self.window.reposition(x,y,26,20)
+  LevelOS.self.window.resizable = false 
+end
+
 SkyOS.sLog.info("Loading file lib")
 SkyOS.lib.file = require("libraries.file")
 if SkyOS.lib.file == nil then SkyOS.sLog.errorC(301,"file library does not exist, reinstall") else SkyOS.sLog.info("file lib loaded") end
+
 SkyOS.sLog.info("Loading graphic lib")
 SkyOS.lib.graphic = require("libraries.graphic")
 if SkyOS.lib.graphic == nil then SkyOS.sLog.errorC(302,"graphic library does not exist, reinstall") else SkyOS.sLog.info("graphic lib loaded") end
+
 SkyOS.lib.file.loadGrpLines(path("graphics/bootSplash.skgrp"))
+
 SkyOS.sLog.info("Loading gpswrapper lib")
 SkyOS.lib.gpswrapper = require("libraries.gpswrapper")
 if SkyOS.lib.gpswrapper == nil then SkyOS.sLog.errorC(303,"gpswrapper library does not exist, reinstall") else SkyOS.sLog.info("gpswrapper lib loaded") end
+
 SkyOS.lib.ts = require("libraries.ts")
 if SkyOS.lib.ts == nil then SkyOS.sLog.errorC(304,"ts library does not exist, reinstall") else SkyOS.sLog.info("ts lib loaded") end
+
 if fs.exists(path("beta.skprg")) then
     SkyOS.sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)
 end
 SkyOS.sLog.save()
 --Do server side things BEFORE term.clear()
+
 local function gpsGet()
     sLog.info("Getting current gps location")
     local x, y, z = gpswrapper.gpslocate(5)

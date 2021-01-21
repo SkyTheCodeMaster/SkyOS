@@ -34,8 +34,8 @@ SkyOS.sLog.info("CCEmuX: " .. tostring(SkyOS.emu.ccemux))
 
 if SkyOS.emu.levelos then
   SkyOS.sLog.info("Running LevelOS-specific functions")
-  local x,y = LevelOS.self.window.getPosition()
-  LevelOS.self.window.reposition(x,y,26,20)
+  local x,y = LevelOS.self.window.win.getPosition()
+  LevelOS.self.window.win.reposition(x,y,26,20)
   LevelOS.self.window.resizable = false 
 end
 

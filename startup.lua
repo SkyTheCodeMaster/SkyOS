@@ -1,5 +1,9 @@
 local function path(file)
-  return fs.combine(shell.dir(),file)  
+  if LevelOS then
+    return fs.combine(LevelOS.self.window.path,file)
+  else
+    return fs.combine(shell.dir(),file)  
+  end
 end
 -- replace apis with new ones
 _G.paintutils = require("libraries.apis.paintutils")

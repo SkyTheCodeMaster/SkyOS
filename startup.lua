@@ -1,9 +1,9 @@
 local function path(file)
   if LevelOS then
-    return fs.combine(LevelOS.self.window.path,file)
+    return fs.combine(fs.getDir(LevelOS.self.window.path),file)
   else
-    return fs.combine(shell.dir(),file)  
-  end
+    return fs.combine(shell.dir(),file)
+  end 
 end
 -- replace apis with new ones
 _G.paintutils = require("libraries.apis.paintutils")
@@ -20,12 +20,11 @@ _G.SkyOS.settings.language = require("settings.general").language
 _G.SkyOS.lib = {}
 _G.SkyOS.emu = {}
 _G.SkyOS.update = function() shell.run(path("wipeSkyOS.lua")) end
-SkyOS.sLog.new(path("logs/mainLog.sklog"),"mainLog")
+SkyOS.sLog.new("logs/mainLog.sklog","mainLog")
 SkyOS.sLog.setMain("mainLog")
 SkyOS.sLog.info("------------------------")
 SkyOS.sLog.info("SkyOS Main Boot Sequence")
 SkyOS.sLog.info("SkyOS V"..SkyOS.versions.OSVERSION)
-SkyOS.sLog.info("Is beta: " .. tostring(fs.exists(path("beta.skprg"))))
 SkyOS.sLog.info("Checking for emulators")
 
 SkyOS.emu.levelos = (lOS and lUtils) and true or false
@@ -40,7 +39,8 @@ if SkyOS.emu.levelos then
   SkyOS.sLog.info("Running LevelOS-specific functions")
   local x,y = LevelOS.self.window.win.getPosition()
   LevelOS.self.window.win.reposition(x,y,26,20)
-  LevelOS.self.window.resizable = false 
+  LevelOS.self.window.resizable = false
+  LevelOS.self.window.title = "SkyOS v" .. SkyOS.versions.OSVERSION
 end
 
 SkyOS.sLog.info("Loading file lib")
@@ -51,7 +51,7 @@ SkyOS.sLog.info("Loading graphic lib")
 SkyOS.lib.graphic = require("libraries.graphic")
 if SkyOS.lib.graphic == nil then SkyOS.sLog.errorC(302,"graphic library does not exist, reinstall") else SkyOS.sLog.info("graphic lib loaded") end
 
-SkyOS.lib.file.loadGrpLines(path("graphics/bootSplash.skgrp"))
+SkyOS.lib.file.loadGrpLines(path("/graphics/bootSplash.skgrp"))
 
 SkyOS.sLog.info("Loading gpswrapper lib")
 SkyOS.lib.gpswrapper = require("libraries.gpswrapper")
@@ -60,10 +60,10 @@ if SkyOS.lib.gpswrapper == nil then SkyOS.sLog.errorC(303,"gpswrapper library do
 SkyOS.lib.ts = require("libraries.ts")
 if SkyOS.lib.ts == nil then SkyOS.sLog.errorC(304,"ts library does not exist, reinstall") else SkyOS.sLog.info("ts lib loaded") end
 
-if fs.exists(path("beta.skprg")) then
+--[[if fs.exists(path("beta.skprg")) then
     SkyOS.sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
     sleep(1)
-end
+end]]
 SkyOS.sLog.save()
 --Do server side things BEFORE term.clear()
 

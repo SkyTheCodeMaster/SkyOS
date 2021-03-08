@@ -1,3 +1,5 @@
+local address = ""
+
 local function cut(str,len,pad)
   pad = pad or " "
   return str:sub(1,len) .. pad:rep(len - #str)
@@ -32,7 +34,7 @@ term.clear()
 local function main()
   while true do
     msgID = msgID + 1
-    socket.send(textutils.serializeJSON({type = "address", id = msgID, address = SkyOS.extra.krist.address}))
+    socket.send(textutils.serializeJSON({type = "address", id = msgID, address = address}))
     local r = socket.receive()
     local data = textutils.unserializeJSON(r)
     --print(textutils.serialize(data))

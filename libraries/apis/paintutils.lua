@@ -44,7 +44,7 @@ function paintutils.drawPixel(xPos, yPos, colour, tOutput)
     if colour then
         tOutput.setBackgroundColor(colour)
     end
-    return drawPixelInternal(xPos, yPos, nColour, tOutput)
+    return drawPixelInternal(xPos, yPos, colour, tOutput)
 end
 
 function paintutils.drawLine(startX, startY, endX, endY, colour, tOutput)

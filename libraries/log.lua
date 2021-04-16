@@ -11,7 +11,7 @@ local tbl = {} --- @type log
 local mt = {["__index"] = tbl}
 --- Save the log, writing all the written info to the file. 
 function tbl:save() 
-  self.fHandle.save()
+  self.fHandle.flush()
 end
 --- Close the log, stopping further use.
 function tbl:close()

@@ -1,5 +1,5 @@
 local gSet = {
-  timeZone = -5,
+  timeZone = -4,
   useRealtime = true,
   language = "en",
   desktopImg = "graphics/background/default.skimg",

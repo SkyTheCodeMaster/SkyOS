@@ -92,7 +92,15 @@ local function drawTime(x,y,backColour,textColour)
   local time
   if SkyOS.settings.useRealtime then
     local timetable = sUtils.getTime(SkyOS.settings.timeZone)
-    time = tostring(timetable.hour) .. ":" .. tostring(timetable.min)
+    local strmin = tostring(timetable.min)
+    local strhour = tostring(timetable.hour)
+    if strmin:len() == 1 then
+      strmin = "0" .. strmin
+    end
+    if strhour:len() == 1 then
+      strhour = "0" .. strhour
+    end
+    time = strhour .. ":" .. strmin
   else
     time = textutils.formatTime(os.time("ingame"),true)
   end

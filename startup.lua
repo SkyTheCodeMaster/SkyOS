@@ -1,6 +1,8 @@
 local function path(file)
   if LevelOS then
     return fs.combine(fs.getDir(LevelOS.self.window.path),file)
+  elseif PhileOS then
+    return fs.combine(fs.getDir(shell.getRunningProgram()),file)
   else
     return fs.combine(shell.dir(),file)
   end 

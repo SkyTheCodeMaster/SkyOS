@@ -32,10 +32,12 @@ mainLog:info("Checking for emulation...")
 SkyOS.emu.levelos = (lOS and lUtils) and true or false
 SkyOS.emu.craftospc = (periphemu and config) and true or false
 SkyOS.emu.ccemux = (ccemux) and true or false
+SkyOS.emu.phileos = (PhileOS) and true or false
 
 mainLog:info("LevelOS: " .. tostring(SkyOS.emu.levelos))
 mainLog:info("CraftOS-PC: " .. tostring(SkyOS.emu.craftospc))
 mainLog:info("CCEmuX: " .. tostring(SkyOS.emu.ccemux))
+mainLog:info("PhileOS: " .. tostring(SkyOS.emu.phileos))
 
 if SkyOS.emu.levelos then
   mainLog:info("Running LevelOS-specific functions")

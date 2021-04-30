@@ -46,6 +46,13 @@ if SkyOS.emu.levelos then
   LevelOS.self.window.resizable = false
   LevelOS.self.window.title = "SkyOS v21.04"
 end
+if SkyOS.emu.phileos then
+  mainLog:info("Running PhileOS-specific functions")
+  local id = PhileOS.ID
+  PhileOS.setSize(id,26,20)
+  PhileOS.setName(id,"SkyOS v21.04")
+  PhileOS.setCanResize(id,false)
+end
 
 -- Quickload boot splash by utilizing the mini skimg library.
 local skimg = require("libraries.skimg")

@@ -7,8 +7,10 @@ local function path(file)
     return fs.combine(shell.dir(),file)
   end 
 end
--- replace apis with new ones
-_G.paintutils = require("libraries.apis.paintutils")
+
+-- Put stuffs in path lol
+package.path = package.path .. ";libraries/?;libraries/?.lua"
+
 local log = require("libraries.log")
 -- normal loading
 term.clear()
@@ -87,7 +89,13 @@ term.clear()
 --Load DE
 
 local function drawTime(x,y,backColour,textColour)
-  local time = textutils.formatTime(os.time("ingame"),true)
+  local time
+  if SkyOS.settings.useRealtime then
+    local timetable = sUtils.getTime(SkyOS.settings.timeZone)
+    time = tostring(timetable.hour) .. ":" .. tostring(timetable.min)
+  else
+    time = textutils.formatTime(os.time("ingame"),true)
+  end
   if time:len() == 4 then time = "0" .. time end
   term.setCursorPos(x,y)
   term.setBackgroundColour(backColour)

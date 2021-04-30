@@ -68,7 +68,7 @@ term.clear()
 --Load DE
 
 local function drawTime(x,y,backColour,textColour)
-  local time = textutils.formatTime(os.date("ingame"),true)
+  local time = textutils.formatTime(os.time("ingame"),true)
   if time:len() == 4 then time = "0" .. time end
   term.setCursorPos(x,y)
   term.setBackgroundColour(backColour)

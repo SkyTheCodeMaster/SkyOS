@@ -1,9 +1,10 @@
-local gSet = {}
-
-gSet.timeZone = -5
-gSet.language = "en"
-gSet.timeServerEnabled = false
-gSet.desktopImg = "graphics/background/default.skimg"
-gSet.taskbarImg = "graphics/taskbar.skimg"
+local gSet = {
+  timeZone = -5,
+  language = "en",
+  timeServerEnabled = false,
+  desktopImg = "graphics/background/default.skimg",
+  taskbarImg = "graphics/taskbar.skimg",
+  notifbarImg = "graphics/topbar.skimg",
+}
 
 return gSet

@@ -15,10 +15,17 @@ _G.SkyOS = {}
 _G.SkyOS.buttons = {}
 _G.SkyOS.settings = require("settings.general")
 _G.SkyOS.emu = {}
+_G.SkyOS.wins = {}
+_G.SkyOS.data = {
+  selectedScreen = 1,
+  homeScreenOpen = true,
+  event = {}
+}
 
 local mainLog = log.create("logs/main.sklog")
 mainLog:info("SkyOS")
 mainLog:info("Contact:")
+mainLog:info("Github: SkyTheCodeMaster, Discord: SkyCrafter0#6386")
 mainLog:info("Discord: https://discord.gg/cY7r2Mt7tc")
 mainLog:info("Checking for emulation...")
 
@@ -35,7 +42,7 @@ if SkyOS.emu.levelos then
   local x,y = LevelOS.self.window.win.getPosition()
   LevelOS.self.window.win.reposition(x,y,26,20)
   LevelOS.self.window.resizable = false
-  LevelOS.self.window.title = "SkyOS v" .. SkyOS.versions.OSVERSION
+  LevelOS.self.window.title = "SkyOS v21.04"
 end
 
 -- Quickload boot splash by utilizing the mini skimg library.
@@ -50,6 +57,7 @@ local ec25519 = require("libraries.ec25519")
 local wireless = require("libraries.wireless")
 local sUtils = require("libraries.sUtils")
 local sos = require("libraries.sos")
+local button = require("libraries.button")
 
 
 --[[if fs.exists(path("beta.skprg")) then
@@ -76,60 +84,52 @@ local function drawTime(x,y,backColour,textColour)
   term.write(time)
 end
 
-local function drawDesktop()
+local function drawHomescreen()
   local desktopImg = sUtils.asset.load(path(SkyOS.settings.desktopImg))
   local taskbarImg = sUtils.asset.load(path(SkyOS.settings.taskbarImg))
-  sUtils.asset.drawSkimg(desktopImg)
-  sUtils.asset.drawSkimg(taskbarImg,1,18)
+  local notifbarImg = sUtils.asset.load(path(SkyOS.settings.notifbarImg))
+  sUtils.asset.drawSkimg(desktopImg,1,2)
+  sUtils.asset.drawSkimg(taskbarImg,1,20)
+  sUtils.asset.drawSkimg(notifbarImg)
 end
 
-drawDesktop()
+drawHomescreen()
 
 local function main()
   while true do
     term.setCursorPos(22,20)
     term.write("     ")
-    drawTime(22,20,colours.lightGrey,colours.white)
+    drawTime(1,1,colours.grey,colours.white)
     sleep()
   end
 end
 
-local function checkSizeLogs()
-  while true do
-    local curSize = file.getSize(path("./logs"))
-    if curSize > 98304 then
-      SkyOS.sLog.warn("log folder size is too large, transmitting and deleting logs.")
-      SkyOS.sLog.close()
-      fs.delete("./logs")
-    end
-    sleep(180)
-  end
-end
-
-local keyTable = {
-  [keys.e] = function()
-    mainLog:info("E pressed, exiting to SkyShell")
-    mainLog:save()
-    term.setBackgroundColour(colours.black)
-    term.clear()
-    term.setCursorPos(1,1)
-  end,
-  [keys.u] = function()
-    mainLog:warn("U pressed, updating SkyOS")
-    mainLog:save()
-    term.clear()
-    term.setCursorPos(1,1)
-    sos.updateSkyOS(true)
-  end
-}
 local function keyman()
   while true do
     local _, key = os.pullEvent("key")
     mainLog:info("GUI character pressed: " .. keys.getName(key))
-    if keyTable[key] then return keyTable[key]() end
+    if key == keys.e then
+      mainLog:info("E pressed, exiting to SkyShell")
+      mainLog:save()
+      term.setBackgroundColour(colours.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      break
+    end
   end
 end
-parallel.waitForAny(main,keyman)
+
+local function eventMan()
+  while true do
+    SkyOS.data.event = {os.pullEvent()}
+    local event = SkyOS.data.event
+    if event[1] == "mouse_click" or event[1] == "mouse_drag" then
+      button.executeButtons(event,true)
+    end
+  end
+end
+
+parallel.waitForAny(main,keyman,eventMan)
  
 -- Colours
 local promptColour  = colours.yellow

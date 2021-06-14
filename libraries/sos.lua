@@ -67,7 +67,7 @@ local function downloadRepo(user,repo,branch,path)
   branch = branch or presets.github.branch
   path = path or presets.github.path
 
-  local data = textutils.unserializeJSON(hread("https://api.github.com/repos/"..user.."/"..repo.."/git/trees/"..repo.."?recursive=1"))
+  local data = textutils.unserializeJSON(hread("https://api.github.com/repos/"..user.."/"..repo.."/git/trees/"..branch.."?recursive=1"))
   
   local filecount = 0
   local downloaded = 0

@@ -25,6 +25,7 @@ _G.SkyOS.data = {
   homeScreenOpen = true,
   event = {}
 }
+_G.SkyOS.coro = require("libraries.coro")
 
 local mainLog = log.create("logs/main.sklog")
 mainLog:info("SkyOS")
@@ -156,7 +157,10 @@ local function eventMan()
   end
 end
 
-parallel.waitForAny(main,keyman,eventMan)
+SkyOS.coro.newCoro(main,"SkyOS") -- This is the main loop for skyos, it is important.
+SkyOS.coro.newCoro(keyman,"Key Manager") -- Manages keypresses on homescreen, for now this is a debug thing.
+SkyOS.coro.newCoro(eventMan,"Event Manager") -- This manages events for SkyOS, it is important.
+SkyOS.coro.runCoros()
  
 -- Colours
 local promptColour  = colours.yellow

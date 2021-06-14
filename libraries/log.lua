@@ -42,7 +42,14 @@ end
 -- @tparam string file Path to the log file.
 -- @treturn table log Logwith functions to write to the log file.
 local function create(file)
-  local fHandle,err = fs.open(file,"w")
+  -- Stubbed for now
+  --local fHandle,err = fs.open(file,"w")
+  local fHandle = {
+    writeLine = function() end,
+    flush = function() end,
+    close = function() end
+  }
+  local err = nil
   if not fHandle then return nil,err end
   local tbl = {
     fHandle = fHandle

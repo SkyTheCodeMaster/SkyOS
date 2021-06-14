@@ -26,6 +26,19 @@ _G.SkyOS.data = {
   event = {}
 }
 _G.SkyOS.coro = require("libraries.coro")
+_G.SkyOS.displayError = function(msg)
+  term.setBackgroundColour(colours.blue)
+  term.setTextColour(colours.white)
+  term.clear()
+  term.setCursorPos(1,1)
+  term.write("SkyOS encountered an error")
+  term.setCursorPos(1,2)
+  term.write("Press any key to reboot.")
+  term.setCursorPos(1,3)
+  print(msg)
+  os.pullEvent("key")
+  os.reboot()
+end
 
 local mainLog = log.create("logs/main.sklog")
 mainLog:info("SkyOS")

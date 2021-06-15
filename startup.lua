@@ -147,7 +147,7 @@ end
 
 local function keyman()
   while true do
-    local _, key = os.pullEvent("key")
+    local _, key = coroutine.yield("key")
     mainLog:info("GUI character pressed: " .. keys.getName(key))
     if key == keys.e then
       mainLog:info("E pressed, exiting to SkyShell")
@@ -155,14 +155,14 @@ local function keyman()
       term.setBackgroundColour(colours.black)
       term.clear()
       term.setCursorPos(1,1)
-      break
+      SkyOS.coro.stop()
     end
   end
 end
 
 local function eventMan()
   while true do
-    SkyOS.data.event = {os.pullEvent()}
+    SkyOS.data.event = {coroutine.yield()}
     local event = SkyOS.data.event
     if event[1] == "mouse_click" or event[1] == "mouse_drag" then
       button.executeButtons(event,true)

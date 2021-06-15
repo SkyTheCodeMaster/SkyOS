@@ -20,6 +20,7 @@ _G.SkyOS.buttons = {}
 _G.SkyOS.settings = require("settings.general")
 _G.SkyOS.emu = {}
 _G.SkyOS.wins = {}
+_G.SkyOS.version = "21.06.0"
 _G.SkyOS.data = {
   selectedScreen = 1,
   homeScreenOpen = true,
@@ -138,10 +139,35 @@ drawHomescreen()
 
 local function main()
   while true do
+    -- Draw the time
     term.setCursorPos(22,20)
     term.write("     ")
     drawTime(1,1,colours.grey,colours.white)
-    sleep()
+    -- Handle screenshots
+    local ctrl,shift,p = false,false,false
+    for i=1,#SkyOS.data.heldKeys do
+      if SkyOS.data.heldKeys[i] == keys.leftCtrl then
+        ctrl = true
+      else
+        ctrl = false
+      end
+      if SkyOS.data.heldKeys[i] == keys.leftShift then
+        shift = true
+      else
+        shift = false
+      end
+      if SkyOS.data.heldKeys[i] == keys.p then
+        p = true
+      else
+        p = false
+      end
+    end
+    if ctrl and shift and p then
+      sos.screenshot()
+      ctrl,shift,p = false,false,false
+    end
+    os.queueEvent("mainYield")
+    coroutine.yield()
   end
 end
 
@@ -166,6 +192,10 @@ local function eventMan()
     local event = SkyOS.data.event
     if event[1] == "mouse_click" or event[1] == "mouse_drag" then
       button.executeButtons(event,true)
+    elseif event[1] == "key" then
+      sUtils.insert(SkyOS.data.heldKeys,event[2])
+    elseif event[1] == "key_up" then
+      sUtils.remove(SkyOS.data.heldKeys,event[2])
     end
   end
 end

@@ -1,0 +1,59 @@
+{
+  "https://github.com/SkyTheCodeMaster/SkyOS/blob/master/src/startup.lua": {
+    "path": "startup.lua",
+    "folder": false
+  },
+  "https://github.com/SkyTheCodeMaster/SkyOS/blob/master/src/settings/general.lua": {
+    "path": "settings/general.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/misc/button.lua": {
+    "path": "libraries/button.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/coro.lua": {
+    "path": "libraries/coro.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/crash.lua": {
+    "path": "libraries/crash.lua",
+    "folder": false
+  },
+  "https://github.com/SkyTheCodeMaster/SkyOS/blob/master/src/libraries/ec25519.lua": {
+    "path": "libraries/ec25519.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/graphic.lua": {
+    "path": "libraries/graphic.lua",
+    "folder": false
+  },
+  "https://github.com/SkyTheCodeMaster/SkyOS/blob/master/src/libraries/log.lua": {
+    "path": "libraries/log.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/misc/progressbar.lua": {
+    "path": "libraries/progressBar.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/skimg.lua": {
+    "path": "libraries/skimg.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/sos.lua": {
+    "path": "libraries/sos.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/misc/sUtils.lua": {
+    "path": "libraries/sUtils.lua",
+    "folder": false
+  },
+  "https://github.com/SkyTheCodeMaster/SkyOS/tree/master/graphics": {
+    "path": "graphics",
+    "folder": true,
+    "recursive": true
+  },
+  "https://pastebin.com/raw/6UV4qfNF": {
+    "path": "libraries/sha256.lua",
+    "folder": false
+  }
+}

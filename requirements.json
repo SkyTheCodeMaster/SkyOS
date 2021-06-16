@@ -47,7 +47,7 @@
     "path": "libraries/sUtils.lua",
     "folder": false
   },
-  "https://github.com/SkyTheCodeMaster/SkyOS/tree/master/graphics": {
+  "https://github.com/SkyTheCodeMaster/SkyOS/tree/master/src/graphics": {
     "path": "graphics",
     "folder": true,
     "recursive": true

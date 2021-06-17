@@ -3,7 +3,7 @@
     "path": "startup.lua",
     "folder": false
   },
-  "https://github.com/SkyTheCodeMaster/SkyOS/blob/master/src/settings/general.lua": {
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/settings/general.lua": {
     "path": "settings/general.lua",
     "folder": false
   },
@@ -19,7 +19,7 @@
     "path": "libraries/crash.lua",
     "folder": false
   },
-  "https://github.com/SkyTheCodeMaster/SkyOS/blob/master/src/libraries/ec25519.lua": {
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/libraries/ec25519.lua": {
     "path": "libraries/ec25519.lua",
     "folder": false
   },

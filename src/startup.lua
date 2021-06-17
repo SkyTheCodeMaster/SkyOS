@@ -11,9 +11,7 @@ end
 -- Load cache data, or return empty table if none.
 local f = fs.open("SkyOS/data.cfg","r")
 local cache
-if not f then cache = {badStarts=0} end
-cache = textutils.unserialize(f.readAll())
-f.close()
+if not f then cache = {badStarts=0} else cache = textutils.unserialize(f.readAll()) f.close() end
 
 if cache.badStarts >= 3 then -- We've had problems booting. Load button and skimg to enable crash menu.
   local button = require("libraries.button")
@@ -198,21 +196,6 @@ local function main()
   end
 end
 
-local function keyman()
-  while true do
-    local _, key = coroutine.yield("key")
-    mainLog:info("GUI character pressed: " .. keys.getName(key))
-    if key == keys.e then
-      mainLog:info("E pressed, exiting to SkyShell")
-      mainLog:save()
-      term.setBackgroundColour(colours.black)
-      term.clear()
-      term.setCursorPos(1,1)
-      SkyOS.coro.stop()
-    end
-  end
-end
-
 local function eventMan()
   while true do
     SkyOS.data.event = {coroutine.yield()}
@@ -221,6 +204,14 @@ local function eventMan()
       button.executeButtons(event,true)
     elseif event[1] == "key" then
       SkyOS.data.heldKeys[event[2]] = true
+        if event[2] == keys.e then
+          mainLog:info("E pressed, exiting to SkyShell")
+          mainLog:save()
+          term.setBackgroundColour(colours.black)
+          term.clear()
+          term.setCursorPos(1,1)
+          SkyOS.coro.stop()
+        end
     elseif event[1] == "key_up" then
       SkyOS.data.heldKeys[event[2]] = false
     end
@@ -228,7 +219,6 @@ local function eventMan()
 end
 
 SkyOS.coro.newCoro(main,"SkyOS") -- This is the main loop for skyos, it is important.
-SkyOS.coro.newCoro(keyman,"Key Manager") -- Manages keypresses on homescreen, for now this is a debug thing.
 SkyOS.coro.newCoro(eventMan,"Event Manager") -- This manages events for SkyOS, it is important.
 SkyOS.coro.runCoros()
  

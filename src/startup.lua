@@ -82,7 +82,6 @@ skimg = nil
 -- Load all the libraries that haven't been loaded. This also caches them into `require` so it's faster for other programs to load them.
 local progressBar = require("libraries.progressBar")
 local ec25519 = require("libraries.ec25519")
-local wireless = require("libraries.wireless")
 local sUtils = require("libraries.sUtils")
 local sos = require("libraries.sos")
 local button = require("libraries.button")

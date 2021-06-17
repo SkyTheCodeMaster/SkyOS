@@ -1,5 +1,5 @@
 {
-  "https://github.com/SkyTheCodeMaster/SkyOS/blob/master/src/startup.lua": {
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/startup.lua": {
     "path": "startup.lua",
     "folder": false
   },
@@ -27,7 +27,7 @@
     "path": "libraries/graphic.lua",
     "folder": false
   },
-  "https://github.com/SkyTheCodeMaster/SkyOS/blob/master/src/libraries/log.lua": {
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/libraries/log.lua": {
     "path": "libraries/log.lua",
     "folder": false
   },

@@ -8,6 +8,46 @@ local function path(file)
   end 
 end
 
+-- Load cache data, or return empty table if none.
+local f = fs.open("SkyOS/data.cfg","r")
+local cache
+if not f then cache = {badStarts=0} end
+cache = textutils.unserialize(f.readAll())
+f.close()
+
+if cache.badStarts >= 3 then -- We've had problems booting. Load button and skimg to enable crash menu.
+  local button = require("libraries.button")
+  local skimg = require("libraries.skimg")
+  local recovery = skimg("graphics/recovery.skimg") -- Load the skimg
+  recovery() -- Draw the skimg.
+  local shellButton,bootButton
+  local function toShell()
+    term.setTextColour(colours.white) 
+    term.setBackgroundColour(colours.blue) 
+    term.clear() 
+    term.setCursorPos(1,1)
+    error("Emergency SkyOS Shell") 
+  end
+  local function boot()
+    cache.badStarts = 0
+    local f = fs.open("SkyOS/data.cfg","w") f.write(textutils.serialize(cache)) f.close()
+    os.reboot()
+  end
+  shellButton = button.newButton(5,10,15,3,toShell)
+  bootButton = button.newButton(5,15,15,3,boot)
+  while true do
+    local e = {os.pullEvent()}
+    if e[1] == "char" then
+      if e[2] == "e" then
+        toShell()
+      elseif e[2] == "c" then
+        boot()
+      end
+    elseif e[1] == "mouse_click" then
+      button.executeButtons(e)
+    end
+  end
+end
 -- Put stuffs in path lol
 package.path = package.path .. ";libraries/?;libraries/?.lua"
 
@@ -22,6 +62,7 @@ _G.SkyOS.emu = {}
 _G.SkyOS.wins = {}
 _G.SkyOS.version = "21.06.0"
 _G.SkyOS.data = {
+  heldKeys = {},
   selectedScreen = 1,
   homeScreenOpen = true,
   event = {}
@@ -38,6 +79,12 @@ _G.SkyOS.displayError = function(msg)
   term.setCursorPos(1,3)
   print(msg)
   os.pullEvent("key")
+  if os.clock() < 30 then -- This is close enough to be startup, 30 seconds is fine.
+    cache.badStarts = cache.badStarts + 1
+  end
+  local f = fs.open("SkyOS/data.cfg","w")
+  f.write(textutils.serialize(cache))
+  f.close()
   os.reboot()
 end
 

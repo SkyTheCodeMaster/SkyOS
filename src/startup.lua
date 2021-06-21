@@ -184,8 +184,6 @@ drawHomescreen()
 local function main()
   while true do
     -- Draw the time
-    term.setCursorPos(22,20)
-    term.write("     ")
     drawTime(1,1,colours.grey,colours.white)
     -- Handle screenshots
     if SkyOS.data.heldKeys[keys.leftCtrl] and SkyOS.data.heldKeys[keys.leftShift] and SkyOS.data.heldKeys[keys.p] then
@@ -246,8 +244,12 @@ while true do
   else
     sLine = read(nil, tCommandHistory)
   end
-  if sLine:match("%S") and tCommandHistory[#tCommandHistory] ~= sLine then
-    table.insert(tCommandHistory, sLine)
+  if sLine == "update" then
+    sos.updateSkyOS()
+  else
+    if sLine:match("%S") and tCommandHistory[#tCommandHistory] ~= sLine then
+      table.insert(tCommandHistory, sLine)
+    end
+    shell.run(sLine)
   end
-  shell.run(sLine)
 end

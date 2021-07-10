@@ -34,6 +34,7 @@
     "redstone",
     "rs",
     "PhileOS",
-    "_HOST"
+    "_HOST",
+    "vector"
   ]
 }

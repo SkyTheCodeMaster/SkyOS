@@ -1,0 +1,22 @@
+name: Illuaminate Lint
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Illuaminate
+        run: |
+          test -d bin || mkdir bin
+          test -f bin/illuaminate || wget -q -Obin/illuaminate https://squiddev.cc/illuaminate/linux-x86-64/illuaminate
+          chmod +x bin/illuaminate
+      
+      - name: Lint Lua code
+        run: |
+          bin/illuaminate lint

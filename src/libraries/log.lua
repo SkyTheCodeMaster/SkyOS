@@ -1,5 +1,5 @@
 --- The log library is a library to store logs for various programs. It will keep the logs down to a certain size.
--- @module[kind=skyos] log
+-- @module log
 
 local function genTime()
   local t = os.date("!*t")
@@ -7,6 +7,7 @@ local function genTime()
   return str
 end
 
+--- The actual log object. Has filehandle inside accessable with `log.fHandle`.
 local tbl = {} --- @type log
 local mt = {["__index"] = tbl}
 --- Save the log, writing all the written info to the file. 
@@ -41,18 +42,18 @@ end
 --- Create returns a table of functions for writing to a log file.
 -- @tparam string file Path to the log file.
 -- @treturn table log Logwith functions to write to the log file.
-local function create(file)
+local function create()
   -- Stubbed for now
   --local fHandle,err = fs.open(file,"w")
   local fHandle = {
     writeLine = function() end,
     flush = function() end,
-    close = function() end
+    close = function() end,
   }
   local err = nil
   if not fHandle then return nil,err end
   local tbl = {
-    fHandle = fHandle
+    fHandle = fHandle,
   }
   return setmetatable(tbl,mt)
 end

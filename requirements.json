@@ -3,8 +3,8 @@
     "path": "startup.lua",
     "folder": false
   },
-  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/settings/general.lua": {
-    "path": "settings/general.lua",
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/settings/general.cfg": {
+    "path": "settings/general.cfg",
     "folder": false
   },
   "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/misc/button.lua": {
@@ -54,6 +54,14 @@
   },
   "https://pastebin.com/raw/6UV4qfNF": {
     "path": "libraries/sha256.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/gesturemanager.lua": {
+    "path": "libraries/gesturemanager.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/programs/desktop.lua": {
+    "path": "programs/desktop.lua",
     "folder": false
   }
 }

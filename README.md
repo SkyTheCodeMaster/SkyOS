@@ -11,4 +11,11 @@ As of writing this, there's no way to get programs on and off, as SkyOS is in ex
 You can press `E` to exit to a shell, where it's a normal CraftOS shell.  
 ## Customization  
 To customize the graphics of SkyOS (The only customizable part right now), the files located inside of the `/graphics/` folder need to be opened in `skimgEditor`.  
-Make sure each of files maintain the same resolution (`26x1` for the bars), or else the images inside SkyOS won't display correctly.
+Make sure each of files maintain the same resolution (`26x1` for the bars), or else the images inside SkyOS won't display correctly.  
+### Size reference  
+The sizes for graphics files in base SkyOS goes as follows:
+* `recovery.skimg`: 26x20
+* `taskbar.skimg`: 26x1
+* `topbar.skimg`: 26x1
+* Any backgrounds for the desktop: `26x18`
+* `bootSplash.skimg`: 26x20

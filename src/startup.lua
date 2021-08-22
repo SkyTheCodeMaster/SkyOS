@@ -1,3 +1,16 @@
+-- Top Level Coroutine Override. This disables the rednet thread from running, allowing enable/disable inside SkyOS.
+if not oldShutdown then
+  _G.oldShutdown = os.shutdown
+  os.shutdown = function() os.run({},"rom/programs/shell.lua") end
+  local i = 0
+  repeat i = i + 1 until debug.getupvalue(rednet.run,i) == "bRunning" -- Thanks wojbie for showing this amazing use of debug. rednet sux:tm:
+  debug.setupvalue(rednet.run,i,false) -- This kills the rednet coroutine, stopping the `parallel.waitForAny`, pcall returns ok, therefore the `press any key to continue` never shows up, it triggers the `os.shutdown()`, runs the custom one which runs a shell, which in turn runs startup file again.
+else
+  os.shutdown = oldShutdown -- Restore the real shutdown
+  ---@diagnostic disable-next-line: lowercase-global 
+  oldShutdown = nil -- Delete the old shutdown, leading to no _G pollution.
+end
+
 local function path(file)
   if LevelOS then
     return fs.combine(fs.getDir(LevelOS.self.window.path),file)
@@ -55,7 +68,7 @@ local log = require("libraries.log")
 -- normal loading
 term.clear()
 term.setCursorPos(1,1)
-local f = fs.open("settings/general.cfg")
+local f = fs.open("settings/general.cfg","w")
 local settings = textutils.unserialize(f.readAll())
 f.close()
 _G.SkyOS = {}
@@ -122,87 +135,7 @@ if SkyOS.emu.phileos then
 end
 
 -- Quickload boot splash by utilizing the mini skimg library.
-local skimg = require("libraries.skimg")
-local bootSplash = skimg("graphics/bootSplash.skimg")
-bootSplash()
-
-local function hread(url)
-  local h,err = http.get(url)
-  if not h then return nil,err end
-  local contents = h.readAll()
-  h.close()
-  return contents
-end
-local function split(inputstr,sep)
-  sep = sep or ","
-  local t={}
-  for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-    table.insert(t, str)
-  end
-  return t
-end
--- Begin integrity check 
-if SkyOS.settings.internet and SkyOS.settings.verifyIntegrity then
-  local function getFiles(recursive,url,filter,path)
-    local contents
-    if filter then
-      local splitURL = split(url,"/")
-      local apiURL = ("https://api.github.com/repos/%s/%s/contents/%s?ref=%s"):format(splitURL[3], splitURL[4], table.concat(splitURL, "/", 7), splitURL[6]) -- Thanks, JackMacWindows!
-      contents = textutils.unserializeJSON(hread(apiURL))
-    else
-      contents = textutils.unserializeJSON(hread(url))
-    end
-    local files = {}
-    for _,v in pairs(contents) do
-      if v.type == "dir" and recursive then
-        local newFiles = getFiles(true,v["_links"].self,false,fs.combine(path,v.name))
-        for url,path in pairs(newFiles) do files[url] = path end
-      end
-      if v.type == "file" then
-        local name = fs.getName(v.path)
-        local path = fs.combine(path,name)
-        files[v.download_url] = path
-      end
-    end
-    return files
-  end
-  -- Necessary libraries for integrity check, we best damned hope they exist and work
-  if not fs.exists(path("libraries/progressBar.lua")) or not fs.exists(path("libraries/crash.lua")) then
-    SkyOS.displayError("Integrity check is missing necessary files!\nlibraries/progressBar.lua\nlibraries/crash.lua")
-  end
-  local progressBar = require("libraries.progressBar")
-  local crash = require("libraries.crash")
-  local integrity = skimg("graphics/integrity.skimg")
-  local integrityBar = progressBar(1,16,26,1,colours.lime,colours.grey)
-  integrity(1,15)
-  local filesJSON,err = hread("https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/requirements.json")
-  if not filesJSON then crash("nil",err,"Failed to get requirements.json for integrity check") SkyOS.displayError(err) end
-  local files = textutils.unserializeJSON(filesJSON)
-  -- Get a count of all the files in the table, and trim the graphics folder.
-  local count = 0
-  for k,v in pairs(files) do
-    if v.folder then
-      files[k] = nil
-      local folder = getFiles(v.recursive,k,true,v.path)
-      for k,v in pairs(folder) do files[k] = v end
-    end
-  end
-  for _ in pairs(files) do count = count + 1 end
-  local processed = 0
-  -- Now begin the actual check
-  for k,v in pairs(files) do
-    if not fs.exists(path(v.path)) then
-      local file = hread(k)
-      if file then
-        local f = fs.open(v.path,"w")
-        f.write(file)
-        f.close()
-      end
-    end
-    processed = processed + 1
-    integrityBar:update(math.floor(processed/count*100))
-  end
-end
+require("libraries.skimg")("graphics/bootSplash.skimg")()
 
 local sUtils = require("libraries.sUtils")
 local sos = require("libraries.sos")

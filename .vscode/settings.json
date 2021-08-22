@@ -35,6 +35,7 @@
     "rs",
     "PhileOS",
     "_HOST",
-    "vector"
+    "vector",
+    "rednet"
   ]
 }

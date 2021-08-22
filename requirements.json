@@ -3,10 +3,6 @@
     "path": "startup.lua",
     "folder": false
   },
-  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/settings/general.cfg": {
-    "path": "settings/general.cfg",
-    "folder": false
-  },
   "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/misc/button.lua": {
     "path": "libraries/button.lua",
     "folder": false
@@ -52,6 +48,11 @@
     "folder": true,
     "recursive": true
   },
+  "https://github.com/SkyTheCodeMaster/SkyOS/tree/master/src/SkyOS": {
+    "path": "SkyOS",
+    "folder": true,
+    "recursive": true
+  },
   "https://pastebin.com/raw/6UV4qfNF": {
     "path": "libraries/sha256.lua",
     "folder": false
@@ -62,6 +63,10 @@
   },
   "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/programs/desktop.lua": {
     "path": "programs/desktop.lua",
+    "folder": false
+  },
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/windowmanager.lua": {
+    "path": "libraries/windowmanager.lua",
     "folder": false
   }
 }

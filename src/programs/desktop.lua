@@ -36,7 +36,7 @@ local function drawApps(image,screen)
   if image then
     sUtils.asset.draw(image)
   end
-    for y,v in ipairs(desktop[selectedScreen]) do
+  for y,v in ipairs(desktop[selectedScreen]) do
     for x,b in ipairs(v) do
       if b.type == "app" then
         local image = sUtils.asset.load(b.image)
@@ -104,6 +104,8 @@ local function drawScreen()
     end
   end
 end
+
+setScreen(selectedScreen)
 
 -- Now create the coroutines
 local buttonCoro = coro.newCoro(handleButtons,"button")

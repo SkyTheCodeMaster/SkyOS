@@ -84,7 +84,7 @@ local f = fs.open("SkyOS/settings.cfg","r")
 _G.SkyOS.settings = textutils.unserialize(f.readAll())
 f.close()
 _G.SkyOS.emu = {}
-_G.SkyOS.wins = dofile("libraries/windowmanager.lua")
+_G.SkyOS.wins = dolib("libraries/windowmanager.lua")
 _G.SkyOS.version = "21.06.0"
 _G.SkyOS.data = {
   heldKeys = {},

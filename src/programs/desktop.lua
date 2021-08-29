@@ -8,10 +8,17 @@
 
 ]]
 
-local sos =     dofile("libraries/sos.lua")
-local sUtils =  dofile("libraries/sUtils.lua")
-local button =  dofile("libraries/button.lua")
-local coro =    dofile("libraries/coro.lua")
+-- Roll custom dofile to include environment
+local function dolib(lib,env)
+  env = env or _ENV
+  local func = loadfile(lib,"t",env)
+  return func()
+end
+
+local sos =     dolib("libraries/sos.lua")
+local sUtils =  dolib("libraries/sUtils.lua")
+local button =  dolib("libraries/button.lua")
+local coro =    dolib("libraries/coro.lua")
 local desktop = sUtils.encfread("SkyOS/desktop.cfg")
 
 _G.SkyOS.data.winids.desktop = _ENV.SkyOS.self.winid -- Place the desktop into the global SkyOS, and to have the task switcher *not* show the desktop.

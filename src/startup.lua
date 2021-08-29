@@ -79,11 +79,10 @@ local logging = require("libraries.log")
 -- normal loading
 term.clear()
 term.setCursorPos(1,1)
-local f = fs.open("SkyOS/settings.cfg","r")
-local settings = textutils.unserialize(f.readAll())
-f.close()
 _G.SkyOS = {}
-_G.SkyOS.settings = settings
+local f = fs.open("SkyOS/settings.cfg","r")
+_G.SkyOS.settings = textutils.unserialize(f.readAll())
+f.close()
 _G.SkyOS.emu = {}
 _G.SkyOS.wins = dofile("libraries/windowmanager.lua")
 _G.SkyOS.version = "21.06.0"
@@ -214,7 +213,7 @@ local function drawTime(x,y,backColour,textColour,tOutput)
 end
 
 topwin = window.create(term.current(),1,1,26,1,true) -- Window for the top bar.
-bottomwin = window.create(term.current(),1,20,26,true) -- Window for the bottom bar.
+bottomwin = window.create(term.current(),1,20,26,1,true) -- Window for the bottom bar.
 do -- Keep all the initial drawing in it's own `do end` block, shall we?
   local topbar = sUtils.asset.load(path("graphics/topbar.skimg"))
   local tskbar = sUtils.asset.load(path("graphics/taskbar.skimg"))
@@ -290,7 +289,7 @@ LOG.info(tostring(skyospid))
 LOG.info(tostring(eventpid))
 LOG.info(tostring(gpid)) -- Thanks Illuaminate! These are now used variables.
 
-local desktopwid = SkyOS.wins.newWindow("programs/desktop.lua","Desktop")
+local desktopwid = SkyOS.wins.newWindow("programs/desktop.lua","Desktop",true,_ENV)
 
 SkyOS.coro.runCoros()
  

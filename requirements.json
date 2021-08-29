@@ -23,7 +23,7 @@
     "path": "libraries/graphic.lua",
     "folder": false
   },
-  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyOS/master/src/libraries/log.lua": {
+  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/log.lua": {
     "path": "libraries/log.lua",
     "folder": false
   },

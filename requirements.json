@@ -48,6 +48,11 @@
     "folder": true,
     "recursive": true
   },
+  "https://github.com/SkyTheCodeMaster/SkyOS/tree/master/src/SkyOS": {
+    "path": "SkyOS",
+    "folder": true,
+    "recursive": true
+  },
   "https://pastebin.com/raw/6UV4qfNF": {
     "path": "libraries/sha256.lua",
     "folder": false

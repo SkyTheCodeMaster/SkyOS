@@ -72,7 +72,7 @@ local logging = require("libraries.log")
 -- normal loading
 term.clear()
 term.setCursorPos(1,1)
-local f = fs.open("settings/general.cfg","w")
+local f = fs.open("SkyOS/settings.cfg","w")
 local settings = textutils.unserialize(f.readAll())
 f.close()
 _G.SkyOS = {}

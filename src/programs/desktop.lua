@@ -8,10 +8,12 @@
 
 ]]
 
-local sos = require("libraries.sos")
-local sUtils = require("libraries.sUtils")
+local sos =     dofile("libraries/sos.lua")
+local sUtils =  dofile("libraries/sUtils.lua")
+local button =  dofile("libraries/button.lua")
+local coro =    dofile("libraries/coro.lua")
 local desktop = sUtils.encfread("SkyOS/desktop.cfg")
-local button = require("libraries.button")
+
 _G.SkyOS.data.winids.desktop = _ENV.SkyOS.self.winid -- Place the desktop into the global SkyOS, and to have the task switcher *not* show the desktop.
 
 local desktopBackground = sUtils.asset.load(SkyOS.settings.desktopImg)
@@ -23,8 +25,11 @@ local imageCache = {{},{},{},{},}
 
 --- Draw a screen with the apps in front, this function allows for rendering type 2 skimgs.
 -- @tparam number screen Screen of apps to draw. This should correspond with the buttons available.
-local function drawApps(screen)
-  for y,v in ipairs(desktop[selectedScreen]) do
+local function drawApps(image,screen)
+  if image then
+    sUtils.asset.draw(image)
+  end
+    for y,v in ipairs(desktop[selectedScreen]) do
     for x,b in ipairs(v) do
       if b.type == "app" then
         local image = sUtils.asset.load(b.image)
@@ -43,8 +48,9 @@ for y=1,4 do
   end
 end
 
+-- This function should only be called once per screenset
 local function setScreen(screen)
-  drawApps(screen)
+  drawApps(nil,screen)
   -- Load buttons
   for y,v in ipairs(desktop[selectedScreen]) do
     for x,b in ipairs(v) do
@@ -53,5 +59,47 @@ local function setScreen(screen)
       end
     end
   end
-
 end
+--- Custom type 2 skimg loader to support animated playback.
+local function draw2skimg(skimg)
+  -- Basically calls the type 1 parser on each frame, with a `sleep` in between.
+  -- make sure terminal has blit and setCursorPos
+  if not term.setCursorPos or not term.blit then
+    error("Terminal is incompatible!",2)
+  end
+  local frames = skimg.data
+  for _,v in ipairs(frames) do
+    local frame = v
+    for i,l in ipairs(frame) do
+      term.setCursorPos(1,i)
+      term.blit(l[1],l[2],l[3])
+    end
+    drawApps(nil,selectedScreen)
+    sleep(skimg.attributes.speed or 0.05)
+  end
+end
+
+-- Functions
+local function handleButtons()
+  while true do
+    local event = {os.pullEvent()}
+    button.executeButtons(event,false,false)
+  end
+end
+
+local function drawScreen()
+  while true do
+    if desktopBackground["format"] == "skimg" and desktopBackground.attributes.type == 2 then
+      draw2skimg(desktopBackground)
+    else
+      sUtils.asset.draw(desktopBackground)
+    end
+  end
+end
+
+-- Now create the coroutines
+local buttonCoro = coro.newCoro(handleButtons,"button")
+local screenCoro = coro.newCoro(drawScreen,"screen")
+
+-- Finally, start the program.
+coro.runCoros()

@@ -11,6 +11,10 @@ else
   oldShutdown = nil -- Delete the old shutdown, leading to no _G pollution.
 end
 
+if SkyOS then
+  error("SkyOS is already running.")
+end
+
 local function path(file)
   if LevelOS then
     return fs.combine(fs.getDir(LevelOS.self.window.path),file)
@@ -64,7 +68,7 @@ package.path = package.path .. ";libraries/?;libraries/?.lua"
 if not fs.exists(path("libraries/log.lua")) then
   error("libraries/log.lua is missing! SkyOS can not continue boot!")
 end
-local log = require("libraries.log")
+local logging = require("libraries.log")
 -- normal loading
 term.clear()
 term.setCursorPos(1,1)
@@ -74,14 +78,14 @@ f.close()
 _G.SkyOS = {}
 _G.SkyOS.settings = settings
 _G.SkyOS.emu = {}
-_G.SkyOS.wins = {}
+_G.SkyOS.wins = dofile("libraries/windowmanager.lua")
 _G.SkyOS.version = "21.06.0"
 _G.SkyOS.data = {
   heldKeys = {},
   event = {},
   winids = {}, -- This is where SkyOS can store information about itself, such as what window id it's desktop is.
 }
-_G.SkyOS.coro = require("libraries.coro")
+_G.SkyOS.coro = dofile("libraries/coro.lua")
 _G.SkyOS.displayError = function(msg)
   term.setBackgroundColour(colours.blue)
   term.setTextColour(colours.white)
@@ -102,32 +106,37 @@ _G.SkyOS.displayError = function(msg)
   os.reboot()
 end
 
-local mainLog = log.create("logs/main.sklog")
-mainLog:info("SkyOS")
-mainLog:info("Contact:")
-mainLog:info("Github: SkyTheCodeMaster, Discord: SkyCrafter0#6386")
-mainLog:info("Discord: https://discord.gg/cY7r2Mt7tc")
-mainLog:info("Checking for emulation...")
+-- Setup logging
+local LOG = logging.getLogger("SkyOS")
+-- Disable logging :)
+LOG.enable(false)
+LOG.basicConfig("log.txt","[{asctime}][{level}] {message}","%Y/%m/%d-%H:%M:%S",logging.INFO)
+
+LOG.info("SkyOS")
+LOG.info("Contact:")
+LOG.info("Github: SkyTheCodeMaster, Discord: SkyCrafter0#6386")
+LOG.info("Discord: https://discord.gg/cY7r2Mt7tc")
+LOG.info("Checking for emulation...")
 
 SkyOS.emu.levelos = lOS and lUtils and true or false
 SkyOS.emu.craftospc = periphemu and config and true or false
 SkyOS.emu.ccemux = ccemux and true or false
 SkyOS.emu.phileos = PhileOS and true or false
 
-mainLog:info("LevelOS: " .. tostring(SkyOS.emu.levelos))
-mainLog:info("CraftOS-PC: " .. tostring(SkyOS.emu.craftospc))
-mainLog:info("CCEmuX: " .. tostring(SkyOS.emu.ccemux))
-mainLog:info("PhileOS: " .. tostring(SkyOS.emu.phileos))
+LOG.info("LevelOS: " .. tostring(SkyOS.emu.levelos))
+LOG.info("CraftOS-PC: " .. tostring(SkyOS.emu.craftospc))
+LOG.info("CCEmuX: " .. tostring(SkyOS.emu.ccemux))
+LOG.info("PhileOS: " .. tostring(SkyOS.emu.phileos))
 
 if SkyOS.emu.levelos then
-  mainLog:info("Running LevelOS-specific functions")
+  LOG.info("Running LevelOS-specific functions")
   local x,y = LevelOS.self.window.win.getPosition()
   LevelOS.self.window.win.reposition(x,y,26,20)
   LevelOS.self.window.resizable = false
   LevelOS.self.window.title = "SkyOS " .. SkyOS.version
 end
 if SkyOS.emu.phileos then
-  mainLog:info("Running PhileOS-specific functions")
+  LOG.info("Running PhileOS-specific functions")
   local id = PhileOS.ID
   PhileOS.setSize(id,26,20)
   PhileOS.setName(id,"SkyOS " .. SkyOS.version)
@@ -137,10 +146,11 @@ end
 -- Quickload boot splash by utilizing the mini skimg library.
 require("libraries.skimg")("graphics/bootSplash.skimg")()
 
-local sUtils = require("libraries.sUtils")
-local sos = require("libraries.sos")
-local button = require("libraries.button")
-local gesture = require("libraries.gesturemanager")
+local sUtils =  dofile("libraries/sUtils.lua")
+local sos =     dofile("libraries/sos.lua")
+local button =  dofile("libraries/button.lua")
+local gesture = dofile("libraries/gesturemanager.lua")
+
 
 --[[if fs.exists(path("beta.skprg")) then
     SkyOS.sLog.info("Beta version of SkyOS, pausing 1 second to emulate server comms")
@@ -164,48 +174,11 @@ function _G.gps.locate(...)
   end
 end
 
--- Setup FS override
--- Protected files/directories. If path:match(x) then it will be access denied on a w/a access.
-local protected = {
-  "SkyOS/defaults/",
-}
-local oldOpen = fs.open
-local oldRO = fs.isReadOnly
-local function readOnly(path)
-  for _,v in pairs(protected) do
-    if path:match(v) then
-      return false
-    end
-  end
-  return oldRO(path)
-end
-
-fs.isReadOnly = readOnly
-
-local protectedModes = {
-  w = true,
-  wb = true,
-  a = true,
-  ab = true,
-}
-
-function fs.open(path,mode)
-  if protectedModes[mode] then
-    if readOnly(path) then
-      return nil,path .. ": Access denied"
-    end
-  end
-  return oldOpen(path,mode)
-end
-
-mainLog:save()
 --Do server side things BEFORE term.clear()
 
 term.setBackgroundColour(colours.black)
 --Begin auto version check
 
--- tlco
--- TODO: Figure out how to properly do a TLCO to make Rednet toggle-able in settings.
 term.clear()
 
 --Load DE
@@ -232,13 +205,6 @@ local function drawTime(x,y,backColour,textColour,tOutput)
   tOutput.setTextColour(textColour)
   tOutput.write(time)
 end
-
-local function drawHomescreen()
-  local desktopImg = sUtils.asset.load(path(SkyOS.settings.desktopImg))
-  sUtils.asset.drawSkimg(desktopImg,1,2)
-end
-
-drawHomescreen()
 
 topwin = window.create(term.current(),1,1,26,1,true) -- Window for the top bar.
 bottomwin = window.create(term.current(),1,20,26,true) -- Window for the bottom bar.
@@ -299,14 +265,6 @@ local function eventMan() -- Utility manager, mostly provides `SkyOS.data.event`
       button.executeButtons(event,false)
     elseif event[1] == "key" then
       SkyOS.data.heldKeys[event[2]] = true
-        if event[2] == keys.e then
-          mainLog:info("E pressed, exiting to SkyShell")
-          mainLog:save()
-          term.setBackgroundColour(colours.black)
-          term.clear()
-          term.setCursorPos(1,1)
-          SkyOS.coro.stop()
-        end
     elseif event[1] == "key_up" then
       SkyOS.data.heldKeys[event[2]] = false
     end
@@ -316,42 +274,49 @@ end
 local skyospid = SkyOS.coro.newCoro(main,"SkyOS") -- This is the main loop for skyos, it is important.
 local eventpid = SkyOS.coro.newCoro(eventMan,"Event Manager",nil,nil,true) -- This manages events for SkyOS, it is important.
 local gpid = SkyOS.coro.newCoro(gesture.run,"Gestures",nil,nil,true)
-mainLog:info("Process IDs for main SkyOS processes.")
-mainLog:info(tostring(skyospid))
-mainLog:info(tostring(eventpid))
-mainLog:info(tostring(gpid)) -- Thanks Illuaminate! These are now used variables.
+
+-- Start the desktop
+
+
+LOG.info("Process IDs for main SkyOS processes.")
+LOG.info(tostring(skyospid))
+LOG.info(tostring(eventpid))
+LOG.info(tostring(gpid)) -- Thanks Illuaminate! These are now used variables.
+
+local desktopwid = SkyOS.wins.newWindow("programs/desktop.lua","Desktop")
+
 SkyOS.coro.runCoros()
  
 -- Colours
-local promptColour  = colours.yellow
-local textColour = colours.white
-local bgColour = colours.blue
-
-term.setBackgroundColor(bgColour)
-term.clear()
-term.setTextColour(promptColour)
-print("SkyShell v21.04")
-term.setTextColour(textColour)
- 
--- Read commands and execute them
-local tCommandHistory = {}
-while true do
-  term.setBackgroundColor(bgColour)
-  term.setTextColour(promptColour)
-  write(shell.dir() .. ":S> ")
-  term.setTextColour(textColour)
-  local sLine
-  if settings.get("shell.autocomplete") then
-    sLine = read(nil, tCommandHistory, shell.complete)
-  else
-    sLine = read(nil, tCommandHistory)
-  end
-  if sLine == "update" then
-    sos.updateSkyOS()
-  else
-    if sLine:match("%S") and tCommandHistory[#tCommandHistory] ~= sLine then
-      table.insert(tCommandHistory, sLine)
-    end
-    shell.run(sLine)
-  end
-end
+--local promptColour  = colours.yellow
+--local textColour = colours.white
+--local bgColour = colours.blue
+--
+--term.setBackgroundColor(bgColour)
+--term.clear()
+--term.setTextColour(promptColour)
+--print("SkyShell v21.04")
+--term.setTextColour(textColour)
+--
+---- Read commands and execute them
+--local tCommandHistory = {}
+--while true do
+--  term.setBackgroundColor(bgColour)
+--  term.setTextColour(promptColour)
+--  write(shell.dir() .. ":S> ")
+--  term.setTextColour(textColour)
+--  local sLine
+--  if settings.get("shell.autocomplete") then
+--    sLine = read(nil, tCommandHistory, shell.complete)
+--  else
+--    sLine = read(nil, tCommandHistory)
+--  end
+--  if sLine == "update" then
+--    sos.updateSkyOS()
+--  else
+--    if sLine:match("%S") and tCommandHistory[#tCommandHistory] ~= sLine then
+--      table.insert(tCommandHistory, sLine)
+--    end
+--    shell.run(sLine)
+--  end
+--end

@@ -100,6 +100,7 @@ local function drawScreen()
       draw2skimg(desktopBackground)
     else
       sUtils.asset.draw(desktopBackground)
+      sleep()
     end
   end
 end

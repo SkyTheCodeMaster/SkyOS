@@ -65,6 +65,13 @@ end
 -- Put stuffs in path lol
 package.path = package.path .. ";libraries/?;libraries/?.lua"
 
+-- Roll custom dofile to include environment
+local function dolib(lib,env)
+  env = env or _ENV
+  local func = loadfile(lib,"t",env)
+  return func()
+end
+
 if not fs.exists(path("libraries/log.lua")) then
   error("libraries/log.lua is missing! SkyOS can not continue boot!")
 end
@@ -85,7 +92,7 @@ _G.SkyOS.data = {
   event = {},
   winids = {}, -- This is where SkyOS can store information about itself, such as what window id it's desktop is.
 }
-_G.SkyOS.coro = dofile("libraries/coro.lua")
+_G.SkyOS.coro = dolib("libraries/coro.lua")
 _G.SkyOS.displayError = function(msg)
   term.setBackgroundColour(colours.blue)
   term.setTextColour(colours.white)
@@ -146,10 +153,10 @@ end
 -- Quickload boot splash by utilizing the mini skimg library.
 require("libraries.skimg")("graphics/bootSplash.skimg")()
 
-local sUtils =  dofile("libraries/sUtils.lua")
-local sos =     dofile("libraries/sos.lua")
-local button =  dofile("libraries/button.lua")
-local gesture = dofile("libraries/gesturemanager.lua")
+local sUtils =  dolib("libraries/sUtils.lua")
+local sos =     dolib("libraries/sos.lua")
+local button =  dolib("libraries/button.lua")
+local gesture = dolib("libraries/gesturemanager.lua")
 
 
 --[[if fs.exists(path("beta.skprg")) then

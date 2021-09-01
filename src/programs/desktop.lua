@@ -33,14 +33,20 @@ local imageCache = {{},{},{},{}}
 --- Draw a screen with the apps in front, this function allows for rendering type 2 skimgs.
 -- @tparam number screen Screen of apps to draw. This should correspond with the buttons available.
 local function drawApps(image,screen)
-  if image then sUtils.asset.draw(image,{y=2}) end
+  if image then
+    local data = image.data or image -- Pull skimg data, or just the image itself (skimg or blit format)
+    for i,v in ipairs(data) do
+      term.setCursorPos(1,i)
+      term.blit(v[1],v[2],v[3])
+    end
+  end
   for y,v in ipairs(desktop[screen]) do
     for x,b in ipairs(v) do
       if b.type == "app" then
         -- Calculate x/y coordinates
+        local _,_,line = term.getLine(5*y)
         sUtils.asset.draw(imageCache[y][x],{x=5*x-2,y=5*y-3},term)
         term.setCursorPos(5*x-2,5*y)
-        local _,_,line = term.getLine(5*y)
         local section = line:sub(5*x-2,5*x+1)
         term.blit(b.name,"0000",section)
       end
@@ -52,7 +58,7 @@ end
 local buttons = {{},{},{},{}}
 for y=1,4 do
   for x=1,4 do
-    buttons[y][x] = button.newButton(2*(3*x-2),3*(2*y-1),5,5,function() end)
+    buttons[y][x] = button.newButton(5*x-2,5*y-3,5,5,function() end)
   end
 end
 
@@ -79,11 +85,13 @@ local function draw2skimg(skimg)
   local frames = skimg.data
   for _,v in ipairs(frames) do
     local frame = v
+    term.setVisible(false)
     for i,l in ipairs(frame) do
       term.setCursorPos(1,i)
       term.blit(l[1],l[2],l[3])
     end
     drawApps(nil,selectedScreen)
+    term.setVisible(true)
     sleep(skimg.attributes.speed or 0.05)
   end
 end
@@ -98,7 +106,7 @@ end
 
 local function drawScreen()
   while true do
-    if desktopBackground["format"] == "skimg" and desktopBackground["attributes"]["format"] == 2 then
+    if desktopBackground["format"] == "skimg" and desktopBackground["attributes"]["type"] == 2 then
       draw2skimg(desktopBackground)
     else
       term.setVisible(false)

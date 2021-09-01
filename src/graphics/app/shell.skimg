@@ -1,27 +1,27 @@
 {
   attributes = {
-    height = 5,
+    height = 3,
     locked = false,
     creator = "SkyCrafter0",
-    width = 5,
+    width = 4,
   },
   data = {
     {
-      "",
-      "4444f",
-      "ffff4",
+      "",
+      "444ff",
+      "fff44",
       1,
     },
     {
-      ">_\000",
-      "4400f",
-      "ffff4",
+      ">_",
+      "440ff",
+      "fff44",
       2,
     },
     {
-      "\000\000\000",
-      "4000f",
-      "ffff4",
+      "",
+      "fffff",
+      "44444",
       3,
     },
     {

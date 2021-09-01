@@ -23,10 +23,6 @@
     "path": "libraries/graphic.lua",
     "folder": false
   },
-  "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/skyos/log.lua": {
-    "path": "libraries/log.lua",
-    "folder": false
-  },
   "https://raw.githubusercontent.com/SkyTheCodeMaster/SkyDocs/main/src/main/misc/progressbar.lua": {
     "path": "libraries/progressBar.lua",
     "folder": false

@@ -71,11 +71,6 @@ local function dolib(lib,env)
   local func = loadfile(lib,"t",env)
   return func()
 end
-
-if not fs.exists(path("libraries/log.lua")) then
-  error("libraries/log.lua is missing! SkyOS can not continue boot!")
-end
-local logging = require("libraries.log")
 -- normal loading
 term.clear()
 term.setCursorPos(1,1)
@@ -102,47 +97,28 @@ _G.SkyOS.displayError = function(msg)
   term.write("Press any key to reboot.")
   term.setCursorPos(1,3)
   print(msg)
-  os.pullEvent("key")
   if os.clock() < 30 then -- This is close enough to be startup, 30 seconds is fine.
     cache.badStarts = cache.badStarts + 1
   end
   local f = fs.open("SkyOS/data.cfg","w")
   f.write(textutils.serialize(cache))
   f.close()
+  os.pullEvent("key")
   os.reboot()
 end
-
--- Setup logging
-local LOG = logging.getLogger("SkyOS")
--- Disable logging :)
-LOG.enable(false)
-LOG.basicConfig("log.txt","[{asctime}][{level}] {message}","%Y/%m/%d-%H:%M:%S",logging.INFO)
-
-LOG.info("SkyOS")
-LOG.info("Contact:")
-LOG.info("Github: SkyTheCodeMaster, Discord: SkyCrafter0#6386")
-LOG.info("Discord: https://discord.gg/cY7r2Mt7tc")
-LOG.info("Checking for emulation...")
 
 SkyOS.emu.levelos = lOS and lUtils and true or false
 SkyOS.emu.craftospc = periphemu and config and true or false
 SkyOS.emu.ccemux = ccemux and true or false
 SkyOS.emu.phileos = PhileOS and true or false
 
-LOG.info("LevelOS: " .. tostring(SkyOS.emu.levelos))
-LOG.info("CraftOS-PC: " .. tostring(SkyOS.emu.craftospc))
-LOG.info("CCEmuX: " .. tostring(SkyOS.emu.ccemux))
-LOG.info("PhileOS: " .. tostring(SkyOS.emu.phileos))
-
 if SkyOS.emu.levelos then
-  LOG.info("Running LevelOS-specific functions")
   local x,y = LevelOS.self.window.win.getPosition()
   LevelOS.self.window.win.reposition(x,y,26,20)
   LevelOS.self.window.resizable = false
   LevelOS.self.window.title = "SkyOS " .. SkyOS.version
 end
 if SkyOS.emu.phileos then
-  LOG.info("Running PhileOS-specific functions")
   local id = PhileOS.ID
   PhileOS.setSize(id,26,20)
   PhileOS.setName(id,"SkyOS " .. SkyOS.version)
@@ -283,46 +259,6 @@ local gpid = SkyOS.coro.newCoro(gesture.run,"Gestures",nil,nil,true)
 
 -- Start the desktop
 
-
-LOG.info("Process IDs for main SkyOS processes.")
-LOG.info(tostring(skyospid))
-LOG.info(tostring(eventpid))
-LOG.info(tostring(gpid)) -- Thanks Illuaminate! These are now used variables.
-
 local desktopwid = SkyOS.wins.newWindow("programs/desktop.lua","Desktop",true,_ENV)
 
 SkyOS.coro.runCoros()
- 
--- Colours
---local promptColour  = colours.yellow
---local textColour = colours.white
---local bgColour = colours.blue
---
---term.setBackgroundColor(bgColour)
---term.clear()
---term.setTextColour(promptColour)
---print("SkyShell v21.04")
---term.setTextColour(textColour)
---
----- Read commands and execute them
---local tCommandHistory = {}
---while true do
---  term.setBackgroundColor(bgColour)
---  term.setTextColour(promptColour)
---  write(shell.dir() .. ":S> ")
---  term.setTextColour(textColour)
---  local sLine
---  if settings.get("shell.autocomplete") then
---    sLine = read(nil, tCommandHistory, shell.complete)
---  else
---    sLine = read(nil, tCommandHistory)
---  end
---  if sLine == "update" then
---    sos.updateSkyOS()
---  else
---    if sLine:match("%S") and tCommandHistory[#tCommandHistory] ~= sLine then
---      table.insert(tCommandHistory, sLine)
---    end
---    shell.run(sLine)
---  end
---end

@@ -24,24 +24,25 @@ local desktop = sUtils.encfread("SkyOS/desktop.cfg")
 _G.SkyOS.data.winids.desktop = _ENV.SkyOS.self.winid -- Place the desktop into the global SkyOS, and to have the task switcher *not* show the desktop.
 
 local desktopBackground = sUtils.asset.load(SkyOS.settings.desktopImg)
-SkyOS.wins.bottombarOpen = true
-SkyOS.wins.topbarOpen = true
+SkyOS.wins.bottombar = true
+SkyOS.wins.topbar = true
 local selectedScreen = 1 -- Which screen is currently selected?
 
-local imageCache = {{},{},{},{},}
+local imageCache = {{},{},{},{}}
 
 --- Draw a screen with the apps in front, this function allows for rendering type 2 skimgs.
 -- @tparam number screen Screen of apps to draw. This should correspond with the buttons available.
 local function drawApps(image,screen)
-  if image then
-    sUtils.asset.draw(image)
-  end
-  for y,v in ipairs(desktop[selectedScreen]) do
+  if image then sUtils.asset.draw(image,{y=2}) end
+  for y,v in ipairs(desktop[screen]) do
     for x,b in ipairs(v) do
       if b.type == "app" then
-        local image = sUtils.asset.load(b.image)
         -- Calculate x/y coordinates
-        sUtils.asset.draw(image,{x=2*(3*x-2),y=3*(2*y-1)})
+        sUtils.asset.draw(imageCache[y][x],{x=5*x-2,y=5*y-3},term)
+        term.setCursorPos(5*x-2,5*y)
+        local _,_,line = term.getLine(5*y)
+        local section = line:sub(5*x-2,5*x+1)
+        term.blit(b.name,"0000",section)
       end
     end
   end
@@ -57,12 +58,13 @@ end
 
 -- This function should only be called once per screenset
 local function setScreen(screen)
-  drawApps(nil,screen)
+  selectedScreen = screen
   -- Load buttons
-  for y,v in ipairs(desktop[selectedScreen]) do
+  for y,v in ipairs(desktop[screen]) do
     for x,b in ipairs(v) do
       if b.type == "app" then
-        button.editButton(buttons[y][x],nil,nil,nil,nil,function() SkyOS.wins.newWindow(b.program, b.name, true) end)
+        button.editButton(buttons[y][x],nil,nil,nil,nil,function() SkyOS.wins.foreground(SkyOS.wins.newWindow(b.program, b.name, true)) end)
+        imageCache[y][x] = sUtils.asset.load(b.image)
       end
     end
   end
@@ -96,16 +98,19 @@ end
 
 local function drawScreen()
   while true do
-    if desktopBackground["format"] == "skimg" and desktopBackground.attributes.type == 2 then
+    if desktopBackground["format"] == "skimg" and desktopBackground["attributes"]["format"] == 2 then
       draw2skimg(desktopBackground)
     else
-      sUtils.asset.draw(desktopBackground)
+      term.setVisible(false)
+      drawApps(desktopBackground,selectedScreen)
+      term.setVisible(true)
       sleep()
     end
   end
 end
 
-setScreen(selectedScreen)
+setScreen(1)
+SkyOS.wins.foreground(SkyOS.self.winid)
 
 -- Now create the coroutines
 local buttonCoro = coro.newCoro(handleButtons,"button")

@@ -11,7 +11,7 @@
 -- Roll custom dofile to include environment
 local function dolib(lib,env)
   env = env or _ENV
-  local func = loadfile(lib,"t",env)
+  local func = assert(loadfile(lib,"t",env))
   return func()
 end
 
